@@ -24,6 +24,9 @@ export default defineConfig({
       less: {
         math: 'always',
         relativeUrls: true,
+        modifyVars: {
+          'theme2048': '"default"',
+        },
         javascriptEnabled: true
       },
     },

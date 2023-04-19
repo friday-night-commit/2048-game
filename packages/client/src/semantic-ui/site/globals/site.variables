@@ -2,7 +2,7 @@
      User Global Variables
 *******************************/
 
-@h1: 5em;
+@h1: if(@theme2048 = 'default', 1em, 5em);
 
 /* Colors */
 @red: yellow;
