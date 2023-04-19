@@ -1,5 +1,4 @@
 import Auth from './pages/Auth'
-import App from './App'
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -8,7 +7,7 @@ import {
 
 export default createBrowserRouter(
   createRoutesFromElements([
-    <Route path="/" element={<App />} />,
+    <Route path="/" element="" />,
     <Route path="/auth" element={<Auth />}></Route>,
   ])
 )
