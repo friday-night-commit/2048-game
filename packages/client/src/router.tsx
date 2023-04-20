@@ -1,4 +1,4 @@
-import Auth from './pages/Auth'
+import Auth from './pages/Auth/Auth'
 import {
   createBrowserRouter,
   createRoutesFromElements,
