@@ -12,11 +12,7 @@ function App() {
 
     fetchServerData()
   }, [])
-  return (
-    <h1 className="App ui red header">
-      Вот тут будет жить ваше приложение :)
-    </h1>
-  );
+  return <div className="App">Вот тут будет жить ваше приложение :)</div>
 }
 
 export default App
