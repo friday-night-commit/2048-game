@@ -16,7 +16,7 @@ function App() {
   }, [])
   return (
     <>
-      <h1 className="App ui red header">
+      <h1 className="text-3xl font-bold underline">
         Вот тут будет жить ваше приложение :)
       </h1>
 
