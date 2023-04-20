@@ -3,8 +3,6 @@ import react from '@vitejs/plugin-react'
 import dotenv from 'dotenv'
 dotenv.config()
 
-import path from 'path'
-
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
@@ -14,18 +12,4 @@ export default defineConfig({
     __SERVER_PORT__: process.env.SERVER_PORT,
   },
   plugins: [react()],
-  resolve: {
-    alias: {
-      '../../theme.config': path.join(__dirname, '../client/src/semantic-ui/theme.config'),
-    },
-  },
-  css: {
-    preprocessorOptions: {
-      less: {
-        math: 'always',
-        relativeUrls: true,
-        javascriptEnabled: true
-      },
-    },
-  },
 })
