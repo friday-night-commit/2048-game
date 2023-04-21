@@ -1,7 +1,7 @@
 import { RouterProvider } from 'react-router-dom'
 import router from './router'
 import { useEffect } from 'react'
-import { Button } from '@material-tailwind/react';
+import { Button } from '@material-tailwind/react'
 import './App.css'
 
 function App() {
@@ -20,7 +20,9 @@ function App() {
       <h1 className="text-3xl font-bold underline">
         Вот тут будет жить ваше приложение :)
       </h1>
-      <Button>Button</Button>
+      <Button nonce='' onResize='' onResizeCapture=''>
+        Кликни на меня
+      </Button>
 
       <RouterProvider router={router} />
     </>
