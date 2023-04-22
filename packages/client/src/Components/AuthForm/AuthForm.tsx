@@ -1,6 +1,7 @@
-import { Card, Input, Button, Typography } from '@material-tailwind/react'
+import { Input, Button, Typography } from '@material-tailwind/react'
 import { useCallback, ChangeEvent, useState } from 'react'
 import { Link } from 'react-router-dom'
+
 import { routes } from '../../router'
 
 type Form = {
@@ -32,36 +33,36 @@ const AuthForm = function() {
 
 
   return (
-    <Card color="white" className="p-12 max-w-md w-full" shadow={false}>
-      <Typography variant="h4" color="blue-gray" className="text-center mb-8">
+    <>
+      <Typography variant='h4' color='blue-gray' className='text-center mb-8'>
         Авторизация
       </Typography>
-      <form className="w-full" onSubmit={onSubmit}>
-        <div className="mb-4 flex flex-col gap-6">
+      <form className='w-full' onSubmit={onSubmit}>
+        <div className='mb-4 flex flex-col gap-6'>
           <Input
-            size="lg"
-            label="Логин"
-            name="login"
+            size='lg'
+            label='Логин'
+            name='login'
             onChange={updateInput}
           />
           <Input
-            type="password"
-            size="lg"
-            label="Пароль"
-            name="password"
+            type='password'
+            size='lg'
+            label='Пароль'
+            name='password'
             onChange={updateInput}
           />
         </div>
-        <Button className="mt-6 mb-4" fullWidth type="submit">
+        <Button className='mt-6 mb-4' fullWidth type='submit'>
           Войти
         </Button>
         <Link
           to={routes.registerPage}
-          className="font-medium text-blue-500 transition-colors hover:text-blue-700 text-center block">
+          className='font-medium text-blue-500 transition-colors hover:text-blue-700 text-center block'>
           Регистрация
         </Link>
       </form>
-    </Card>
+    </>
   )
 }
 
