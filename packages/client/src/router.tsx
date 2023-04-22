@@ -5,9 +5,15 @@ import {
   Route,
 } from 'react-router-dom'
 
+export enum routes {
+  mainPage = "/",
+  authPage = "/auth",
+  registrationPage = "/registration"
+}
+
 export default createBrowserRouter(
   createRoutesFromElements([
-    <Route path="/" element="" />,
-    <Route path="/auth" element={<Auth />}></Route>,
+    <Route path={routes.mainPage} element="" />,
+    <Route path={routes.authPage} element={<Auth />}></Route>,
   ])
 )
