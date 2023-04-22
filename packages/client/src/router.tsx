@@ -1,18 +1,15 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import Auth from './pages/Auth'
-import NoMatch from './pages/NoMatch'
+import routes from './routes'
 
-export enum routes {
-  mainPage = '/',
-  authPage = '/auth',
-  registerPage = '/register'
-}
+import MainPage from './pages/Main'
+import AuthPage from './pages/Auth'
+import NoMatch from './pages/NoMatch'
 
 export default createBrowserRouter(
   [
-    {path: routes.mainPage, element: ''},
-    {path: routes.authPage, element: <Auth />},
+    { path: routes.mainPage, element: <MainPage /> },
+    { path: routes.authPage, element: <AuthPage /> },
     { path: '*', element: <NoMatch /> }
   ]
 )
