@@ -1,14 +1,9 @@
-// import App from './App'
-// import { render, screen } from '@testing-library/react'
+import App from './App'
+import { render, queryByAttribute } from '@testing-library/react'
 
-// const appContent = 'Вот тут будет жить ваше приложение :)'
+const getById = queryByAttribute.bind(null, 'id');
 
-// // @ts-ignore
-// global.fetch = jest.fn(() =>
-//   Promise.resolve({ json: () => Promise.resolve('hey') })
-// )
-
-// test('Example test', async () => {
-//   render(<App />)
-//   expect(screen.getByText(appContent)).toBeDefined()
-// })
+test('Example test', async () => {
+  const dom = render(<App />)
+  expect(getById(dom.container, 'root')).toBeDefined()
+})
