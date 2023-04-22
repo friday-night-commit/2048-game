@@ -2,16 +2,17 @@ import './style.scss'
 import { FormEvent } from 'react'
 import { Card, Input, Button, Typography } from '@material-tailwind/react'
 import { Form } from '../../Components/Form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { routes } from '../../router'
 
 
 export default function AuthPage() {
+  const navigate = useNavigate();
 
   const handleLogin = (e: FormEvent) => {
     e.preventDefault();
-    console.log('Отправляем данные формы');
-    console.log(e.target);
+    console.log('Отправляем данные формы', e.target);
+    navigate(routes.mainPage);
   }
 
   return (

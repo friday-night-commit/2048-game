@@ -1,0 +1,21 @@
+/* Colors */
+$background-color: rgb(250, 248, 239);
+$font-color: rgb(119, 110, 101);
+$light-brown: rgb(187, 173, 160);
+$dark-brown: rgb(143, 122, 102);
+
+$base-tile: rgb(238, 228, 218); // 2
+$light-yellow-tile: rgb(237, 224, 200); // 4
+$light-orange-tile: rgb(242, 177, 121); // 8
+$orange-tile: rgb(245, 149, 99); // 16
+$light-red-tile: rgb(246, 124, 95); // 32
+$red-tile: rgb(246, 94, 59); // 64
+$yellow-tile: rgb(237, 207, 114); // 128
+
+
+/* Mixins */
+@mixin hover-link {
+  &:hover {
+    color: darken($font-color, 10%);
+  }
+}

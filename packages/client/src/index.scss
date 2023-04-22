@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './variables.scss';
+
+html {
+  background: $background-color;
+  color: $font-color;
+}
+
+.game-button {
+  line-height: 28px;
+  font-size: 28px;
+  background: $dark-brown;
+  border-width: 0px;
+  box-shadow: none;
+  &:hover {
+    box-shadow: 2px 2px 6px lighten($dark-brown, 20%) !important;
+  }
+}
+
+h5 a {
+  @include hover-link;
+  text-decoration: underline;
+  font-weight: bold;
+}
