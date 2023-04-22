@@ -2,7 +2,7 @@ import { FC, FormEvent } from 'react'
 
 type TOwnProps = {
   className?: string
-  handleSubmit: (e: FormEvent<HTMLFormElement>) => void
+  handleSubmit: (formData: FormData) => void
   children?: JSX.Element | JSX.Element[]
 }
 
@@ -13,7 +13,8 @@ const Form: TProps = props => {
 
   const decoratedHandleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleSubmit(e);
+    const formData = new FormData(e.target as HTMLFormElement);
+    handleSubmit(formData);
   }
 
   return (
