@@ -1,18 +1,20 @@
-import { Link } from 'react-router-dom'
 import { Input, Button, Typography } from '@material-tailwind/react'
-import { routes } from '../../router'
+import { Link, useNavigate } from 'react-router-dom'
 
 import CardContainer from '../../Components/CardContainer'
 import { Form } from '../../Components/Form'
+import { routes } from '../../router'
 
 
 export default function AuthPage() {
+  const navigate = useNavigate();
 
   const onSubmit = (formData: FormData) => {
     // Temp console log
     for (const pair of formData.entries()) {
       console.log(pair[0]+ ', ' + pair[1]);
     }
+    navigate(routes.mainPage);
   }
 
   return (
