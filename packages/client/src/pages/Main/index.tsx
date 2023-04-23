@@ -2,7 +2,7 @@ import { Button, Typography } from '@material-tailwind/react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import PageContainer from '../../Components/PageContainer'
-import { routes } from '../../router'
+import { ROUTES } from '../../models/enums'
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -15,12 +15,12 @@ export default function MainPage() {
         </Typography>
         <Typography variant='h5' className='mb-8 font-normal'>
           {'Пользуйся подсказками, вдохновляйся '}
-          <Link to={routes.liderboardPage}>лучшими результатами</Link>
+          <Link to={ROUTES.liderboardPage}>лучшими результатами</Link>
           {' и общайся на нашем '}
-          <Link to={routes.forumPage}>форуме</Link>
+          <Link to={ROUTES.forumPage}>форуме</Link>
           {'!'}
         </Typography>
-        <Button size='lg' className='game-button' onClick={() => navigate(routes.gamePage)}>
+        <Button size='lg' className='game-button' onClick={() => navigate(ROUTES.gamePage)}>
           START!
         </Button>
       </>

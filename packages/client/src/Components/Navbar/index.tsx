@@ -1,9 +1,8 @@
 import { FC } from 'react';
 import { Navbar as MaterialNavbar, Typography } from '@material-tailwind/react'
 import { Link } from 'react-router-dom'
-
-import { routes } from '../../router'
 import './index.scss'
+import { ROUTES } from '../../models/enums'
 
 type TNavbarItemProps = {
   url: string
@@ -25,10 +24,10 @@ const NavbarItem: FC<TNavbarItemProps> = ({ url, title }) => {
 }
 
 // TODO: why routes is undefined object?
+console.log('routes', ROUTES)
 const NAVBAR_ITEMS = [
   {
-    // url: routes.profilePage,
-    url: '123',
+    url: ROUTES.profilePage,
     title: 'Мой профиль'
   }, {
     // url: routes.liderboardPage,
@@ -47,7 +46,7 @@ export default function Navbar() {
       <div className='container mx-auto flex items-center justify-between'>
         <Typography
           as={Link}
-          to={routes.mainPage}
+          to={ROUTES.mainPage}
           variant='h1'
           className='mr-4 cursor-pointer py-1.5 title'
         >

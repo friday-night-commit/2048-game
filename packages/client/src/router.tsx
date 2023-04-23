@@ -7,21 +7,14 @@ import {
 import MainPage from './pages/Main'
 import Auth from './pages/Auth'
 import NoMatch from './pages/NoMatch'
-
-export enum routes {
-  mainPage = '/',
-  authPage = '/auth',
-  registrationPage = '/registration',
-  profilePage = '/profile',
-  liderboardPage = '/liderboard',
-  forumPage = '/forum',
-  gamePage = '/game'
-}
+import Profile from './pages/Profile'
+import { ROUTES } from './models/enums'
 
 export default createBrowserRouter(
   createRoutesFromElements([
-    <Route path={routes.mainPage} element={<MainPage />} />,
-    <Route path={routes.authPage} element={<Auth />}></Route>,
+    <Route path={ROUTES.mainPage} element={<MainPage />} />,
+    <Route path={ROUTES.authPage} element={<Auth />}></Route>,
+    <Route path={ROUTES.profilePage} element={<Profile />}></Route>,
     <Route path='*' element={<NoMatch />}></Route>
   ])
 )

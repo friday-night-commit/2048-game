@@ -5,7 +5,7 @@ import cx from 'classnames'
 import './index.scss'
 
 type TOwnProps = {
-  className?: string
+  className?: string;
   children?: JSX.Element | JSX.Element[]
 }
 
