@@ -14,6 +14,6 @@ export enum routes {
 export default createBrowserRouter(
   createRoutesFromElements([
     <Route path={routes.mainPage} element="" />,
-    <Route path={routes.authPage} element={<Auth />}></Route>,
+    <Route path={routes.authPage} element={<Auth />} />,
   ])
 )
