@@ -1,9 +1,9 @@
-import './style.scss'
-import { FormEvent } from 'react'
 import { Card, Input, Button, Typography } from '@material-tailwind/react'
+import { FormEvent } from 'react'
 import { Form } from '../../Components/Form'
 import { Link, useNavigate } from 'react-router-dom'
 import { ROUTES } from '../../models/enums'
+import './style.module.scss'
 
 
 export default function AuthPage() {

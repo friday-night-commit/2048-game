@@ -1,26 +1,10 @@
 module.exports = {
-  env: {
-    browser: true,
-    es2020: true,
-    node: true
-  },
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'prettier'
-  ],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 11
-  },
-  plugins: ['@typescript-eslint'],
-  rules: {
-    '@typescript-eslint/ban-ts-comment': 1,
-    'max-len': [2, 120, {
-      'ignoreStrings': true,
-      'ignoreTemplateLiterals': true,
-      'ignoreComments': true
-    }],
+  'root': true,
+  'parser': '@typescript-eslint/parser',
+  'plugins': ['@typescript-eslint'],
+  'ignorePatterns': ['**/*.js'],
+  'extends': ['eslint:recommended', 'plugin:@typescript-eslint/eslint-recommended', 'plugin:@typescript-eslint/recommended'],
+  'rules': {
     'quotes': [
       2,
       'single',
@@ -28,5 +12,20 @@ module.exports = {
         'avoidEscape': true
       }
     ],
+    'no-use-before-define': [
+      'warn',
+      {
+        'functions': true,
+        'classes': false,
+        'variables': true,
+        'allowNamedExports': false
+      }
+    ],
+    'no-param-reassign': ['warn']
+  },
+  'env': {
+    'browser': true,
+    'node': true,
+    'jasmine': true
   }
 }

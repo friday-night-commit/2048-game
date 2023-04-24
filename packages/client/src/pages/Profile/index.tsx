@@ -4,7 +4,7 @@ import { ROUTES } from '../../models/enums'
 import { FormEvent } from 'react'
 import Input from '../../Components/Input/Input'
 import { Button, Card, Typography } from '@material-tailwind/react'
-import './profile.scss'
+import './profile.module.scss'
 import Avatar from '../../Components/Avatar'
 
 export enum UserFields {
