@@ -23,8 +23,6 @@ const NavbarItem: FC<TNavbarItemProps> = ({ url, title }) => {
   )
 }
 
-// TODO: why routes is undefined object?
-console.log('routes', ROUTES)
 const NAVBAR_ITEMS = [
   {
     url: ROUTES.profilePage,
