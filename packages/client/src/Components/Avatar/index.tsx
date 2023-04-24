@@ -1,45 +1,56 @@
-import { FC, useState } from 'react'
-import avatar from '../../assets/avatar.png'
-
+import React, { FC, useState } from 'react'
 import './avatar.scss'
-import Input from '../Input/Input'
+import Toast from '../Toast'
 
 type TOwnProps = {
-  src?: string;
+  alert?: string;
 }
 
 type TProps = FC<TOwnProps>
 
-const Avatar: TProps = ({ src }) => {
+const Avatar: TProps = ({alert}) => {
+  const [preview, setPreview] = useState('')
+  const [error, setError] = useState('')
 
-  const [preview, setPreview] = useState(null)
-
-  function onClose() {
-    setPreview(null)
+  function handleError(e: React.SyntheticEvent<HTMLInputElement>) {
+    console.log('handleError', e)
   }
 
-  function onCrop(pv: any) {
-    setPreview(pv)
-  }
+  function handleUpload(e: React.FormEvent<HTMLInputElement>) {
+    if (!e) {
+      return
+    }
+    const target = e.target as HTMLInputElement
 
-  function onBeforeFileLoad(elem: any) {
-    if (elem.target.files[0].size > 71680) {
-      alert('Файл имеет слишком большой размер!')
-      elem.target.value = ''
+    try {
+      if (target.files && target.files.length) {
+        const uri = URL.createObjectURL(target.files[0])
+        setPreview(uri)
+      }
+    } catch (e) {
+      console.log('e', e)
+      const err = (e as Error).message
+      setError(err)
     }
   }
 
   return (
-    <div className='settings-user-avatar'>
-      <img className='settings-user-avatar__image' src={avatar} alt='photo' />
-      <label className='settings-user-avatar__file'>
-        <span className='settings-user-avatar__text'>Нажмите чтобы изменить ваш аватар</span>
-        <Input
-          type='file'
-          additionalClasses='settings-user-avatar__input'
-          name='avatar'
-        />
-      </label>
+    <div>
+      <div className='avatar-container'>
+        <img className='avatar-container__image' src={preview} alt={alert} />
+        <label className='avatar-container__file'>
+          <span className='avatar-container__text'>Нажмите чтобы изменить ваш аватар</span>
+          <input
+            type='file'
+            className='avatar-container__input'
+            name='avatar'
+            accept='image/*'
+            onChange={el => handleUpload(el)}
+            onError={err => handleError(err)}
+          />
+        </label>
+      </div>
+      {error && <Toast text={error} />}
     </div>
   )
 }

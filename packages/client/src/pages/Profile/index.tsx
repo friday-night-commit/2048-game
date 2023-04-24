@@ -32,11 +32,9 @@ export default function ProfilePage() {
         <Typography variant='h3' className='text-center mb-8'>
           Настройки профиля
         </Typography>
-
-        <div className='flex m-14'>
-          <Avatar/>
+        <div className='mb-8 flex justify-center'>
+          <Avatar alert='photo' />
         </div>
-
         <Form className='w-full'
               handlerSubmit={handleSubmit}>
           <Input
