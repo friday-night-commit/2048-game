@@ -33,7 +33,7 @@ export default function AuthPage() {
             Войти
           </Button>
           <Link
-            to={routes.registrationPage}
+            to={routes.registerPage}
             className="font-medium text-blue-500 transition-colors hover:text-blue-700 text-center block">
             Регистрация
           </Link>
