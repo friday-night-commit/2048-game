@@ -2,7 +2,7 @@ import { Button, Typography } from '@material-tailwind/react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import PageContainer from '../../Components/PageContainer'
-import { routes } from '../../router'
+import routes from '../../routes'
 
 export default function MainPage() {
   const navigate = useNavigate();

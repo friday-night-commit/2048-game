@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import CardContainer from '../../Components/CardContainer'
 import { Form } from '../../Components/Form'
-import { routes } from '../../router'
+import routes from '../../routes'
 
 
 export default function AuthPage() {

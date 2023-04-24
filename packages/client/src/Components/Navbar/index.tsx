@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Navbar as MaterialNavbar, Typography } from '@material-tailwind/react'
 import { Link } from 'react-router-dom'
 
-import { routes } from '../../router'
+import routes from '../../routes'
 import './index.scss'
 
 type TNavbarItemProps = {

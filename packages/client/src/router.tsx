@@ -4,19 +4,11 @@ import {
   Route,
 } from 'react-router-dom'
 
+import routes from './routes'
+
 import MainPage from './pages/Main'
 import Auth from './pages/Auth'
 import NoMatch from './pages/NoMatch'
-
-export enum routes {
-  mainPage = '/',
-  authPage = '/auth',
-  registerPage = '/register',
-  profilePage = '/profile',
-  liderboardPage = '/liderboard',
-  forumPage = '/forum',
-  gamePage = '/game'
-}
 
 export default createBrowserRouter(
   createRoutesFromElements([
