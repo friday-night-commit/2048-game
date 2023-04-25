@@ -1,0 +1,8 @@
+@import '../../variables.scss';
+
+.game-container {
+  background: $light-brown;
+  border-radius: 10px;
+  width: $game-container-size;
+  height: $game-container-size;
+}

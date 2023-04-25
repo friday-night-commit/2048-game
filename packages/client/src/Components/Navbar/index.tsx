@@ -38,6 +38,8 @@ const NAVBAR_ITEMS = [
 ]
 
 export default function Navbar() {
+  const maxScoreToday = 4096;
+
   return (
     <MaterialNavbar className='navbar mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4'>
       <div className='container mx-auto flex items-center justify-between'>
@@ -55,7 +57,7 @@ export default function Navbar() {
           </ul>
         </div>
         <span className='score-container'>
-          Максимум сегодня: 4096
+          {`Максимум сегодня: ${maxScoreToday}`}
         </span>
       </div>
     </MaterialNavbar>
