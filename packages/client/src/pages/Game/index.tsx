@@ -1,5 +1,5 @@
 import { Button, Typography } from '@material-tailwind/react'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import cx from 'classnames'
 import { useNavigate } from 'react-router-dom'
 
@@ -8,18 +8,68 @@ import Game from '../../Components/Game'
 import Modal from '../../Components/Modal'
 import routes from '../../routes'
 
-export default function GamePage() {
+type TModalProps = {
+  open: boolean
+  handleOpen: () => void
+}
+
+const SuccessModal: FC<TModalProps> = ({open, handleOpen}) => {
   const navigate = useNavigate();
 
-  const [confirmRestart, setConfirmRestart] = useState(false);
-  const [openFinalModal, setOpenFinalModal] = useState(false);
+  return (
+    <Modal
+      title='Поздравляем! Цель достигнута!'
+      open={open}
+      handleOpen={handleOpen}
+      className='game-modal'
+    >
+      <div className='text-center'>
+        <Typography variant='h6' className='mb-8 font-normal'>
+          <b>2048</b> в твоем зачете! Продолжай набирать очки и иди на рекорд, или найди свое имя в рейтинге самых успешных игроков!
+        </Typography>
+        <div>
+          <Button className='game-button small mr-4' onClick={() => handleOpen()}>
+            Продолжить игру
+          </Button>
+          <Button className='game-button small' onClick={() => navigate(routes.liderboardPage)}>
+            Посмотреть рейтинг
+          </Button>
+        </div>
+      </div>
+    </Modal>
+  );
+}
 
-  const handleOpenFinalModal = () => setOpenFinalModal(!openFinalModal);
+const FailureModal: FC<TModalProps & {restart: () => void}> = ({ open, handleOpen, restart }) => {
+  return (
+    <Modal
+      title='Ничего страшного! Попробуйте еще раз!'
+      open={open}
+      handleOpen={handleOpen}
+      className='game-modal'
+    >
+      <div className='text-center'>
+        <Typography variant='h6' className='mb-8 font-normal'>
+          Ну что, еще поборемся за <b>2048</b>??
+        </Typography>
+        <div>
+          <Button className='game-button small' onClick={() => restart()}>
+            Начать сначала
+          </Button>
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
+export default function GamePage() {
+
+  const [confirmRestart, setConfirmRestart] = useState(false);
 
   const handleRestart = () => {
     if (confirmRestart) {
       // restart();
-      handleOpenFinalModal();
+      handleOpenSuccessModal();
     }
     setConfirmRestart(!confirmRestart);
   }
@@ -27,6 +77,12 @@ export default function GamePage() {
   const restart = () => {
     return;
   }
+
+  const [openSuccessModal, setOpenFinalModal] = useState(false);
+  const handleOpenSuccessModal = () => setOpenFinalModal(!openSuccessModal);
+
+  const [openFailureModal, setOpenFailureModal] = useState(false);
+  const handleOpenFailureModal = () => setOpenFailureModal(!openFailureModal);
 
   return (
     <PageContainer>
@@ -51,26 +107,8 @@ export default function GamePage() {
         </div>
         <div className='game-page-container'>
           <Game />
-          <Modal
-            title='Поздравляем! Цель достигнута!'
-            open={openFinalModal}
-            handleOpen={handleOpenFinalModal}
-            className='game-modal'
-          >
-            <div className='text-center'>
-              <Typography variant='h6' className='mb-8 font-normal'>
-                <b>2048</b> в твоем зачете! Продолжай набирать очки и иди на рекорд, или найди свое имя в рейтинге самых успешных игроков!
-              </Typography>
-              <div>
-                <Button className='game-button small mr-4' onClick={() => handleOpenFinalModal()}>
-                  Продолжить игру
-                </Button>
-                <Button className='game-button small' onClick={() => navigate(routes.liderboardPage)}>
-                  Посмотреть рейтинг
-                </Button>
-              </div>
-            </div>
-          </Modal>
+          <SuccessModal open={openSuccessModal} handleOpen={handleOpenSuccessModal} />
+          <FailureModal open={openFailureModal} handleOpen={handleOpenFailureModal} restart={restart} />
         </div>
       </>
     </PageContainer>
