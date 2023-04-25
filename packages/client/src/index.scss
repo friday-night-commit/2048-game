@@ -18,6 +18,12 @@ html {
   }
 }
 
+.game-modal {
+  .title, .content {
+    color: $font-color;
+  }
+}
+
 .game-button {
   line-height: 28px;
   font-size: 28px;
