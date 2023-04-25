@@ -1,11 +1,12 @@
-import { Form } from '../../Components/Form'
 import { useNavigate } from 'react-router-dom'
-import { FormEvent } from 'react'
+import { FormEvent, useState } from 'react'
 import Input from '../../Components/Input/index'
 import { Button, Card, Typography } from '@material-tailwind/react'
 import Avatar from '../../Components/Avatar'
 import routes from '../../routes'
 import CardContainer from '../../Components/CardContainer'
+import Form from '../../Components/Form'
+import { ChangePasswordModal } from './components/ChangePassword/ChangePassword'
 
 export enum UserFields {
   first_name = 'first_name',
@@ -13,18 +14,23 @@ export enum UserFields {
   login = 'login',
   email = 'email',
   phone = 'phone',
-  password = 'password',
-  avatar = 'avatar',
 }
 
 export default function ProfilePage() {
   const navigate = useNavigate()
+  const [visibilityChangePasswordModal, setVisibilityChangePasswordModal] = useState(false)
+
+  const openChangePasswordModal = () => {
+    setVisibilityChangePasswordModal(prev => !prev)
+  }
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    console.log('Отправляем данные формы', e.target)
+    console.log('ProfilePage Отправляем данные формы', e.target)
     navigate(routes.mainPage)
   }
+
+  const handleOpenChangePasswordModal = () => setVisibilityChangePasswordModal(prev => !prev)
 
   return (
     <CardContainer>
@@ -68,12 +74,14 @@ export default function ProfilePage() {
             placeholder='+7999888999'
             required={true}
           />
-          <Input
-            name={UserFields.password}
-            type='password'
-            placeholder='Введите новый пароль'
-            required={true}
-          />
+
+          <div className='mt-4 mb-4 flex flex-col'>
+            <Button
+              onClick={() => openChangePasswordModal()}
+              className='small game-button'>
+              Изменить пароль
+            </Button>
+          </div>
 
           <div className='mb-4 flex flex-col'>
             <Button
@@ -83,6 +91,7 @@ export default function ProfilePage() {
               Сохранить
             </Button>
             <Button
+              color='amber'
               className='mt-2 mb-4'
               onClick={() => navigate(-1)}
             >
@@ -91,6 +100,11 @@ export default function ProfilePage() {
           </div>
         </Form>
       </Card>
+      <div>  {visibilityChangePasswordModal &&
+        (<ChangePasswordModal handleOpen={handleOpenChangePasswordModal}
+                              onClose={handleOpenChangePasswordModal}
+                              open={visibilityChangePasswordModal} />)
+      }</div>
     </CardContainer>
   )
 }
