@@ -1,8 +1,6 @@
 import Auth from './pages/Auth'
 import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
+  createBrowserRouter
 } from 'react-router-dom'
 
 export enum routes {
@@ -12,8 +10,9 @@ export enum routes {
 }
 
 export default createBrowserRouter(
-  createRoutesFromElements([
-    <Route path={routes.mainPage} element="" />,
-    <Route path={routes.authPage} element={<Auth />} />,
-  ])
+  [
+    {path:routes.mainPage, element: ""},
+    {path:routes.authPage, element: <Auth />},
+    {path:routes.registerPage, element: ""},
+  ]
 )
