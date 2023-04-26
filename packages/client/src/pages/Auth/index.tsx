@@ -1,19 +1,15 @@
 import { Input, Button, Typography } from '@material-tailwind/react'
 import { Link, useNavigate } from 'react-router-dom'
-
+import Form from '../../Components/Form'
 import CardContainer from '../../Components/CardContainer'
-import { Form } from '../../Components/Form'
 import routes from '../../routes'
+import { FormEvent } from 'react'
 
 
 export default function AuthPage() {
   const navigate = useNavigate();
 
-  const onSubmit = (formData: FormData) => {
-    // Temp console log
-    for (const pair of formData.entries()) {
-      console.log(pair[0]+ ', ' + pair[1]);
-    }
+  const onSubmit = (e: FormEvent) => {
     navigate(routes.mainPage);
   }
 
@@ -25,7 +21,7 @@ export default function AuthPage() {
         </Typography>
         <Form
           className="w-full"
-          handleSubmit={onSubmit}>
+          handlerSubmit={onSubmit}>
           <div className="mb-4 flex flex-col gap-6">
             <Input size="lg" label="Логин" name='login' />
             <Input type="password" size="lg" label="Пароль" name='password'/>

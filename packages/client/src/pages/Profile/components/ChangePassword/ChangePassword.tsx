@@ -31,7 +31,6 @@ export  const ChangePasswordModal: FC<TChangePasswordProps> = ({ onClose, open, 
 
         {error && <Toast text={error} />}
 
-        <div className="m-auto w-full max-w-md">
           <Form handlerSubmit={handleSubmit}>
             <Input
               name='oldPassword'
@@ -54,8 +53,9 @@ export  const ChangePasswordModal: FC<TChangePasswordProps> = ({ onClose, open, 
               placeholder='Повторите новый пароль'
               required={true}
             />
-            <div className="flex justify-between w-full max-w-md ">
+            <div className="flex mt-2 justify-between ">
               <Button
+                color='amber'
                 className='mt-2 mb-4'
                 type='submit'
                 onClick={onClose}
@@ -70,7 +70,6 @@ export  const ChangePasswordModal: FC<TChangePasswordProps> = ({ onClose, open, 
               </Button>
             </div>
           </Form>
-        </div>
       </div>
     </Modal>
   );

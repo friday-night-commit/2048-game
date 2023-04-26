@@ -100,7 +100,7 @@ export default function ProfilePage() {
           </div>
         </Form>
       </Card>
-      <div>  {visibilityChangePasswordModal &&
+      <div> {visibilityChangePasswordModal &&
         (<ChangePasswordModal handleOpen={handleOpenChangePasswordModal}
                               onClose={handleOpenChangePasswordModal}
                               open={visibilityChangePasswordModal} />)
