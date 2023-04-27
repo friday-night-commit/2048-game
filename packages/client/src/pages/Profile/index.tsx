@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { FormEvent, useState } from 'react'
 import Input from '../../Components/Input/index'
-import { Button, Card, Typography } from '@material-tailwind/react'
+import { Button, Typography } from '@material-tailwind/react'
 import Avatar from '../../Components/Avatar'
 import routes from '../../routes'
 import CardContainer from '../../Components/CardContainer'
@@ -34,7 +34,6 @@ export default function ProfilePage() {
 
   return (
     <CardContainer>
-      <Card color='white' className='p-12 max-w-md w-full' shadow={false}>
         <Typography variant='h3' className='text-center mb-8'>
           Настройки профиля
         </Typography>
@@ -99,12 +98,10 @@ export default function ProfilePage() {
             </Button>
           </div>
         </Form>
-      </Card>
-      <div> {visibilityChangePasswordModal &&
-        (<ChangePasswordModal handleOpen={handleOpenChangePasswordModal}
+
+       <ChangePasswordModal handleOpen={handleOpenChangePasswordModal}
                               onClose={handleOpenChangePasswordModal}
-                              open={visibilityChangePasswordModal} />)
-      }</div>
+                              open={visibilityChangePasswordModal} />
     </CardContainer>
   )
 }

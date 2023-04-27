@@ -1,0 +1,20 @@
+@import './src/variables';
+
+.forum{
+  display: flex;
+  height: 700px;
+  background: $light-brown;
+  border-radius: 30px;
+
+  &__left{
+    width: 30%;
+    background: $light-orange-tile;
+    overflow-y: scroll;
+  }
+
+  &__right{
+    width: 70%;
+    background: $light-brown;
+    overflow-y: auto;
+  }
+}

@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react'
 import Toast from '../Toast'
+import './index.scss';
 
 type TOwnProps = {
   alert?: string;
