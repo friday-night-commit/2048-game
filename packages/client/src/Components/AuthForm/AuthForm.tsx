@@ -5,12 +5,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import routes from '../../routes'
 
 type Form = {
-  login: string;
-  password: string;
+  login: string
+  password: string
 }
 
 const AuthForm = function() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const [formInputsData, setFormInputsData] = useState<Form>({
     login: '',
@@ -18,22 +18,22 @@ const AuthForm = function() {
   })
   
   const onSubmit = useCallback(function(event: React.FormEvent) {
-    event.preventDefault();
-    // Temp console log
-    console.log(formInputsData);
+    event.preventDefault()
+    // eslint-disable-next-line no-console
+    console.log(formInputsData)
 
-    navigate(routes.mainPage);
-  }, [formInputsData]);
+    navigate(routes.mainPage)
+  }, [formInputsData])
   
   const updateInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    const inputName = event.target.getAttribute('name') as keyof Form;
-    const inputValue = event.target.value;
+    const inputName = event.target.getAttribute('name') as keyof Form
+    const inputValue = event.target.value
   
     setFormInputsData({
       ...formInputsData,
       [inputName]: inputValue,
     })
-  }, [formInputsData]);
+  }, [formInputsData])
 
 
   return (

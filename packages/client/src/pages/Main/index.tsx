@@ -5,7 +5,7 @@ import PageContainer from '../../Components/PageContainer'
 import routes from '../../routes'
 
 export default function MainPage() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
     <PageContainer>

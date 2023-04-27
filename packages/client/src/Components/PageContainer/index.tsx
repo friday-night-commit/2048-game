@@ -8,13 +8,13 @@ type TOwnProps = {
   children: JSX.Element | JSX.Element[]
 }
 
-const PageContainer: FC<TOwnProps> = ({children}) => {
+const PageContainer: FC<TOwnProps> = ({ children }) => {
   return (
     <div>
       <div>
         <Navbar />
       </div>
-      <div style={{padding: '2em'}}>
+      <div style={{ padding: '2em' }}>
         {children}
       </div>
     </div>

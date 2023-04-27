@@ -7,13 +7,13 @@ type RestartButtonProps = {
 }
 
 const RestartButton: FC<RestartButtonProps> = ({ restart }) => {
-  const [confirmRestart, setConfirmRestart] = useState(false);
+  const [confirmRestart, setConfirmRestart] = useState(false)
 
   const handleRestart = useCallback(() => {
     if (confirmRestart) {
-      restart();
+      restart()
     }
-    setConfirmRestart(!confirmRestart);
+    setConfirmRestart(!confirmRestart)
   }, [confirmRestart])
 
   return (

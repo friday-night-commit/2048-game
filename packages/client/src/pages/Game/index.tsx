@@ -7,7 +7,7 @@ import RestartButton from './components/RestartButton'
 
 export default function GamePage() {
   const restart = useCallback(() => {
-    return;
+    return
   }, [])
 
   return (

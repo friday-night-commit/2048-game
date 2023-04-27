@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogBody,
   DialogFooter,
-} from '@material-tailwind/react';
+} from '@material-tailwind/react'
 
 type ModalProps = {
   title: string
