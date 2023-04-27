@@ -1,8 +1,8 @@
 import { Input, Button, Typography } from '@material-tailwind/react'
 import { useCallback, ChangeEvent, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-import { routes } from '../../router'
+import routes from '../../routes'
 
 type Form = {
   login: string;
@@ -10,6 +10,8 @@ type Form = {
 }
 
 const AuthForm = function() {
+  const navigate = useNavigate();
+
   const [formInputsData, setFormInputsData] = useState<Form>({
     login: '',
     password: '',
@@ -19,6 +21,8 @@ const AuthForm = function() {
     event.preventDefault();
     // Temp console log
     console.log(formInputsData);
+
+    navigate(routes.mainPage);
   }, [formInputsData]);
   
   const updateInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
