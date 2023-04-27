@@ -9,7 +9,7 @@ export default function MainPage() {
 
   return (
     <PageContainer>
-      <>
+      <div className='text-center'>
         <Typography variant='h3' className='mb-8 font-normal'>
           Соединяй одинаковые элементы, пока не получишь 2048!
         </Typography>
@@ -20,10 +20,10 @@ export default function MainPage() {
           <Link to={routes.forumPage}>форуме</Link>
           {'!'}
         </Typography>
-        <Button size='lg' className='game-button' onClick={() => navigate(routes.gamePage)}>
+        <Button className='game-button' onClick={() => navigate(routes.gamePage)}>
           START!
         </Button>
-      </>
+      </div>
     </PageContainer>
   )
 }

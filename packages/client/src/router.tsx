@@ -4,12 +4,14 @@ import routes from './routes'
 
 import MainPage from './pages/Main'
 import AuthPage from './pages/Auth'
+import GamePage from './pages/Game'
 import NoMatch from './pages/NoMatch'
 
 export default createBrowserRouter(
   [
     { path: routes.mainPage, element: <MainPage /> },
     { path: routes.authPage, element: <AuthPage /> },
+    { path: routes.gamePage, element: <GamePage /> },
     { path: '*', element: <NoMatch /> }
   ]
 )

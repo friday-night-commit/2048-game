@@ -1,5 +1,14 @@
 @import '../../variables.scss';
 
+.game-page-container {
+  width: $game-container-size;
+  margin: auto;
+
+  &.large {
+    width: $game-container-size * 2;
+  }
+}
+
 .game-button {
   line-height: 28px;
   font-size: 28px;
@@ -9,6 +18,15 @@
 
   &:hover {
     box-shadow: 2px 2px 6px lighten($dark-brown, 20%) !important;
+  }
+
+  &.small {
+    line-height: 12px;
+    font-size: 12px;
+  }
+
+  &.alert {
+    background: $orange-tile;
   }
 }
 
