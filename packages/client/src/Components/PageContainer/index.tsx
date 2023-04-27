@@ -2,6 +2,8 @@ import { FC } from 'react'
 
 import Navbar from '../../Components/Navbar'
 
+import './index.scss'
+
 type TOwnProps = {
   children: JSX.Element | JSX.Element[]
 }

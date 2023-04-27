@@ -1,16 +1,16 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Navbar as MaterialNavbar, Typography } from '@material-tailwind/react'
 import { Link } from 'react-router-dom'
 
 import routes from '../../routes'
 import './index.scss'
 
-type TNavbarItemProps = {
+type NavbarLinkProps = {
   url: string
   title: string
 }
 
-const NavbarItem: FC<TNavbarItemProps> = ({ url, title }) => {
+const NavbarItem: FC<NavbarLinkProps> = ({ url, title }) => {
   return (
     <Typography
       as='li'
@@ -38,7 +38,7 @@ const NAVBAR_ITEMS = [
 ]
 
 export default function Navbar() {
-  const maxScoreToday = 4096;
+  const [maxScore, setMaxScore] = useState(4096); // TODO: get value from API
 
   return (
     <MaterialNavbar className='navbar mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4'>
@@ -57,7 +57,7 @@ export default function Navbar() {
           </ul>
         </div>
         <span className='score-container'>
-          {`Максимум сегодня: ${maxScoreToday}`}
+          {`Максимум сегодня: ${maxScore}`}
         </span>
       </div>
     </MaterialNavbar>
