@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react'
-import createCell from '../utils/createCell'
-import { addCellToMatrix } from '../utils/matrix'
-import createListeners from '../utils/listeners'
+import { Cell } from '../Cell/Cell'
+import { Engine } from '../Engine/Engine'
 
 type CanvasProps = React.DetailedHTMLProps<
   React.CanvasHTMLAttributes<HTMLCanvasElement>,
@@ -24,13 +23,11 @@ const Canvas:React.FC<CanvasProps> = ({draw, ...props}) => {
 
       draw(context);
 
-      function creatingBox (context: CanvasRenderingContext2D) {
-        const newCell = createCell(context);
-        addCellToMatrix(newCell);
-        createListeners(context);
-      }
+      const engine = new Engine(context);
+      const newCell = new Cell(context, engine);
+      engine.addCellToMatrix(newCell);
+      engine.createListeners(context);
 
-      creatingBox(context);
 
     },[draw])
 
