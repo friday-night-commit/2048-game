@@ -1,4 +1,3 @@
-import { drawCellElem, reDrawCellElem, removeCellElem } from '../../../utils/draw'
 import { Engine } from '../Engine/Engine'
 
 export class Cell {
@@ -17,7 +16,7 @@ export class Cell {
     this.matrix = engine.getMatrix();
     this.value = this.generateValue()
     this.position = this.getCellPosition()
-    this.cellEl = drawCellElem(this.position, this.context, this.value);
+    this.cellEl = this.engine.drawCellElem(this.position, this.context, this.value);
   }
 
   getMatrix(): number[][] {
@@ -46,7 +45,7 @@ export class Cell {
   setPosition(newPosition: {x: number, y:number}) {
     const oldPosition = this.position
     this.position = newPosition
-    this.cellEl = reDrawCellElem(oldPosition, this.position, this.context, this.value)
+    this.cellEl = this.engine.reDrawCellElem(oldPosition, this.position, this.context, this.value)
     this.engine.addCellToMatrix(this)
     this.engine.removeCellFromMatrix(oldPosition)
   }
@@ -56,7 +55,7 @@ export class Cell {
   }
 
   kill() {
-    this.cellEl = removeCellElem(this.position, this.context)
+    this.cellEl = this.engine.removeCellElem(this.position, this.context)
   }
 
   mergeCellValue() {

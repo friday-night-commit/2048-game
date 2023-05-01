@@ -136,6 +136,71 @@ export class Engine {
       this.addCellToMatrix(newCell);
     }
   }
+
+  drawGrid (context: CanvasRenderingContext2D): void {
+    const w = 800;
+    const h = 400;
+    const step = 75;
+
+    this.context.beginPath();
+    this.context.fillStyle = 'white'
+
+    for (let x=0;x<=w;x+=step) {
+      this.context.moveTo(x, 0);
+      this.context.lineTo(x, h);
+    }
+    // set the color of the line
+    this.context.strokeStyle = 'rgb(143, 122, 102)';
+    this.context.lineWidth = 3;
+    // the stroke will actually paint the current path
+    this.context.stroke();
+    // for the sake of the example 2nd path
+    this.context.beginPath();
+    for (let y=0;y<=h;y+=step) {
+      this.context.moveTo(0, y);
+      this.context.lineTo(w, y);
+    }
+    // set the color of the line
+    this.context.strokeStyle = 'rgb(143, 122, 102)';
+    // just for fun
+    this.context.lineWidth = 3;
+    // for your original question - you need to stroke only once
+    this.context.stroke();
+  }
+
+  drawCellElem (position: {x: number, y: number}, context: CanvasRenderingContext2D, value: number): CanvasRenderingContext2D {
+
+    this.drawRect(context, position, value);
+
+    return this.context;
+  }
+
+  reDrawCellElem (oldPosition: {x: number, y: number},position: {x: number, y: number}, context: CanvasRenderingContext2D, value: number): CanvasRenderingContext2D
+  {
+    this.context.clearRect(oldPosition.x*75,oldPosition.y*75,75,75)
+    this.drawGrid(context);
+    this.drawRect(context, position, value);
+
+    return context;
+  }
+
+  removeCellElem(oldPosition: {x: number, y: number}, context: CanvasRenderingContext2D): CanvasRenderingContext2D {
+    this.context.clearRect(oldPosition.x*75,oldPosition.y*75,75,75)
+    this.drawGrid(context);
+
+    return context;
+  }
+
+  drawRect(context: CanvasRenderingContext2D, position: {x: number, y: number}, value: number): void {
+    this.context.fillStyle = 'gray';
+    const { x, y } = position
+    this.context.fillRect(x*75,y*75,75,75)
+    this.context.font = "20px Arial"
+    this.context.textBaseline = 'middle'
+    this.context.fillStyle = 'black'
+    this.context.textAlign = 'center'
+    this.context.fillText(String(value), x*75+37, y*75+35)
+  }
 }
 
 const listeners:Record<number, string> = {
