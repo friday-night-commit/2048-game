@@ -29,7 +29,7 @@ const NAVBAR_ITEMS = [
     url: routes.profilePage,
     title: 'Мой профиль'
   }, {
-    url: routes.liderboardPage,
+    url: routes.leaderboardPage,
     title: 'Рейтинг игроков'
   }, {
     url: routes.forumPage,
