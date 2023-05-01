@@ -3,17 +3,17 @@ import { Typography } from '@material-tailwind/react'
 import PageContainer from '../../Components/PageContainer'
 import './style.scss'
 
-type leaderBoardUsers = {
+type leaderboardUsers = {
   userName: string
   score: string | number
 }
 
-export default function MainPage() {
-  const [leaderboard, setLeaderboard] = useState<leaderBoardUsers[]>([])
+export default function LeaderboardPage() {
+  const [leaderboard, setLeaderboard] = useState<leaderboardUsers[]>([])
 
   const getLeaderboard = useCallback(async () => {
     // return mock data
-    let gotData: leaderBoardUsers[] = [
+    let gotData: leaderboardUsers[] = [
       { userName: 'user1', score: '2048' },
       { userName: 'user2', score: '1024' },
       { userName: 'user3', score: '4096' },
