@@ -1,7 +1,5 @@
-import getMatrix, { addCellToMatrix, getEmptyMatrixCoordinates, removeCellFromMatrix } from './matrix'
-import generateRandom from './generateRandom'
 import { drawCellElem, reDrawCellElem, removeCellElem } from '../../../utils/draw'
-import findCellHorizontalPosition from './findCellHorizontalPosition'
+import { Engine } from '../Engine/Engine'
 
 export class Cell {
   private value: number
@@ -9,33 +7,52 @@ export class Cell {
   public id: number;
   public cellEl: CanvasRenderingContext2D;
   public context: CanvasRenderingContext2D;
+  public matrix: number[][]
+  public engine: Engine
 
-  constructor(context: CanvasRenderingContext2D) {
+  constructor(context: CanvasRenderingContext2D, engine: Engine) {
     this.context = context;
-    this.id = generateRandom(0,99999)
-    this.value = getValue()
-    this.position = getCellPosition()
+    this.engine = engine;
+    this.id = engine.generateRandom(0,999999);
+    this.matrix = engine.getMatrix();
+    this.value = this.generateValue()
+    this.position = this.getCellPosition()
     this.cellEl = drawCellElem(this.position, this.context, this.value);
   }
 
-  getValue() {
+  getMatrix(): number[][] {
+    return this.matrix;
+  }
+
+  getValue(): number {
     return this.value
   }
 
-  getPosition() {
+  getPosition(): { x: number, y: number } {
     return this.position
   }
 
-  getId() {
+  getId(): number {
     return this.id;
+  }
+
+  getCellPosition() {
+    const emptyCoordinates = this.engine.getEmptyMatrixCoordinates()
+    const randomCoordinateIndex = this.engine.generateRandom(0, emptyCoordinates.length - 1)
+
+    return emptyCoordinates[randomCoordinateIndex]
   }
 
   setPosition(newPosition: {x: number, y:number}) {
     const oldPosition = this.position
     this.position = newPosition
     this.cellEl = reDrawCellElem(oldPosition, this.position, this.context, this.value)
-    addCellToMatrix(this)
-    removeCellFromMatrix(oldPosition)
+    this.engine.addCellToMatrix(this)
+    this.engine.removeCellFromMatrix(oldPosition)
+  }
+
+  generateValue(): number {
+    return Math.random() > 0.75 ? 4 : 2
   }
 
   kill() {
@@ -50,12 +67,12 @@ export class Cell {
 
   move(moveDirection: string)
   {
-    const matrix = getMatrix();
+    const matrix = this.getMatrix();
     const { x, y } = this.getPosition();
 
     switch (moveDirection) {
       case "left": {
-        findCellHorizontalPosition({
+        this.engine.findCellHorizontalPosition({
           cell: this,
           x,
           y,
@@ -67,7 +84,7 @@ export class Cell {
         break;
       }
       case "right": {
-        findCellHorizontalPosition({
+        this.engine.findCellHorizontalPosition({
           cell: this,
           x,
           y,
@@ -82,20 +99,4 @@ export class Cell {
         return;
     }
   }
-}
-
-function getCellPosition() {
-  const emptyCoordinates = getEmptyMatrixCoordinates()
-  const randomCoordinateIndex = generateRandom(0, emptyCoordinates.length - 1)
-
-  return emptyCoordinates[randomCoordinateIndex]
-}
-
-function getValue() {
-  return Math.random() > 0.75 ? 4 : 2
-}
-
-export default function createCell(context: CanvasRenderingContext2D): Cell
-{
-  return new Cell(context)
 }
