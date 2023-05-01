@@ -2,12 +2,9 @@ import React, { useEffect, useRef } from 'react'
 import { Cell } from '../Cell/Cell'
 import { Engine } from '../Engine/Engine'
 
-type CanvasProps = React.DetailedHTMLProps<
-  React.CanvasHTMLAttributes<HTMLCanvasElement>,
-  HTMLCanvasElement
-> & {draw: (context: CanvasRenderingContext2D) => void}
+type CanvasProps = React.DetailedHTMLProps<React.CanvasHTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement>
 
-const Canvas:React.FC<CanvasProps> = ({draw, ...props}) => {
+const Canvas:React.FC<CanvasProps> = ({ ...props}) => {
   const canvasRef = useRef<HTMLCanvasElement | null >(null);
 
   useEffect(() => {
@@ -21,15 +18,17 @@ const Canvas:React.FC<CanvasProps> = ({draw, ...props}) => {
         return
       }
 
-      draw(context);
 
       const engine = new Engine(context);
+
+      engine.drawGrid(context)
+
       const newCell = new Cell(context, engine);
       engine.addCellToMatrix(newCell);
       engine.createListeners(context);
 
 
-    },[draw])
+    },[])
 
   return (
     <canvas ref={canvasRef} width={props.width} height={props.height}/>
