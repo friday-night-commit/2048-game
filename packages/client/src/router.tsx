@@ -1,11 +1,11 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom';
 
-import routes from './routes'
+import routes from './routes';
 
-import MainPage from './pages/Main'
-import AuthPage from './pages/Auth'
-import GamePage from './pages/Game'
-import NoMatch from './pages/NoMatch'
+import MainPage from './pages/Main';
+import AuthPage from './pages/Auth';
+import GamePage from './pages/Game';
+import NoMatch from './pages/NoMatch';
 
 export default createBrowserRouter(
   [
@@ -14,4 +14,4 @@ export default createBrowserRouter(
     { path: routes.gamePage, element: <GamePage /> },
     { path: '*', element: <NoMatch /> }
   ]
-)
+);

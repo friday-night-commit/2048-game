@@ -1,12 +1,12 @@
-import { FC } from 'react'
+import { FC } from 'react';
 
-import Navbar from '../../Components/Navbar'
+import Navbar from '../../Components/Navbar';
 
-import './index.scss'
+import './index.scss';
 
 type TOwnProps = {
   children: JSX.Element | JSX.Element[]
-}
+};
 
 const PageContainer: FC<TOwnProps> = ({ children }) => {
   return (
@@ -18,7 +18,7 @@ const PageContainer: FC<TOwnProps> = ({ children }) => {
         {children}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PageContainer
+export default PageContainer;

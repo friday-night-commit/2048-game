@@ -8,4 +8,4 @@ enum routes {
   gamePage = '/game'
 }
 
-export default routes
+export default routes;

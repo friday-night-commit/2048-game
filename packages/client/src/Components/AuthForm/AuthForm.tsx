@@ -1,39 +1,39 @@
-import { Input, Button, Typography } from '@material-tailwind/react'
-import { useCallback, ChangeEvent, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Input, Button, Typography } from '@material-tailwind/react';
+import { useCallback, ChangeEvent, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-import routes from '../../routes'
+import routes from '../../routes';
 
 type Form = {
   login: string
   password: string
-}
+};
 
 const AuthForm = function() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [formInputsData, setFormInputsData] = useState<Form>({
     login: '',
     password: '',
-  })
+  });
   
   const onSubmit = useCallback(function(event: React.FormEvent) {
-    event.preventDefault()
+    event.preventDefault();
     // eslint-disable-next-line no-console
-    console.log(formInputsData)
+    console.log(formInputsData);
 
-    navigate(routes.mainPage)
-  }, [formInputsData])
+    navigate(routes.mainPage);
+  }, [formInputsData]);
   
   const updateInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    const inputName = event.target.getAttribute('name') as keyof Form
-    const inputValue = event.target.value
+    const inputName = event.target.getAttribute('name') as keyof Form;
+    const inputValue = event.target.value;
   
     setFormInputsData({
       ...formInputsData,
       [inputName]: inputValue,
-    })
-  }, [formInputsData])
+    });
+  }, [formInputsData]);
 
 
   return (
@@ -67,7 +67,7 @@ const AuthForm = function() {
         </Link>
       </form>
     </>
-  )
-}
+  );
+};
 
-export default AuthForm
+export default AuthForm;
