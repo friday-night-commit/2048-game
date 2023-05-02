@@ -1,22 +1,34 @@
 import { Engine } from '../Engine/Engine'
 
-export class Cell {
-  private value: number
-  private position: {x: number, y:number}
-  public id: number;
-  public cellEl: CanvasRenderingContext2D;
-  public context: CanvasRenderingContext2D;
-  public matrix: number[][]
-  public engine: Engine
+type Position = {
+  x: number,
+  y: number
+}
 
-  constructor(context: CanvasRenderingContext2D, engine: Engine) {
+enum Direction {
+  TOP = "TOP",
+  BOTTOM = "BOTTOM"
+}
+
+
+export class Cell {
+  private readonly value: number
+  private readonly position: Position
+  // public id: number;
+  // public cellEl: CanvasRenderingContext2D;
+  public context: CanvasRenderingContext2D;
+  // public matrix: number[][]
+  // public engine: Engine
+
+  constructor(context: CanvasRenderingContext2D) {
+    // TODO Игра управляет ячейками, сама ячейка не знает ничего, кроме значения и позиции
     this.context = context;
-    this.engine = engine;
-    this.id = engine.generateRandom(0,999999);
-    this.matrix = engine.getMatrix();
+    // this.engine = engine;
+    // this.id = engine.generateRandom(0,999999);
+    // this.matrix = engine.getMatrix();
     this.value = this.generateValue()
-    this.position = this.getCellPosition()
-    this.cellEl = this.engine.drawCellElem(this.position, this.context, this.value);
+    // this.position = this.getCellPosition()
+    // this.cellEl = this.engine.drawCellElem(this.position, this.context, this.value);
   }
 
   getMatrix(): number[][] {
@@ -42,7 +54,7 @@ export class Cell {
     return emptyCoordinates[randomCoordinateIndex]
   }
 
-  setPosition(newPosition: {x: number, y:number}) {
+  setPosition(newPosition: Position) {
     const oldPosition = this.position
     this.position = newPosition
     this.cellEl = this.engine.reDrawCellElem(oldPosition, this.position, this.context, this.value)
@@ -50,7 +62,7 @@ export class Cell {
     this.engine.removeCellFromMatrix(oldPosition)
   }
 
-  generateValue(): number {
+  private generateValue(): number {
     return Math.random() > 0.75 ? 4 : 2
   }
 
@@ -64,7 +76,9 @@ export class Cell {
     //if 2048 win?
   }
 
-  move(moveDirection: string)
+
+
+  move(moveDirection: Direction)
   {
     const matrix = this.getMatrix();
     const { x, y } = this.getPosition();
@@ -94,8 +108,6 @@ export class Cell {
         });
         break;
       }
-      default:
-        return;
     }
   }
 }
