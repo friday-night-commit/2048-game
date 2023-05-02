@@ -220,6 +220,14 @@ export class Engine {
     this.renderCells()
   }
 
+  checkCollision(cell1, cell2) {
+    if(cell1.x === cell2.x && cell1.y === cell2.y && cell1.value === cell2.vlaue){
+      const value = cell1.value * 2
+      const cell = new Cell(context, value)
+      // кладем в нужное место в матрице
+    }
+  }
+
   renderCells(){
     for(let cell of this.cells){
       cell.render()
