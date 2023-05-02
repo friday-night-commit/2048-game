@@ -20,13 +20,8 @@ const Canvas:React.FC<CanvasProps> = ({ ...props}) => {
 
 
       const engine = new Engine(context);
-
-      engine.drawGrid(context)
-
-      const newCell = new Cell(context, engine);
-      engine.addCellToMatrix(newCell);
-      engine.createListeners(context);
-
+      engine.render()
+      engine.createListeners()
 
     },[])
 
