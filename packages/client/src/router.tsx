@@ -1,6 +1,4 @@
-import {
-  createBrowserRouter,
-} from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 
 import routes from './routes';
 
@@ -10,13 +8,10 @@ import GamePage from './pages/Game';
 import NoMatch from './pages/NoMatch';
 import ProfilePage from './pages/Profile';
 
-export default createBrowserRouter(
-  [
-    { path: routes.mainPage, element: <MainPage /> },
-    { path: routes.authPage, element: <AuthPage /> },
-    { path: routes.profilePage, element: <ProfilePage /> },
-    { path: routes.gamePage, element: <GamePage /> },
-    { path: '*', element: <NoMatch /> }
-  ]
-);
-
+export default createBrowserRouter([
+  { path: routes.mainPage, element: <MainPage /> },
+  { path: routes.authPage, element: <AuthPage /> },
+  { path: routes.gamePage, element: <GamePage /> },
+  { path: routes.profilePage, element: <ProfilePage /> },
+  { path: '*', element: <NoMatch /> },
+]);
