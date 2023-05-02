@@ -2,15 +2,26 @@ import { cloneDeep, isEqual } from 'lodash'
 import { Cell } from '../Cell/Cell'
 
 export class Engine {
-  public context: CanvasRenderingContext2D;
-  matrix: number[][]
+  // Максимальное использовать свойства класса, а не передать их в методы
+  protected readonly context: CanvasRenderingContext2D;
+  protected _matrix: number[][]
+  // protected cells: Cell[]
+  protected cells: (Cell | undefined)[]
+  private maxValue: number = 0
+
+  get matrix() {
+      return this._matrix
+  }
 
   constructor(context: CanvasRenderingContext2D) {
     this.context = context
-    this.matrix = this.getMatrix();
+
+    this.generateField()
+
+    // this.matrix = this.getMatrix();
   }
 
-  findCellHorizontalPosition ({cell, x, y, matrix, startCondition, endCondition, changeMethod}: any) {
+  findCellHorizontalPosition ({cell, x, y, startCondition, endCondition, changeMethod}: any) {
     if (startCondition(x)) return
     const cellLine = matrix[y]
     let currentX = x
@@ -39,7 +50,7 @@ export class Engine {
     })
   }
 
-  generateRandom(min = 0, max = 100) {
+  static generateRandom(min = 0, max = 100) {
     const difference = max - min;
 
     let rand = Math.random();
@@ -51,9 +62,9 @@ export class Engine {
     return rand;
   }
 
-  createListeners(context: CanvasRenderingContext2D) {
+  createListeners() {
     document.addEventListener("keydown", (event: KeyboardEvent) => {
-      this.moveMatrixElements(listeners[(event as KeyboardEvent).keyCode], context);
+      this.moveMatrixElements(listeners[(event as KeyboardEvent).keyCode]);
     });
   }
 
@@ -89,7 +100,7 @@ export class Engine {
     return matrix;
   }
 
-  moveMatrixElements(moveDirection: string, context: CanvasRenderingContext2D) {
+  moveMatrixElements(moveDirection: string) {
     const matrix = this.getMatrix();
     const oldMatrix = this.getPrevMatrix(matrix);
 
@@ -132,7 +143,7 @@ export class Engine {
 
     const isSameMatrix = isEqual(oldMatrix, cloneDeep(matrix));
     if (!isSameMatrix) {
-      const newCell = new Cell(context, this);
+      const newCell = new Cell(this.context, this);
       this.addCellToMatrix(newCell);
     }
   }
@@ -201,6 +212,20 @@ export class Engine {
     this.context.textAlign = 'center'
     this.context.fillText(String(value), x*75+37, y*75+35)
   }
+
+  // для одного кадра
+  render() {
+    this.clear()
+    this.drawGrid()
+    this.renderCells()
+  }
+
+  renderCells(){
+    for(let cell of this.cells){
+      cell.render()
+    }
+  }
+
 }
 
 const listeners:Record<number, string> = {
