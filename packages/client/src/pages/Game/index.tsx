@@ -1,14 +1,14 @@
-import { Button, Typography } from '@material-tailwind/react'
-import { useCallback } from 'react'
+import { Button, Typography } from '@material-tailwind/react';
+import { useCallback } from 'react';
 
-import PageContainer from '../../Components/PageContainer'
-import Game from '../../Components/Game'
-import RestartButton from './components/RestartButton'
+import PageContainer from '../../Components/PageContainer';
+import Game from '../../Components/Game';
+import RestartButton from './components/RestartButton';
 
 export default function GamePage() {
   const restart = useCallback(() => {
     return;
-  }, [])
+  }, []);
 
   return (
     <PageContainer>
@@ -34,5 +34,5 @@ export default function GamePage() {
         </div>
       </>
     </PageContainer>
-  )
+  );
 }

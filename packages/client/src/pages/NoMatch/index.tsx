@@ -1,10 +1,10 @@
-import { Button, Typography } from '@material-tailwind/react'
-import { useNavigate } from 'react-router-dom'
+import { Button, Typography } from '@material-tailwind/react';
+import { useNavigate } from 'react-router-dom';
 
-import CardContainer from '../../Components/CardContainer'
+import CardContainer from '../../Components/CardContainer';
 
 export default function NoMatch() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <CardContainer className='no-match-page'>
       <>
@@ -23,5 +23,5 @@ export default function NoMatch() {
         </Button>
       </>
     </CardContainer>
-  )
+  );
 }
