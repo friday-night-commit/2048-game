@@ -1,9 +1,9 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { ThemeProvider } from '@material-tailwind/react'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { ThemeProvider } from '@material-tailwind/react';
 
-import './index.scss'
-import App from './App'
+import './index.scss';
+import App from './App';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -11,4 +11,4 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <App></App>
     </ThemeProvider>
   </React.StrictMode>
-)
+);
