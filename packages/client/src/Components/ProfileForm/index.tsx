@@ -1,9 +1,10 @@
 import { Button } from '@material-tailwind/react';
 import { FC, useCallback } from 'react';
-import { UserFields } from '../../pages/Profile';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Form from '../Form';
 import Input from '../Input';
+import { UserFields } from '../../pages/Profile/models/UserFields.enum';
+import routes from '../../routes';
 
 type FormProps = {
   openChangePasswordModal: () => void;
@@ -12,53 +13,53 @@ type FormProps = {
 type TProps = FC<FormProps>;
 
 const ProfileForm: TProps = ({ openChangePasswordModal }) => {
-  const navigate = useNavigate();
   const handleSubmit = useCallback(function (e: React.FormEvent) {
     e.preventDefault();
   }, []);
 
   return (
-    <Form className="w-full" handlerSubmit={handleSubmit}>
+    <Form className="w-full" handleSubmit={handleSubmit}>
       <Input
         name={UserFields.first_name}
         type="text"
-        placeholder="Имя"
+        label="Имя"
         validationType="name"
-        required={true}
+        required
       />
       <Input
         name={UserFields.second_name}
         type="text"
-        placeholder="Фамилия"
+        label="Фамилия"
         validationType="name"
-        required={true}
+        required
       />
       <Input
         name={UserFields.login}
         type="text"
-        placeholder="Логин"
+        label="Логин"
         validationType="login"
-        required={true}
+        required
       />
       <Input
         name={UserFields.email}
         type="email"
-        placeholder="Почта"
+        label="Почта"
         validationType="email"
-        required={true}
+        required
       />
       <Input
         name={UserFields.phone}
         type="tel"
+        label="Телефон"
         validationType="phone"
-        placeholder="+7999888999"
-        required={true}
+        required
       />
 
       <div className="mt-4 mb-4 flex flex-col">
         <Button
           onClick={() => openChangePasswordModal()}
-          className="small game-button">
+          color="amber"
+          className="small">
           Изменить пароль
         </Button>
       </div>
@@ -67,12 +68,11 @@ const ProfileForm: TProps = ({ openChangePasswordModal }) => {
         <Button className="mt-6 mb-4" type="submit">
           Сохранить
         </Button>
-        <Button
-          color="amber"
-          className="mt-2 mb-4"
-          onClick={() => navigate(-1)}>
+        <Link
+          to={routes.gamePage}
+          className="font-medium text-blue-500 transition-colors hover:text-blue-700 text-center block">
           Вернуться Назад
-        </Button>
+        </Link>
       </div>
     </Form>
   );

@@ -1,6 +1,6 @@
 @import '../../variables.scss';
 
-.initial-input {
+.default-input {
   display: flex;
   flex-direction: column;
   color: $font-color;
@@ -26,6 +26,7 @@
       border-color: $dark-brown;
     }
   }
+
   &__error {
     font-size: 14px;
     color: $red-tile;

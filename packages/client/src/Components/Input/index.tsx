@@ -3,6 +3,7 @@ import InputValidator, {
   ValidatorTypes,
 } from '../../Utils/Validators/InputValidator';
 import './index.scss';
+import { Input as TWInput } from '@material-tailwind/react';
 
 type TOwnProps = {
   placeholder?: string;
@@ -26,14 +27,6 @@ const Input: TProps = ({
 }) => {
   const [error, setError] = useState('');
 
-  const handleError = useCallback(function (
-    e: React.SyntheticEvent<HTMLInputElement>
-  ) {
-    // eslint-disable-next-line no-console
-    console.log('handleError', e);
-  },
-  []);
-
   const handleChange = useCallback(function (
     e: React.FormEvent<HTMLInputElement>
   ) {
@@ -49,22 +42,17 @@ const Input: TProps = ({
   []);
 
   return (
-    <div className="initial-input">
-      <label className="initial-input__label" htmlFor={name}>
-        {label}
-      </label>
-      <div className="initial-input__block">
-        <input
-          className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-          name={name}
-          type={type}
-          required={required}
-          onBlur={el => handleChange(el)}
-          onError={err => handleError(err)}
-          placeholder={placeholder}
-        />
-      </div>
-      <span className="initial-input__error">{error}</span>
+    <div className='default-input__block'>
+      <TWInput
+        className='px-5 py-2 rounded-full outline-none'
+        name={name}
+        label={label}
+        type={type}
+        required={required}
+        onBlur={el => handleChange(el)}
+        placeholder={placeholder}
+      />
+      <span className='default-input__error'>{error}</span>
     </div>
   );
 };

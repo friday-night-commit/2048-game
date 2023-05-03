@@ -5,14 +5,6 @@ import CardContainer from '../../Components/CardContainer';
 import { ChangePasswordModal } from './components/ChangePassword/ChangePassword';
 import ProfileForm from '../../Components/ProfileForm';
 
-export enum UserFields {
-  first_name = 'first_name',
-  second_name = 'second_name',
-  login = 'login',
-  email = 'email',
-  phone = 'phone',
-}
-
 export default function ProfilePage() {
   const [visibilityChangePasswordModal, setVisibilityChangePasswordModal] =
     useState(false);
@@ -24,7 +16,7 @@ export default function ProfilePage() {
   return (
     <CardContainer>
       <Typography variant="h3" className="text-center mb-8">
-        Настройки профиля
+        Мой профиль
       </Typography>
 
       <div className="mb-8 flex justify-center">
@@ -33,7 +25,6 @@ export default function ProfilePage() {
       <ProfileForm openChangePasswordModal={openChangePasswordModal} />
       <ChangePasswordModal
         handleOpen={openChangePasswordModal}
-        onClose={openChangePasswordModal}
         open={visibilityChangePasswordModal}
       />
     </CardContainer>

@@ -19,7 +19,7 @@ interface ValidationRules {
   minlength?: RuleType<number>;
 }
 
-class Validator {
+class InputValidator {
   private errors: string[] = [];
 
   private readonly type: ValidatorTypes;
@@ -110,7 +110,7 @@ class Validator {
     },
   };
 
-  private element: HTMLInputElement | HTMLTextAreaElement;
+  private readonly element: HTMLInputElement | HTMLTextAreaElement;
 
   constructor(
     input: HTMLInputElement | HTMLTextAreaElement,
@@ -206,7 +206,7 @@ class Validator {
   }
 
   public getError(): string {
-    return this.errors[0] ? this.errors[0] : '';
+    return this.errors[0] || '';
   }
 
   public getErrors(): string {
@@ -218,4 +218,4 @@ class Validator {
   }
 }
 
-export default Validator;
+export default InputValidator;

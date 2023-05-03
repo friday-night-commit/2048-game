@@ -2,17 +2,17 @@ import { FC, FormEvent } from 'react';
 
 type TOwnProps = {
   className?: string;
-  handlerSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   children?: JSX.Element | JSX.Element[];
 };
 
 type TProps = FC<TOwnProps>;
 
 const Index: TProps = props => {
-  const { children, handlerSubmit, className } = props;
+  const { children, handleSubmit, className } = props;
 
   return (
-    <form className={className} onSubmit={handlerSubmit}>
+    <form className={className} onSubmit={handleSubmit}>
       {children}
     </form>
   );
