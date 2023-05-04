@@ -1,4 +1,5 @@
 import { Cell } from '../Cell/Cell'
+import { minBy } from 'lodash'
 
 export class Engine {
   // Максимальное использовать свойства класса, а не передать их в методы
@@ -60,19 +61,6 @@ export class Engine {
     }, []);
   }
 
-  addCellToMatrix(cell: any): void {
-    const { x, y } = cell.getPosition()
-    matrix[y][x] = cell;
-  }
-
-  removeCellFromMatrix(oldPosition: {x: number, y: number}): void {
-
-  }
-
-  // getMatrix(): number[][] {
-  //   return matrix;
-  // }
-
   moveMatrixElements(moveDirection: Direction): void {
     if (moveDirection === Direction.LEFT) {
       this.cells.forEach((item) => {
@@ -80,9 +68,9 @@ export class Engine {
         const cellPositionY = item?.getPosition().y;
         let minIndex = 0;
 
-        if(cellPositionX && cellPositionY) {
-          for(let i = 4; i > 0; i--) {
-            let leftNeighbor = this.cells.find(element => element?.getPosition().x === cellPositionX - i && element?.getPosition().y === cellPositionY);
+        if(cellPositionX) {
+          for(let i = 0; i < 4; i++) {
+            let leftNeighbor = this.cells.find(element => element?.getPosition().x === i && element?.getPosition().y === cellPositionY);
             if(leftNeighbor) {
               minIndex++;
             }
@@ -95,7 +83,71 @@ export class Engine {
           this.render();
         }
       })
-      }
+    } else if (moveDirection === Direction.DOWN) {
+      this.cells.forEach((item) => {
+        const cellPositionX = item?.getPosition().x;
+        const cellPositionY = item?.getPosition().y;
+        let minIndex = 3;
+
+        if(cellPositionY !== 3) {
+          for(let i = 3; i > 0; i--) {
+            let downNeighbor = this.cells.find(element => element?.getPosition().x === cellPositionX! && element?.getPosition().y === i);
+            if(downNeighbor) {
+              minIndex--;
+            }
+          }
+        }
+
+        let position = {x: cellPositionX!, y: minIndex};
+
+        if(item && item.getPosition().y !== minIndex) {
+          item.setPosition(position);
+          this.render();
+        }
+      })
+    } else if (moveDirection === Direction.RIGHT) {
+      this.cells.forEach((item) => {
+        const cellPositionX = item?.getPosition().x;
+        const cellPositionY = item?.getPosition().y;
+        let minIndex = 3;
+
+        if(cellPositionX !== 3) {
+          for(let i = 3; i < 1; i--) {
+            let rightNeighbor = this.cells.find(element => element?.getPosition().x === i && element?.getPosition().y === cellPositionY!);
+            if(rightNeighbor) {
+              minIndex--;
+            }
+          }
+        }
+
+        let position = {x: minIndex, y: cellPositionY!};
+        if(item && item.getPosition().x !== minIndex) {
+          item.setPosition(position);
+          this.render();
+        }
+      })
+    } else if (moveDirection === Direction.UP) {
+      this.cells.forEach((item) => {
+        const cellPositionX = item?.getPosition().x;
+        const cellPositionY = item?.getPosition().y;
+        let minIndex = 0;
+
+        if(cellPositionY) {
+          for(let i = 0; i < 4; i++) {
+            let topNeighbor = this.cells.find(element => element?.getPosition().x === cellPositionX! && element?.getPosition().y === i);
+            if(topNeighbor) {
+              minIndex++;
+            }
+          }
+        }
+
+        let position = {x: cellPositionX!, y: minIndex};
+        if(item && item.getPosition().y !== minIndex) {
+          item.setPosition(position);
+          this.render();
+        }
+      })
+    }
     }
 
   drawGrid (): void {
@@ -142,6 +194,7 @@ export class Engine {
   //     const value = cell1.value * 2
   //     const cell = new Cell(context, value)
   //     // кладем в нужное место в матрице
+         // удаляем ячейку и добавляем туда новую  сновым значением
   //   }
   // }
 
