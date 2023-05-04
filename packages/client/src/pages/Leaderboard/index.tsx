@@ -1,24 +1,26 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Typography } from '@material-tailwind/react'
 import PageContainer from '../../Components/PageContainer'
-import './style.scss'
+import UserScore from './UserScore'
+import Preloader from '../../Components/Preloader';
 
-type leaderboardUsers = {
+export type leaderboardUser = {
+  userImage: string | undefined
   userName: string
-  score: string | number
+  score: number
 }
 
 export default function LeaderboardPage() {
-  const [leaderboard, setLeaderboard] = useState<leaderboardUsers[]>([])
+  const [leaderboard, setLeaderboard] = useState<leaderboardUser[]>([])
 
   const getLeaderboard = useCallback(async () => {
     // return mock data
-    let gotData: leaderboardUsers[] = [
-      { userName: 'user1', score: '2048' },
-      { userName: 'user2', score: '1024' },
-      { userName: 'user3', score: '4096' },
+    let gotData: leaderboardUser[] = [
+      { userImage: 'https://centauri-dreams.org/wp-content/uploads/2008/05/omega_centauri_2.jpg', userName: 'user1', score: 2048 },
+      { userImage: 'https://centauri-dreams.org/wp-content/uploads/2008/05/omega_centauri_2.jpg', userName: 'user2', score: 1024 },
+      { userImage: undefined, userName: 'user3', score: 4096 },
     ]
-    gotData = gotData.sort((a, b) => +b.score - +a.score)
+    gotData = gotData.sort((a, b) => b.score - a.score)
 
     await new Promise(resolve => setTimeout(resolve, 1000)) // Эмуляция получения данных
 
@@ -35,14 +37,11 @@ export default function LeaderboardPage() {
     return (
       <div className='leaderboard mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4'>
         <Typography variant='h3' className='mb-8 font-bold'>
-          Таблица лидеров
+          Рейтинг игроков
         </Typography>
         {leaderboard?.map(user => {
           return (
-            <div className='leaderboard__el mb-4'>
-              <Typography variant="h5" className='leaderboard__name font-medium'>{user.userName}</Typography>
-              <Typography variant="h5" className='leaderboard__score font-bold'>{user.score}</Typography>
-            </div>
+            <UserScore user={user}/>
           )
         })}
       </div>
@@ -51,11 +50,7 @@ export default function LeaderboardPage() {
 
   return (
     <PageContainer>
-      <div className='text-center'>
-        {leaderboard.length > 0
-          ? renderLeaderboard()
-          : 'Идёт получение данных...'}
-      </div>
+      <Preloader renderElement={renderLeaderboard()} conditionalFunction={() => leaderboard.length > 0}/>
     </PageContainer>
   )
 }
