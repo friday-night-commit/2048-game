@@ -3,21 +3,15 @@ import { Cell } from '../Cell/Cell'
 export class Engine {
   // Максимальное использовать свойства класса, а не передать их в методы
   protected readonly context: CanvasRenderingContext2D;
-  protected _matrix: number[][]
   protected cells: (Cell | undefined)[]
   private maxValue: number = 0
 
-  get matrix() {
-      return this._matrix
-  }
 
   constructor(context: CanvasRenderingContext2D) {
     this.context = context
     this.cells = [];
-    this._matrix = matrix;
     //this.generateField()
 
-    // this.matrix = this.getMatrix();
   }
 
   //мы создаем матрицу
@@ -25,34 +19,6 @@ export class Engine {
   // каждый раз рисуем массив заново
   //выставляя позиции после сдвига ячеек
 
-  // findCellHorizontalPosition ({cell, x, y, startCondition, endCondition, changeMethod}: any) {
-  //   if (startCondition(x)) return
-  //   const cellLine = matrix[y]
-  //   let currentX = x
-  //   let foundX = x
-  //
-  //   do {
-  //     currentX = changeMethod(currentX)
-  //
-  //     const anotherCell = cellLine[currentX]
-  //
-  //     if (anotherCell) {
-  //       if (anotherCell.getValue() === cell.getValue()) {
-  //         foundX = currentX
-  //         cell.mergeCellValue()
-  //         anotherCell.kill()
-  //       }
-  //
-  //       break
-  //     } else {
-  //       foundX = currentX
-  //     }
-  //   } while (endCondition(currentX))
-  //   cell.setPosition({
-  //     x: foundX,
-  //     y
-  //   })
-  // }
 
   static generateRandom(min = 0, max = 100) {
     const difference = max - min;
@@ -110,60 +76,27 @@ export class Engine {
   moveMatrixElements(moveDirection: Direction): void {
     if (moveDirection === Direction.LEFT) {
       this.cells.forEach((item) => {
-        console.log(item)
-        })
-      }
-      // this.generateCell()
-      // console.log(this.cells)
-    }
+        const cellPositionX = item?.getPosition().x;
+        const cellPositionY = item?.getPosition().y;
+        let minIndex = 0;
 
-  // moveMatrixElements(moveDirection: string) {
-  //   const matrix = this.getMatrix();
-  //   const oldMatrix = this.getPrevMatrix(matrix);
-  //
-  //
-  //   if (moveDirection === "left") {
-  //     for (let index = 1; index < matrix.length; index++) {
-  //       matrix.forEach((matrixLine) => {
-  //         const cell = matrixLine[index];
-  //         if (cell) {
-  //           cell.move(moveDirection);
-  //         }
-  //       });
-  //     }
-  //   } else if (moveDirection === "right") {
-  //     for (let index = matrix.length - 2; index > -1; index--) {
-  //       matrix.forEach((matrixLine) => {
-  //         const cell = matrixLine[index];
-  //         if (cell) {
-  //           cell.move(moveDirection);
-  //         }
-  //       });
-  //     }
-  //   } else if (moveDirection === "up") {
-  //     matrix.forEach((matrixLine) => {
-  //       matrixLine.forEach((cell) => {
-  //         if (cell) {
-  //           cell.move(moveDirection);
-  //         }
-  //       });
-  //     });
-  //   } else if (moveDirection === "down") {
-  //     for (let index = matrix.length - 2; index > -1; index--) {
-  //       matrix[index].forEach((cell) => {
-  //         if (cell) {
-  //           cell.move(moveDirection);
-  //         }
-  //       });
-  //     }
-  //   }
-  //
-  //   const isSameMatrix = isEqual(oldMatrix, cloneDeep(matrix));
-  //   if (!isSameMatrix) {
-  //     const newCell = new Cell(this.context, this);
-  //     this.addCellToMatrix(newCell);
-  //   }
-  // }
+        if(cellPositionX && cellPositionY) {
+          for(let i = 4; i > 0; i--) {
+            let leftNeighbor = this.cells.find(element => element?.getPosition().x === cellPositionX - i && element?.getPosition().y === cellPositionY);
+            if(leftNeighbor) {
+              minIndex++;
+            }
+          }
+        }
+
+        let position = {x: minIndex, y: cellPositionY!};
+        if(item && item.getPosition().x !== minIndex) {
+          item.setPosition(position);
+          this.render();
+        }
+      })
+      }
+    }
 
   drawGrid (): void {
     const w = 800;
