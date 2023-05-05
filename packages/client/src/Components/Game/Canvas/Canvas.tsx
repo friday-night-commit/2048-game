@@ -20,8 +20,6 @@ const Canvas:React.FC<CanvasProps> = ({ ...props}) => {
 
 
       const engine = new Engine(context);
-      engine.render()
-      engine.createListeners()
 
     },[])
 
