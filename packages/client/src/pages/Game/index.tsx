@@ -16,8 +16,11 @@ export default function GamePage() {
         <div className='game-page-container large'>
           <div className='flex justify-between'>
             <div>
-              <Typography variant='h6' className='mb-8 font-normal leading-[1.2]'>
-                Используй <b>стрелки на клавиатуре</b>, чтобы двигать элементы.<br />
+              <Typography
+                variant='h6'
+                className='mb-8 font-normal leading-[1.2]'>
+                Используй <b>стрелки на клавиатуре</b>, чтобы двигать элементы.
+                <br />
                 Когда одинаковые элементы соединяются, они объединяются в один.
               </Typography>
             </div>
@@ -25,12 +28,15 @@ export default function GamePage() {
               <Button className='game-button small mr-4' disabled>
                 Шаг назад
               </Button>
-              <RestartButton restart={restart} />
+              {/* [just for tests] open modal on restart click */}
+              <RestartButton restart={handleOpenSuccessModal} />
             </div>
           </div>
         </div>
         <div className='game-page-container'>
           <Game />
+          <SuccessModal open={openSuccessModal} handleOpen={handleOpenSuccessModal} />
+          <FailureModal open={openFailureModal} handleOpen={handleOpenFailureModal} restart={restart} />
         </div>
       </>
     </PageContainer>

@@ -1,13 +1,14 @@
 import React, { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 type Props = {
-  children: ReactNode
+  children: ReactNode;
 };
 
 type State = {
-  hasError: boolean
-  error: Error | null
-  errorInfo: React.ErrorInfo | null
+  hasError: boolean;
+  error: Error | null;
+  errorInfo: React.ErrorInfo | null;
 };
 
 class ErrorBoundary extends React.Component<Props, State> {
