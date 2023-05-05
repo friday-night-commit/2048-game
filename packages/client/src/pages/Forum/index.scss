@@ -3,18 +3,21 @@
 .forum{
   display: flex;
   height: 700px;
-  background: $light-brown;
+  background: $background-color;
   border-radius: 30px;
+  gap: .5rem;
 
   &__left{
-    width: 30%;
-    background: $light-orange-tile;
-    overflow-y: scroll;
+    margin-top: 2rem;
+    width: 70%;
+    overflow-y: auto;
   }
 
   &__right{
-    width: 70%;
-    background: $light-brown;
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    gap: 10px;
     overflow-y: auto;
   }
 }

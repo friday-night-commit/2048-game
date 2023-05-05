@@ -5,6 +5,8 @@ enum routes {
   profilePage = '/profile',
   liderboardPage = '/liderboard',
   forumPage = '/forum',
+  postsPage = '/posts',
+  addPostPage = '/add-post',
   gamePage = '/game'
 }
 

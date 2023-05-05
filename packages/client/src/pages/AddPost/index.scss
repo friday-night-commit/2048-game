@@ -1,0 +1,22 @@
+.add-post{
+  display: flex;
+  border-radius: 30px;
+  gap: 2rem;
+
+  &__left{
+    width: 30%;
+    overflow-y: auto;
+  }
+
+  &__right{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+  }
+
+  &__action{
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+  }
+}

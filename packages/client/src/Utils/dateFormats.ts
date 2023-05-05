@@ -1,0 +1,5 @@
+export enum DATE_FORMATS {
+  SIMPLE_DATE_FORMAT = 'YYYY.MM.DD',
+  COMPLEX_DATE_FORMAT = 'yyyy.MM.DD HH:mm',
+  HOUR_AND_MINUTE_FORMAT = 'HH:mm',
+}

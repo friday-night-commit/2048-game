@@ -1,0 +1,29 @@
+@import './src/variables';
+
+.edit-block {
+  justify-content: right;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  padding: 2px 5px 5px;
+  .remove-btn{
+    height: 30px;
+    font-size: 12px;
+  }
+}
+
+.tag {
+  display: inline-block;
+  border-radius: 3px;
+  padding: .2em .2em .1em;
+  background-image: linear-gradient(90deg,$light-red-tile,$light-orange-tile);
+  font-weight: 700;
+  color: $base-tile;
+  margin: .25em .1em
+}
+
+.tag-lg {
+  font-size: 1.2em;
+  border-radius: 4px
+}
