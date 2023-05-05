@@ -17,8 +17,8 @@ export const posts: Posts = {
       },
       imageUrl:
         'https://assets.toptal.io/images?url=https://bs-uploads.toptal.io/blackfish-uploads/components/blog_post_page/content/cover_image_file/cover_image/1096616/retina_500x200_cover-top-18-most-common-angularjs-developer-mistakes-41f9ad303a51db70e4a5204e101e7414.png',
-      createdAt: '2023-11-04T08:24:15.471Z',
-      updatedAt: '2023-05-04T09:24:51.489Z',
+      createdAt: new Date('2023-11-04T08:24:15.471Z'),
+      updatedAt: new Date('2023-05-04T09:24:51.489Z'),
     },
     {
       _id: '2',
@@ -49,8 +49,8 @@ export const posts: Posts = {
         avatar: 'https://www.casino-king.com/images/articles/elon-musk.jpg',
       },
       imageUrl: 'https://www.itshop.ru/productimages/auto/pimg_2021101_182.png',
-      createdAt: '2023-05-10T06:30:51.471Z',
-      updatedAt: '2023-05-04T06:24:51.489Z',
+      createdAt: new Date('2023-05-10T06:30:51.471Z'),
+      updatedAt: new Date('2023-05-04T06:24:51.489Z'),
     },
     {
       _id: '3',
@@ -68,8 +68,8 @@ export const posts: Posts = {
       },
       imageUrl:
         'https://kinsta.com/wp-content/uploads/2021/07/what-to-know-about-vue-js.jpg',
-      createdAt: '2023-05-06T06:24:51.471Z',
-      updatedAt: '2023-05-04T06:24:51.489Z',
+      createdAt: new Date('2023-05-06T06:24:51.471Z'),
+      updatedAt: new Date('2023-05-04T06:24:51.489Z'),
     },
   ],
   status: 'loaded',
@@ -90,8 +90,8 @@ export interface ForumPost {
   isNew: boolean;
   user: UserData;
   imageUrl: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const tags: Tags = {
@@ -110,8 +110,8 @@ export const userData: UserData = {
   email: 'laksan@mail.ru',
   avatar:
     'https://kinsta.com/wp-content/uploads/2021/07/what-to-know-about-vue-js.jpg',
-  createdAt: '2023-05-03T15:12:22.276Z',
-  updatedAt: '2023-05-03T15:12:22.276Z',
+  createdAt: new Date('2023-05-03T15:12:22.276Z'),
+  updatedAt: new Date('2023-05-03T15:12:22.276Z'),
 };
 
 export interface UserData {
@@ -119,8 +119,8 @@ export interface UserData {
   fullName: string;
   email: string;
   avatar: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export const lastComments: Comment[] = [
@@ -130,7 +130,7 @@ export const lastComments: Comment[] = [
       avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
     },
     text: 'Это тестовый комментарий. Откройте пост и напишите новый комментарий',
-    createdAt: '2023-05-04T13:40:28.276Z',
+    createdAt: new Date('2023-05-04T13:40:28.276Z'),
   },
   {
     user: {
@@ -138,7 +138,7 @@ export const lastComments: Comment[] = [
       avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',
     },
     text: 'Это второй тестовый комментарий',
-    createdAt: '2023-05-05T13:14:16.276Z',
+    createdAt: new Date('2023-05-05T13:14:16.276Z'),
   },
 ];
 
@@ -148,5 +148,5 @@ export interface Comment {
     avatarUrl: string;
   };
   text: string;
-  createdAt: string;
+  createdAt: Date;
 }
