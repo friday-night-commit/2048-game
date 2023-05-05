@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Typography } from '@material-tailwind/react'
 import PageContainer from '../../Components/PageContainer'
-import UserScore from './UserScore'
+import UserScore from './components/UserScore'
 import Preloader from '../../Components/Preloader';
 
 export type leaderboardUser = {
@@ -41,7 +41,7 @@ export default function LeaderboardPage() {
         </Typography>
         {leaderboard?.map(user => {
           return (
-            <UserScore user={user}/>
+            <UserScore user={user} key={user.userName}/>
           )
         })}
       </div>
@@ -50,7 +50,9 @@ export default function LeaderboardPage() {
 
   return (
     <PageContainer>
-      <Preloader renderElement={renderLeaderboard()} conditionalFunction={() => leaderboard.length > 0}/>
+      <Preloader conditional={leaderboard.length > 0}>
+        {renderLeaderboard()}
+      </Preloader>
     </PageContainer>
   )
 }

@@ -1,15 +1,15 @@
 import { FC } from 'react'
 
 type preloaderProps = {
-  renderElement: JSX.Element
-  conditionalFunction: () => boolean
+  children: JSX.Element
+  conditional: boolean
 }
 
-const Preloader: FC<preloaderProps> = ({renderElement, conditionalFunction}) => {
+const Preloader: FC<preloaderProps> = ({children, conditional}) => {
   return (
-    <div className='text-center'>
-      {conditionalFunction()
-        ? renderElement
+    <div className='text-center preloader'>
+      {conditional
+        ? children
         : 'Идёт получение данных...'}
     </div>
   )
