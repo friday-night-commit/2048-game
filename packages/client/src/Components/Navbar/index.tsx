@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { Navbar as MaterialNavbar, Typography } from '@material-tailwind/react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import routes from '../../routes';
 import './index.scss';
@@ -12,10 +12,18 @@ type NavbarLinkProps = {
 
 const NavbarItem: FC<NavbarLinkProps> = ({ url, title }) => {
   return (
-    <Typography as='li' variant='h6' className='p-1 font-normal'>
-      <Link to={url} className='flex items-center'>
+
+    <Typography
+      as='li'
+      variant='h6'
+      className='p-1 font-normal'
+    >
+      <NavLink
+        to={url}
+        className={({ isActive }) => (isActive ? 'flex items-center active' : 'flex items-center')}
+      >
         {title}
-      </Link>
+      </NavLink>
     </Typography>
   );
 };

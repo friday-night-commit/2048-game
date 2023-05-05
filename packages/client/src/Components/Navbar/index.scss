@@ -5,6 +5,11 @@
 
   a {
     @include hover-link;
+
+    &.active {
+      font-weight: bold;
+      text-decoration: underline;
+    }
   }
 
   a.title {
