@@ -16,11 +16,7 @@ export default function ServerError() {
       <Typography variant='h6' color='blue-gray' className='text-center mb-8'>
         Мы уже работаем над устранением технических неполадок
       </Typography>
-      <Button
-        className='mt-6 mb-4'
-        fullWidth
-        onClick={() => navigate(-1)}
-      >
+      <Button className='mt-6 mb-4' fullWidth onClick={() => navigate(-1)}>
         Вернуться Назад
       </Button>
     </CardContainer>
