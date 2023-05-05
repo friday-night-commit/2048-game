@@ -1,10 +1,10 @@
-import { Button, Typography } from '@material-tailwind/react'
-import { useNavigate } from 'react-router-dom'
+import { Button, Typography } from '@material-tailwind/react';
+import { useNavigate } from 'react-router-dom';
 
-import CardContainer from '../../Components/CardContainer'
+import CardContainer from '../../Components/CardContainer';
 
 export default function ServerError() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <CardContainer className='server-error-page'>
       <Typography variant='h1' color='blue-gray' className='text-center mb-8'>
@@ -24,5 +24,5 @@ export default function ServerError() {
         Вернуться Назад
       </Button>
     </CardContainer>
-  )
+  );
 }

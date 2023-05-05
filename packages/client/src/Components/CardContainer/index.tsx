@@ -1,15 +1,15 @@
-import { FC } from 'react'
-import { Card } from '@material-tailwind/react'
-import cx from 'classnames'
+import { FC } from 'react';
+import { Card } from '@material-tailwind/react';
+import cx from 'classnames';
 
-import './index.scss'
+import './index.scss';
 
 type TOwnProps = {
   className?: string
   children?: JSX.Element | JSX.Element[]
-}
+};
 
-type TProps = FC<TOwnProps>
+type TProps = FC<TOwnProps>;
 
 const CardContainer: TProps = ({ className, children }) => {
   return (
@@ -18,7 +18,7 @@ const CardContainer: TProps = ({ className, children }) => {
         {children}
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default CardContainer
+export default CardContainer;

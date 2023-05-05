@@ -1,6 +1,6 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom';
 
-import routes from './routes'
+import routes from './routes';
 
 import MainPage from './pages/Main'
 import AuthPage from './pages/Auth'
@@ -16,4 +16,4 @@ export default createBrowserRouter(
     { path: routes.leaderboardPage, element: <Leaderboard /> },
     { path: '*', element: <NoMatch /> }
   ]
-)
+);

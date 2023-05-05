@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC } from 'react';
 import {
   Button,
   Dialog,
@@ -14,7 +14,7 @@ type ModalProps = {
   handleOpen: () => void
   noFooter?: boolean
   className?: string
-}
+};
 
 const Modal: FC<ModalProps> = ({ title, children, open, handleOpen, noFooter = true, className }) => {
   return (
@@ -35,7 +35,7 @@ const Modal: FC<ModalProps> = ({ title, children, open, handleOpen, noFooter = t
         </DialogFooter>
       }
     </Dialog>
-  )
-}
+  );
+};
 
-export default Modal
+export default Modal;
