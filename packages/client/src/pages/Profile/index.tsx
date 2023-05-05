@@ -15,11 +15,11 @@ export default function ProfilePage() {
 
   return (
     <CardContainer>
-      <Typography variant="h3" className="text-center mb-8">
+      <Typography variant='h3' className='text-center mb-8'>
         Мой профиль
       </Typography>
 
-      <div className="mb-8 flex justify-center">
+      <div className='mb-8 flex justify-center'>
         <Avatar />
       </div>
       <ProfileForm openChangePasswordModal={openChangePasswordModal} />
