@@ -1,23 +1,14 @@
 import { Button, Typography } from '@material-tailwind/react';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 
 import PageContainer from '../../Components/PageContainer';
 import Game from '../../Components/Game';
-
 import RestartButton from './components/RestartButton';
-import SuccessModal from './components/SuccessModal';
-import FailureModal from './components/FailureModal';
 
 export default function GamePage() {
   const restart = useCallback(() => {
     return;
   }, []);
-
-  const [openSuccessModal, setOpenFinalModal] = useState(false);
-  const handleOpenSuccessModal = () => setOpenFinalModal(!openSuccessModal);
-
-  const [openFailureModal, setOpenFailureModal] = useState(false);
-  const handleOpenFailureModal = () => setOpenFailureModal(!openFailureModal);
 
   return (
     <PageContainer>
@@ -25,8 +16,11 @@ export default function GamePage() {
         <div className='game-page-container large'>
           <div className='flex justify-between'>
             <div>
-              <Typography variant='h6' className='mb-8 font-normal leading-[1.2]'>
-                Используй <b>стрелки на клавиатуре</b>, чтобы двигать элементы.<br />
+              <Typography
+                variant='h6'
+                className='mb-8 font-normal leading-[1.2]'>
+                Используй <b>стрелки на клавиатуре</b>, чтобы двигать элементы.
+                <br />
                 Когда одинаковые элементы соединяются, они объединяются в один.
               </Typography>
             </div>

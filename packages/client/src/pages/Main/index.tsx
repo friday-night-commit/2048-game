@@ -20,7 +20,9 @@ export default function MainPage() {
           <Link to={routes.forumPage}>форуме</Link>
           {'!'}
         </Typography>
-        <Button className='game-button' onClick={() => navigate(routes.gamePage)}>
+        <Button
+          className='game-button'
+          onClick={() => navigate(routes.gamePage)}>
           START!
         </Button>
       </div>

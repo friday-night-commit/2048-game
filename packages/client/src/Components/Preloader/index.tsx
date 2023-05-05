@@ -1,18 +1,16 @@
-import { FC } from 'react'
+import { FC } from 'react';
 
 type preloaderProps = {
-  children: JSX.Element
-  conditional: boolean
-}
+  children: JSX.Element;
+  conditional: boolean;
+};
 
-const Preloader: FC<preloaderProps> = ({children, conditional}) => {
+const Preloader: FC<preloaderProps> = ({ children, conditional }) => {
   return (
     <div className='text-center preloader'>
-      {conditional
-        ? children
-        : 'Идёт получение данных...'}
+      {conditional ? children : 'Идёт получение данных...'}
     </div>
-  )
-}
+  );
+};
 
-export default Preloader
+export default Preloader;

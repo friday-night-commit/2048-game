@@ -14,11 +14,7 @@ export default function NoMatch() {
         <Typography variant='h3' color='blue-gray' className='text-center mb-8'>
           Запрашиваемая страница не найдена
         </Typography>
-        <Button
-          className='mt-6 mb-4'
-          fullWidth
-          onClick={() => navigate(-1)}
-        >
+        <Button className='mt-6 mb-4' fullWidth onClick={() => navigate(-1)}>
           Вернуться Назад
         </Button>
       </>
