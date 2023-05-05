@@ -18,7 +18,7 @@ import { AddPostPage } from '../AddPost';
 export default function ForumPage() {
   const isPostsLoading = posts.status === 'loading';
   const isTagsLoading = tags.status === 'loading';
-  const data = [
+  const tabsData = [
     {
       label: 'Посты',
       value: 'posts',
@@ -30,17 +30,7 @@ export default function ForumPage() {
                 <p>Skeleton ...</p>
               ) : (
                 <Post
-                  _id={obj._id}
-                  title={obj.title}
-                  imageUrl={obj.imageUrl}
-                  user={obj.user}
-                  createdAt={obj.createdAt}
-                  viewsCount={obj.viewsCount}
-                  text={obj.text}
-                  commentsCount={obj.commentsCount}
-                  tags={obj.tags}
-                  isNew={obj.isNew}
-                  isFullPost={false}
+                  {...obj}
                   isEditable={userData?._id === obj.user._id}
                 />
               )
@@ -71,7 +61,7 @@ export default function ForumPage() {
 
       <Tabs value="posts">
         <TabsHeader>
-          {data.map(({ label, value }) => (
+          {tabsData.map(({ label, value }) => (
             <Tab key={value} value={value}>
               <div className="flex items-center gap-2">{label}</div>
             </Tab>
@@ -79,7 +69,7 @@ export default function ForumPage() {
         </TabsHeader>
 
         <TabsBody>
-          {data.map(({ value, content }) => (
+          {tabsData.map(({ value, content }) => (
             <TabPanel key={value} value={value}>
               {content}
             </TabPanel>

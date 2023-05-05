@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import './index.scss';
 import { Typography } from '@material-tailwind/react';
 
 type TOwnProps = {

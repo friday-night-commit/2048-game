@@ -4,12 +4,14 @@
   justify-content: right;
   display: flex;
   flex-direction: row;
-  gap: 10px;
   align-items: center;
   padding: 2px 5px 5px;
+
   .remove-btn{
-    height: 30px;
-    font-size: 12px;
+    @apply block w-12 h-12 rounded-full relative overflow-hidden;
+    @apply bg-[url('../../assets/images/remove-btn.svg')];
+    @apply bg-no-repeat bg-center ;
+    height: 20px;
   }
 }
 
@@ -27,3 +29,28 @@
   font-size: 1.2em;
   border-radius: 4px
 }
+
+.views{
+  @apply block w-12 h-12 rounded-full relative overflow-hidden;
+  @apply bg-[url('../../assets/images/views.svg')];
+  @apply bg-no-repeat bg-center ;
+  height: 25px;
+}
+
+.content-icon{
+  background-image: url('../../assets/images/content.svg');
+  @apply block w-12 h-12 rounded-full relative overflow-hidden;
+  @apply bg-no-repeat bg-center;
+  height: 30px;
+}
+
+.comments{
+  background-image: url('../../assets/images/comments.svg');
+  @apply block w-12 h-12 rounded-full relative overflow-hidden;
+  @apply bg-no-repeat bg-center;
+  height: 25px;
+}
+
+
+
+
