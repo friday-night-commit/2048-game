@@ -1,35 +1,32 @@
-import { generateValue } from '../utils/getValue'
-import { ThemeProvider } from '@material-tailwind/react'
-import value = ThemeProvider.propTypes.value
+import { Utils } from '../utils/Utils'
 
 export type Position = {
-  x: number,
-  y: number
-}
-
+  x: number;
+  y: number;
+};
 
 export class Cell {
-  protected readonly _value: number
-  protected _position: Position
-  protected context: CanvasRenderingContext2D;
+  protected readonly value: number;
+  protected position: Position;
+  private size: number;
 
-  constructor(context: CanvasRenderingContext2D, position: Position) {
-    // TODO Игра управляет ячейками, сама ячейка не знает ничего, кроме значения и позиции
-    this.context = context;
-    this._value = generateValue();
-    this._position = position;
+  constructor(position: Position, size: number, value?: number) {
+    this.value = value || Utils.generateValue();
+    this.position = position;
+    this.size = size;
   }
 
-  get value(): number {
-    return this._value
+  getValue(): number {
+    return this.value;
   }
 
-  setPosition(newPosition: Position) {
-    this._position = newPosition;
+  setPosition(newPosition: Position): Cell {
+    this.position = newPosition;
+    return this;
   }
 
-  get position(): Position {
-    return this._position
+  getPosition(): Position {
+    return this.position;
   }
 
   private changeColor() : string {
@@ -63,13 +60,14 @@ export class Cell {
     }
   }
 
-  render() {
-    this.context.fillStyle = this.changeColor();
-    const { x, y } = this.position
-    this.context.fillRect(x*75,y*75,75,75);
-    this.context.textBaseline = 'middle';
-    this.context.fillStyle = 'black';
-    this.context.textAlign = 'center';
-    this.context.fillText(String(this.value), x*75+37, y*75+35);
+  render(context: CanvasRenderingContext2D) {
+    context.fillStyle = this.changeColor();
+    const { x, y } = this.getPosition();
+    context.fillRect(x * this.size, y * this.size, this.size, this.size);
+    context.font = '20px Arial';
+    context.textBaseline = 'middle';
+    context.fillStyle = 'black';
+    context.textAlign = 'center';
+    context.fillText(String(this.value), x * this.size + (this.size / 2), y * this.size + (this.size / 2));
   }
 }

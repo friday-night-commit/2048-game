@@ -1,165 +1,295 @@
 import { Cell, Position } from '../Cell/Cell'
-import { generateRandom } from '../utils/generateRandom'
+import { Utils } from '../utils/Utils'
+
+export type MatrixArray = (Cell | undefined)[][];
 
 export class Engine {
-  // Максимальное использовать свойства класса, а не передать их в методы
   protected readonly context: CanvasRenderingContext2D;
   protected cells: (Cell | undefined)[] = [];
-  private maxValue: number = 0;
+  private maxValue: number = MAX_VALUE;
+  private currentMaxNumber: number = 0;
+  protected _matrix: MatrixArray;
+  private readonly _size: number;
+  private readonly _canvasSize: number;
+  private readonly eventListeners: ((event: KeyboardEvent) => void)[];
+  private readonly cellSize: number;
 
-
-  constructor(context: CanvasRenderingContext2D) {
+  constructor(
+    context: CanvasRenderingContext2D,
+    canvasSize: number,
+    size: number
+  ) {
     this.context = context;
-    //this.generateField()
+    this._matrix = Utils.generateMatrix();
+    this._size = size;
+    this._canvasSize = canvasSize;
+    this.cellSize = canvasSize / size;
+
+    this.eventListeners = [];
+
+    this.init()
   }
 
   init() {
-    this.render()
     this.createListeners();
+    this.render()
   }
 
-  //мы создаем матрицу
-  // ней массив с позициями
-  // каждый раз рисуем массив заново
-  //выставляя позиции после сдвига ячеек
+  get size(): number {
+    return this._size;
+  }
+
+  createListeners(): void {
+    const listener = (event: KeyboardEvent) => {
+      this.moveMatrixElements(listeners[(event as KeyboardEvent).keyCode]);
+    };
+    this.eventListeners.push(listener);
+    document.addEventListener('keydown', listener);
+  }
 
   generateCell(): void {
-    const randomCoordinates = this.generateRandomCellPosition();
-    const newCell = new Cell(this.context, randomCoordinates);
-    this.cells?.push(newCell)
-  }
+    let emptyCellExists = false;
+    for (const row of this._matrix) {
+      for (const cell of row) {
+        if (!cell) {
+          emptyCellExists = true;
+        }
+      }
+    }
 
-  movingMatrixElements(event: KeyboardEvent): void {
-    this.moveMatrixElements(listeners[event.keyCode]);
-  }
-
-  createListeners() {
-    document.addEventListener("keydown", this.movingMatrixElements.bind(this));
-  }
-
-  removeListeners(): void {
-    document.removeEventListener("keydown", this.movingMatrixElements);
+    if (emptyCellExists) {
+      const randomCoordinates = this.generateRandomCellPosition();
+      const newCell = new Cell(randomCoordinates, this.cellSize);
+      this.addCellToMatrix(newCell);
+    }
   }
 
   generateRandomCellPosition(): Position {
-    const emptyCoordinates = this.getEmptyMatrixCoordinates()
-    const randomCoordinateIndex = generateRandom(0, emptyCoordinates.length - 1)
-
-    return emptyCoordinates[randomCoordinateIndex]
+    const randomX = Utils.generateRandom(0, this._size);
+    const randomY = Utils.generateRandom(0, this._size);
+    if (this._matrix[randomY][randomX]) {
+      return this.generateRandomCellPosition();
+    }
+    return { x: randomX, y: randomY };
   }
 
-  getEmptyMatrixCoordinates() {
-    //type for emptycord ?
-    return matrix.reduce((emptyCoordinates: any, matrixLine, y: number) => {
-      matrixLine.forEach((elem: number, x: number) => {
-        if (!elem) {
-          emptyCoordinates.push({ x , y });
-        }
-      });
+  addCellToMatrix(cell: Cell, newPosition?: Position): void {
+    let x: number,y: number;
 
-      return emptyCoordinates;
-    }, []);
+    if (newPosition) {
+      x = newPosition.x;
+      y = newPosition.y;
+    } else {
+      x = cell.getPosition().x;
+      y = cell.getPosition().y
+    }
+
+    this._matrix[y][x] = cell;
+  }
+
+  copyCell(position: Position, value: number): Cell {
+    return new Cell(position, this.cellSize, value)
+  }
+
+  removeCellFromMatrix(cell: Cell, oldPosition?: Position): void {
+    let x: number,y: number;
+
+    if (oldPosition) {
+      x = oldPosition.x;
+      y = oldPosition.y;
+    } else {
+      x = cell.getPosition().x;
+      y = cell.getPosition().y
+    }
+
+    this._matrix[y][x] = undefined;
+  }
+
+  moveCell(cell: Cell, direction: Direction): void {
+    const { x, y } = cell.getPosition();
+    let newX = x;
+    let newY = y;
+
+    switch (direction) {
+      case Direction.LEFT:
+        newX--;
+        break;
+      case Direction.DOWN:
+        newY++;
+        break;
+      case Direction.RIGHT:
+        newX++;
+        break;
+      case Direction.UP:
+        newY--;
+        break;
+      default:
+        return;
+    }
+
+    if (newX < 0 || newX == this._size || newY < 0 || newY == this._size) {
+      return;
+    }
+
+    const neighborCell = this._matrix[newY][newX];
+    const copyCell = this.copyCell({ x, y },cell.getValue());
+
+    if (neighborCell && this.checkCollision(neighborCell,copyCell)) {
+
+      let increasedValue = cell.getValue() * 2;
+
+      if(increasedValue > this.currentMaxNumber) {
+        this.currentMaxNumber = increasedValue;
+      }
+
+      this.removeCellFromMatrix(neighborCell);
+      this.removeCellFromMatrix(cell);
+
+      this.addCellToMatrix(this.copyCell({ x: newX, y: newY }, increasedValue ));
+
+      this.moveCell(cell, direction);
+      return;
+
+    } else {
+
+      if (this._matrix[newY][newX]) {
+        return;
+      }
+
+      cell.setPosition({ x: newX, y: newY });
+      this.removeCellFromMatrix(cell, {x, y});
+      this.addCellToMatrix(cell, { x: newX, y: newY })
+
+      this.moveCell(cell, direction);
+    }
+  }
+
+  checkCollision(cell1: Cell, cell2: Cell): boolean {
+    return cell1.getValue() === cell2.getValue();
+  }
+
+  checkCollisionNeighbors(cell: Cell): boolean {
+    const { x: currentX, y: currentY } = cell.getPosition();
+    const copyCell = this.copyCell(cell.getPosition(), cell.getValue())
+
+    return this.findingNeighbors(this._matrix, currentY, currentX).every(
+      neighbor => {
+        copyCell.setPosition(neighbor.getPosition());
+        return !this.checkCollision(copyCell, neighbor);
+      }
+    );
+  }
+
+  findingNeighbors(myArray: MatrixArray, i: number, j: number): Cell[] {
+    const neighbors: Cell[] = [];
+
+    try {
+      const leftNeighbor = myArray[i][j - 1] || null;
+      if (leftNeighbor) {
+        neighbors.push(leftNeighbor);
+      }
+    } catch (err) {
+      //
+    }
+    try {
+      const rightNeighbor = myArray[i][j + 1] || null;
+      if (rightNeighbor) {
+        neighbors.push(rightNeighbor);
+      }
+    } catch (err) {
+      //
+    }
+    try {
+      const topNeighbor = myArray[i - 1][j] || null;
+      if (topNeighbor) {
+        neighbors.push(topNeighbor);
+      }
+    } catch (err) {
+      //
+    }
+    try {
+      const bottomNeighbor = myArray[i + 1][j] || null;
+      if (bottomNeighbor) {
+        neighbors.push(bottomNeighbor);
+      }
+    } catch (err) {
+      //
+    }
+
+    return neighbors;
   }
 
   moveMatrixElements(moveDirection: Direction): void {
-    console.log(this.cells)
     switch (moveDirection) {
-      case Direction.DOWN:
-        for (let item of this.cells) {
-          this.moveElement(3, 'down', true, false, item);
-        }
-        break;
-      case Direction.LEFT:
-        for (let item of this.cells) {
-          this.moveElement(0, 'left', false, true, item);
-        }
-        break;
-      case Direction.RIGHT:
-        for (let item of this.cells) {
-          this.moveElement(3, 'right', false, false, item);
-        }
-        break;
       case Direction.UP:
-        for (let item of this.cells) {
-          this.moveElement(0, 'up', true, true, item);
+      case Direction.LEFT:
+        for (const row of this._matrix) {
+          for (const cell of row) {
+            if (cell) {
+              this.moveCell(cell, moveDirection);
+            }
+          }
         }
         break;
-    }
 
-    this.removeListeners();
-    this.render();
+      case Direction.DOWN:
+      case Direction.RIGHT:
+        for (
+          let rowNumber = this._matrix.length - 1;
+          rowNumber >= 0;
+          rowNumber--
+        ) {
+          for (
+            let colNumber = this._matrix[rowNumber].length - 1;
+            colNumber >= 0;
+            colNumber--
+          ) {
+            const cell = this._matrix[rowNumber][colNumber];
+            if (cell) {
+              this.moveCell(cell, moveDirection);
+            }
+          }
+        }
+        break;
+      default:
+        return;
+    }
+    if (!this.checkEndGame()) {
+      this.render();
+    } else {
+      alert('Игра окончена!');
+    }
   }
 
-  moveElement(minIndex: number, direction: string, isVertical: boolean, increasing: boolean, item: Cell|undefined): void {
-      const cellPositionX = item?.position.x;
-      const cellPositionY = item?.position.y;
+  checkEndGame(): boolean {
+    let isEndGame = true;
 
-      let startIndex;
-      let conditionEdge;
-      let position;
-      let positionCheck;
+    //Набралось ли максимальное количество баллов?
+    if (this.currentMaxNumber < this.maxValue) {
 
-      switch (isVertical) {
-        case true:
-          conditionEdge = cellPositionY;
-          positionCheck = item!.position.y;
-          break;
-        case false:
-          conditionEdge = cellPositionX;
-          positionCheck = item!.position.x;
-          break;
-      }
-
-      switch (increasing) {
-        case true:
-          startIndex = 0;
-
-          if(conditionEdge) {
-            for(let i = startIndex; i < conditionEdge; i++) {
-              let neighbor;
-
-              neighbor = isVertical
-                ? this.cells.find(element => element?.position.x === cellPositionX! && element?.position.y === i)
-                : this.cells.find(element => element?.position.x === i && element?.position.y === cellPositionY!);
-
-              if(neighbor) {
-                minIndex++;
-              }
-            }
+      console.log('tick')
+      // Существуют ли пустые ячейки?
+      for (const row of this._matrix) {
+        for (const cell of row) {
+          if (!cell) {
+            isEndGame = false;
+            return isEndGame;
           }
-          break;
-        case false:
-          startIndex = 3;
+        }
+      }
 
-          if(conditionEdge !== startIndex) {
-            for(let i = startIndex; i > conditionEdge!; i--) {
-              let neighbor;
-
-              neighbor =  isVertical
-               ? this.cells.find(element => element?.position.x === cellPositionX! && element?.position.y === i)
-               : this.cells.find(element => element?.position.x === i && element?.position.y === cellPositionY!);
-
-              if(neighbor) {
-                minIndex--;
-              }
-            }
+      // Проверки коллизий
+      for (const row of this._matrix) {
+        for (const cell of row) {
+          if (cell && !this.checkCollisionNeighbors(cell)) {
+            isEndGame = false;
+            return false;
           }
-          break;
+        }
       }
-
-      switch (isVertical) {
-        case true:
-          position = {x: Number(cellPositionX!), y: Number(minIndex)};
-          break;
-        case false:
-          position = {x: Number(minIndex), y: Number(cellPositionY!)};
-          break;
-      }
-
-
-    if(item && positionCheck !== minIndex) {
-        item.setPosition(position);
     }
+
+    return isEndGame;
   }
 
   drawGrid (): void {
@@ -191,10 +321,9 @@ export class Engine {
   }
 
   clear() {
-    this.context.clearRect(0, 0, 300, 300);
+    this.context.clearRect(0, 0, this._canvasSize, this._canvasSize,);
   }
 
-  // для одного кадра
   render() {
     this.clear();
     this.drawGrid();
@@ -202,20 +331,25 @@ export class Engine {
     this.renderCells();
   }
 
-  // checkCollision(cell1, cell2) {
-  //   if(cell1.x === cell2.x && cell1.y === cell2.y && cell1.value === cell2.vlaue){
-  //     const value = cell1.value * 2
-  //     const cell = new Cell(context, value)
-  //     // кладем в нужное место в матрице
-         // удаляем ячейку и добавляем туда новую  сновым значением
-  //   }
-  // }
 
   renderCells(){
-    for(let cell of this.cells){
-      if(cell) {
-        cell.render();
+    for (const row of this._matrix) {
+      for (const cell of row) {
+        if (cell) {
+          cell.render(this.context);
+        }
       }
+    }
+  }
+
+
+  destroy() {
+    this.removeListeners();
+  }
+
+  removeListeners() {
+    for (const listener of this.eventListeners) {
+      document.removeEventListener('keydown', listener);
     }
   }
 
@@ -228,13 +362,11 @@ enum Direction {
   RIGHT = "right",
 }
 
+const MAX_VALUE = 2048;
+
 const listeners:Record<number, Direction> = {
   37: Direction.LEFT,
   38: Direction.UP,
   39: Direction.RIGHT,
   40: Direction.DOWN
 };
-
-const matrix: number[][] = Array.from({ length: 4 }, () =>
-  Array.from({ length: 4 }, () => 0)
-);
