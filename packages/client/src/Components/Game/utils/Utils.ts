@@ -1,9 +1,9 @@
-import { MatrixArray } from '../Engine/Engine'
+import { MatrixArray } from '../Engine/Engine';
 
 export class Utils {
 
   static generateValue(): number {
-    return Math.random() > 0.75 ? 4 : 2
+    return Math.random() > 0.75 ? 4 : 2;
   }
 
   static generateRandom(min = 0, max = 100): number {

@@ -1,4 +1,4 @@
-import { Utils } from '../utils/Utils'
+import { Utils } from '../utils/Utils';
 
 export type Position = {
   x: number;
@@ -9,6 +9,11 @@ export class Cell {
   protected readonly value: number;
   protected position: Position;
   private size: number;
+
+  protected readonly fontText = '20px Arial';
+  protected readonly baselineText = 'middle';
+  protected readonly textColor = 'black';
+  protected readonly alignText = 'center';
 
   constructor(position: Position, size: number, value?: number) {
     this.value = value || Utils.generateValue();
@@ -64,10 +69,10 @@ export class Cell {
     context.fillStyle = this.changeColor();
     const { x, y } = this.getPosition();
     context.fillRect(x * this.size, y * this.size, this.size, this.size);
-    context.font = '20px Arial';
-    context.textBaseline = 'middle';
-    context.fillStyle = 'black';
-    context.textAlign = 'center';
+    context.font = this.fontText;
+    context.textBaseline = this.baselineText;
+    context.fillStyle = this.textColor;
+    context.textAlign = this.alignText;
     context.fillText(String(this.value), x * this.size + (this.size / 2), y * this.size + (this.size / 2));
   }
 }

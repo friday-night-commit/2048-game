@@ -1,18 +1,23 @@
-import { Cell, Position } from '../Cell/Cell'
-import { Utils } from '../utils/Utils'
+import { Cell, Position } from '../Cell/Cell';
+import { Utils } from '../utils/Utils';
 
 export type MatrixArray = (Cell | undefined)[][];
 
 export class Engine {
   protected readonly context: CanvasRenderingContext2D;
-  protected cells: (Cell | undefined)[] = [];
   private maxValue: number = MAX_VALUE;
-  private currentMaxNumber: number = 0;
+  private currentMaxNumber = 0;
   protected _matrix: MatrixArray;
   private readonly _size: number;
   private readonly _canvasSize: number;
   private readonly eventListeners: ((event: KeyboardEvent) => void)[];
   private readonly cellSize: number;
+
+  protected readonly fontText = '20px Arial';
+  protected readonly border = 'rgb(143, 122, 102)';
+  protected readonly widthBorder = 3;
+  protected readonly background = 'white';
+
 
   constructor(
     context: CanvasRenderingContext2D,
@@ -27,12 +32,12 @@ export class Engine {
 
     this.eventListeners = [];
 
-    this.init()
+    this.init();
   }
 
   init() {
     this.createListeners();
-    this.render()
+    this.render();
   }
 
   get size(): number {
@@ -81,14 +86,14 @@ export class Engine {
       y = newPosition.y;
     } else {
       x = cell.getPosition().x;
-      y = cell.getPosition().y
+      y = cell.getPosition().y;
     }
 
     this._matrix[y][x] = cell;
   }
 
   copyCell(position: Position, value: number): Cell {
-    return new Cell(position, this.cellSize, value)
+    return new Cell(position, this.cellSize, value);
   }
 
   removeCellFromMatrix(cell: Cell, oldPosition?: Position): void {
@@ -99,7 +104,7 @@ export class Engine {
       y = oldPosition.y;
     } else {
       x = cell.getPosition().x;
-      y = cell.getPosition().y
+      y = cell.getPosition().y;
     }
 
     this._matrix[y][x] = undefined;
@@ -136,7 +141,7 @@ export class Engine {
 
     if (neighborCell && this.checkCollision(neighborCell,copyCell)) {
 
-      let increasedValue = cell.getValue() * 2;
+      const increasedValue = cell.getValue() * 2;
 
       if(increasedValue > this.currentMaxNumber) {
         this.currentMaxNumber = increasedValue;
@@ -157,8 +162,8 @@ export class Engine {
       }
 
       cell.setPosition({ x: newX, y: newY });
-      this.removeCellFromMatrix(cell, {x, y});
-      this.addCellToMatrix(cell, { x: newX, y: newY })
+      this.removeCellFromMatrix(cell, { x, y });
+      this.addCellToMatrix(cell, { x: newX, y: newY });
 
       this.moveCell(cell, direction);
     }
@@ -170,7 +175,7 @@ export class Engine {
 
   checkCollisionNeighbors(cell: Cell): boolean {
     const { x: currentX, y: currentY } = cell.getPosition();
-    const copyCell = this.copyCell(cell.getPosition(), cell.getValue())
+    const copyCell = this.copyCell(cell.getPosition(), cell.getValue());
 
     return this.findingNeighbors(this._matrix, currentY, currentX).every(
       neighbor => {
@@ -267,7 +272,6 @@ export class Engine {
     //Набралось ли максимальное количество баллов?
     if (this.currentMaxNumber < this.maxValue) {
 
-      console.log('tick')
       // Существуют ли пустые ячейки?
       for (const row of this._matrix) {
         for (const cell of row) {
@@ -293,30 +297,30 @@ export class Engine {
   }
 
   drawGrid (): void {
-    const w = 800;
-    const h = 400;
-    const step = 75;
+    const w = this._canvasSize;
+    const h = this._canvasSize;
+    const step = this.cellSize;
 
     this.context.beginPath();
-    this.context.fillStyle = 'white';
+    this.context.fillStyle = this.background;
 
-    for (let x=0;x<=w;x+=step) {
+    for (let x=0; x<=w; x+=step) {
       this.context.moveTo(x, 0);
       this.context.lineTo(x, h);
     }
-    this.context.font = "20px Arial";
+    this.context.font = this.fontText;
 
-    this.context.strokeStyle = 'rgb(143, 122, 102)';
-    this.context.lineWidth = 3;
+    this.context.strokeStyle = this.border;
+    this.context.lineWidth = this.widthBorder;
     this.context.stroke();
 
     this.context.beginPath();
-    for (let y=0;y<=h;y+=step) {
+    for (let y=0; y<=h; y+=step) {
       this.context.moveTo(0, y);
       this.context.lineTo(w, y);
     }
-    this.context.strokeStyle = 'rgb(143, 122, 102)';
-    this.context.lineWidth = 3;
+    this.context.strokeStyle = this.border;
+    this.context.lineWidth = this.widthBorder;
     this.context.stroke();
   }
 
@@ -356,10 +360,10 @@ export class Engine {
 }
 
 enum Direction {
-  UP    = "up",
-  DOWN  = "down",
-  LEFT  = "left",
-  RIGHT = "right",
+  UP = 'up',
+  DOWN = 'down',
+  LEFT = 'left',
+  RIGHT = 'right',
 }
 
 const MAX_VALUE = 2048;
