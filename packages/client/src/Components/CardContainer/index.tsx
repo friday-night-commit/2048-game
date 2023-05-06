@@ -5,8 +5,8 @@ import cx from 'classnames';
 import './index.scss';
 
 type TOwnProps = {
-  className?: string
-  children?: JSX.Element | JSX.Element[]
+  className?: string;
+  children?: JSX.Element | JSX.Element[];
 };
 
 type TProps = FC<TOwnProps>;
