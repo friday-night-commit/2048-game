@@ -32,7 +32,7 @@ export class Cell {
     return this._position
   }
 
-  changeColor() : string {
+  private changeColor() : string {
     switch (this.value) {
       case 2:
         return 'rgb(224, 222, 220)';

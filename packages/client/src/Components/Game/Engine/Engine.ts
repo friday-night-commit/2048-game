@@ -4,17 +4,18 @@ import { generateRandom } from '../utils/generateRandom'
 export class Engine {
   // Максимальное использовать свойства класса, а не передать их в методы
   protected readonly context: CanvasRenderingContext2D;
-  protected cells: (Cell | undefined)[]
-  private maxValue: number = 0
+  protected cells: (Cell | undefined)[] = [];
+  private maxValue: number = 0;
 
 
   constructor(context: CanvasRenderingContext2D) {
     this.context = context;
-    this.cells = [];
     //this.generateField()
+  }
 
+  init() {
     this.render()
-
+    this.createListeners();
   }
 
   //мы создаем матрицу
@@ -61,6 +62,7 @@ export class Engine {
   }
 
   moveMatrixElements(moveDirection: Direction): void {
+    console.log(this.cells)
     switch (moveDirection) {
       case Direction.DOWN:
         for (let item of this.cells) {
@@ -198,7 +200,6 @@ export class Engine {
     this.drawGrid();
     this.generateCell();
     this.renderCells();
-    this.createListeners();
   }
 
   // checkCollision(cell1, cell2) {

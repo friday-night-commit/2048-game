@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react'
-import { Cell } from '../Cell/Cell'
 import { Engine } from '../Engine/Engine'
 
 type CanvasProps = React.DetailedHTMLProps<React.CanvasHTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement>
@@ -9,18 +8,16 @@ const Canvas:React.FC<CanvasProps> = ({ ...props}) => {
 
   useEffect(() => {
       const canvas = canvasRef.current
-      if (!canvas) {
-        return
+      if (canvas) {
+        const context = canvas.getContext('2d')
+
+        if (context) {
+          const engine = new Engine(context);
+          engine.init()
+        }
       }
 
-      const context = canvas.getContext('2d')
-      if (!context) {
-        return
-      }
-
-
-      const engine = new Engine(context);
-
+      return;
     },[])
 
   return (
