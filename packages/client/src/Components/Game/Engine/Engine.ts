@@ -3,6 +3,22 @@ import { Utils } from '../utils/Utils';
 
 export type MatrixArray = (Cell | undefined)[][];
 
+enum Direction {
+  UP = 'up',
+  DOWN = 'down',
+  LEFT = 'left',
+  RIGHT = 'right',
+}
+
+const MAX_VALUE = 2048;
+
+const listeners:Record<number, Direction> = {
+  37: Direction.LEFT,
+  38: Direction.UP,
+  39: Direction.RIGHT,
+  40: Direction.DOWN
+};
+
 export class Engine {
   protected readonly context: CanvasRenderingContext2D;
   private maxValue: number = MAX_VALUE;
@@ -54,11 +70,12 @@ export class Engine {
 
   generateCell(): void {
     let emptyCellExists = false;
-    for (const row of this._matrix) {
-      for (const cell of row) {
-        if (!cell) {
-          emptyCellExists = true;
-        }
+
+    for(let i = 0; !emptyCellExists && i < this._matrix.length; i++){
+      for(let j = 0; !emptyCellExists && j < this._matrix[i].length; j++){
+         if(!this._matrix[i][j]) {
+           emptyCellExists = true;
+         }
       }
     }
 
@@ -85,15 +102,15 @@ export class Engine {
       x = newPosition.x;
       y = newPosition.y;
     } else {
-      x = cell.getPosition().x;
-      y = cell.getPosition().y;
+      x = cell.position.x;
+      y = cell.position.y;
     }
 
     this._matrix[y][x] = cell;
   }
 
   copyCell(position: Position, value: number): Cell {
-    return new Cell(position, this.cellSize, value);
+    return Cell.copyCell(position, this.cellSize, value);
   }
 
   removeCellFromMatrix(cell: Cell, oldPosition?: Position): void {
@@ -103,15 +120,15 @@ export class Engine {
       x = oldPosition.x;
       y = oldPosition.y;
     } else {
-      x = cell.getPosition().x;
-      y = cell.getPosition().y;
+      x = cell.position.x;
+      y = cell.position.y;
     }
 
     this._matrix[y][x] = undefined;
   }
 
   moveCell(cell: Cell, direction: Direction): void {
-    const { x, y } = cell.getPosition();
+    const { x, y } = cell.position;
     let newX = x;
     let newY = y;
 
@@ -137,11 +154,11 @@ export class Engine {
     }
 
     const neighborCell = this._matrix[newY][newX];
-    const copyCell = this.copyCell({ x, y },cell.getValue());
+    const copyCell = this.copyCell({ x, y },cell.value);
 
     if (neighborCell && this.checkCollision(neighborCell,copyCell)) {
 
-      const increasedValue = cell.getValue() * 2;
+      const increasedValue = cell.value * 2;
 
       if(increasedValue > this.currentMaxNumber) {
         this.currentMaxNumber = increasedValue;
@@ -153,7 +170,6 @@ export class Engine {
       this.addCellToMatrix(this.copyCell({ x: newX, y: newY }, increasedValue ));
 
       this.moveCell(cell, direction);
-      return;
 
     } else {
 
@@ -170,16 +186,16 @@ export class Engine {
   }
 
   checkCollision(cell1: Cell, cell2: Cell): boolean {
-    return cell1.getValue() === cell2.getValue();
+    return cell1.value === cell2.value;
   }
 
   checkCollisionNeighbors(cell: Cell): boolean {
-    const { x: currentX, y: currentY } = cell.getPosition();
-    const copyCell = this.copyCell(cell.getPosition(), cell.getValue());
+    const { x: currentX, y: currentY } = cell.position;
+    const copyCell = this.copyCell(cell.position, cell.value);
 
     return this.findingNeighbors(this._matrix, currentY, currentX).every(
       neighbor => {
-        copyCell.setPosition(neighbor.getPosition());
+        copyCell.setPosition(neighbor.position);
         return !this.checkCollision(copyCell, neighbor);
       }
     );
@@ -267,8 +283,6 @@ export class Engine {
   }
 
   checkEndGame(): boolean {
-    let isEndGame = true;
-
     //Набралось ли максимальное количество баллов?
     if (this.currentMaxNumber < this.maxValue) {
 
@@ -276,8 +290,7 @@ export class Engine {
       for (const row of this._matrix) {
         for (const cell of row) {
           if (!cell) {
-            isEndGame = false;
-            return isEndGame;
+            return false;
           }
         }
       }
@@ -286,14 +299,13 @@ export class Engine {
       for (const row of this._matrix) {
         for (const cell of row) {
           if (cell && !this.checkCollisionNeighbors(cell)) {
-            isEndGame = false;
             return false;
           }
         }
       }
     }
 
-    return isEndGame;
+    return true;
   }
 
   drawGrid (): void {
@@ -346,7 +358,6 @@ export class Engine {
     }
   }
 
-
   destroy() {
     this.removeListeners();
   }
@@ -358,19 +369,3 @@ export class Engine {
   }
 
 }
-
-enum Direction {
-  UP = 'up',
-  DOWN = 'down',
-  LEFT = 'left',
-  RIGHT = 'right',
-}
-
-const MAX_VALUE = 2048;
-
-const listeners:Record<number, Direction> = {
-  37: Direction.LEFT,
-  38: Direction.UP,
-  39: Direction.RIGHT,
-  40: Direction.DOWN
-};

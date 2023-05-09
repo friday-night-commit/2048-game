@@ -6,9 +6,9 @@ export type Position = {
 };
 
 export class Cell {
-  protected readonly value: number;
-  protected position: Position;
-  private size: number;
+  protected readonly _value: number;
+  protected _position: Position;
+  protected size: number;
 
   protected readonly fontText = '20px Arial';
   protected readonly baselineText = 'middle';
@@ -16,22 +16,27 @@ export class Cell {
   protected readonly alignText = 'center';
 
   constructor(position: Position, size: number, value?: number) {
-    this.value = value || Utils.generateValue();
-    this.position = position;
+    this._value = value || Utils.generateValue();
+    this._position = position;
     this.size = size;
   }
 
-  getValue(): number {
-    return this.value;
+  get value(): number {
+    return this._value;
   }
 
   setPosition(newPosition: Position): Cell {
-    this.position = newPosition;
+    this._position = newPosition;
     return this;
   }
 
-  getPosition(): Position {
-    return this.position;
+  get position(): Position {
+    return this._position;
+  }
+
+  static copyCell(position: Position, size: number, value: number)
+  {
+    return new Cell(position, size, value);
   }
 
   private changeColor() : string {
@@ -67,7 +72,7 @@ export class Cell {
 
   render(context: CanvasRenderingContext2D) {
     context.fillStyle = this.changeColor();
-    const { x, y } = this.getPosition();
+    const { x, y } = this.position;
     context.fillRect(x * this.size, y * this.size, this.size, this.size);
     context.font = this.fontText;
     context.textBaseline = this.baselineText;
@@ -75,4 +80,5 @@ export class Cell {
     context.textAlign = this.alignText;
     context.fillText(String(this.value), x * this.size + (this.size / 2), y * this.size + (this.size / 2));
   }
+
 }
