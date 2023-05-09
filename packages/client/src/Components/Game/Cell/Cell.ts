@@ -25,9 +25,8 @@ export class Cell {
     return this._value;
   }
 
-  setPosition(newPosition: Position): Cell {
+  set position(newPosition: Position) {
     this._position = newPosition;
-    return this;
   }
 
   get position(): Position {

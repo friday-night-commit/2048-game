@@ -177,7 +177,7 @@ export class Engine {
         return;
       }
 
-      cell.setPosition({ x: newX, y: newY });
+      cell.position = { x: newX, y: newY };
       this.removeCellFromMatrix(cell, { x, y });
       this.addCellToMatrix(cell, { x: newX, y: newY });
 
@@ -195,7 +195,7 @@ export class Engine {
 
     return this.findingNeighbors(this._matrix, currentY, currentX).every(
       neighbor => {
-        copyCell.setPosition(neighbor.position);
+        copyCell.position = neighbor.position;
         return !this.checkCollision(copyCell, neighbor);
       }
     );
