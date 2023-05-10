@@ -33,11 +33,6 @@ export class Cell {
     return this._position;
   }
 
-  static copyCell(position: Position, size: number, value: number)
-  {
-    return new Cell(position, size, value);
-  }
-
   private changeColor() : string {
     switch (this.value) {
       case 2:

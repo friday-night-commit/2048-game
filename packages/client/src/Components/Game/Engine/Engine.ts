@@ -110,7 +110,7 @@ export class Engine {
   }
 
   copyCell(position: Position, value: number): Cell {
-    return Cell.copyCell(position, this.cellSize, value);
+    return new Cell(position, this.cellSize, value);
   }
 
   removeCellFromMatrix(cell: Cell, oldPosition?: Position): void {
