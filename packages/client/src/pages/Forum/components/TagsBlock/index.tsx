@@ -23,7 +23,7 @@ export const TagsBlock: TProps = ({ items, isLoading }) => {
           >
             <span className="tag tag-lg">
               {' '}
-              {isLoading ? 'Skeleton ...' : '#' + name}
+              {isLoading ? 'Skeleton ...' : '#' + tag}
             </span>
           </a>
         ))}
