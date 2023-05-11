@@ -26,15 +26,15 @@ const NavbarItem: FC<NavbarLinkProps> = ({ url, title }) => {
 
 const NAVBAR_ITEMS = [
   {
-    url: routes.profilePage,
+    url: `/${routes.profilePage}`,
     title: 'Мой профиль',
   },
   {
-    url: routes.leaderboardPage,
+    url: `/${routes.leaderboardPage}`,
     title: 'Рейтинг игроков',
   },
   {
-    url: routes.forumPage,
+    url: `/${routes.forumPage}`,
     title: 'Форум',
   },
 ];
@@ -48,7 +48,7 @@ export default function Navbar() {
       <div className='container mx-auto flex items-center justify-between'>
         <Typography
           as={Link}
-          to={routes.mainPage}
+          to={`/${routes.mainPage}`}
           variant='h1'
           className='mr-4 cursor-pointer py-1.5 title'>
           2048

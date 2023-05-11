@@ -15,14 +15,14 @@ export default function MainPage() {
         </Typography>
         <Typography variant='h5' className='mb-8 font-normal'>
           {'Пользуйся подсказками, вдохновляйся '}
-          <Link to={routes.leaderboardPage}>лучшими результатами</Link>
+          <Link to={`/${routes.leaderboardPage}`}>лучшими результатами</Link>
           {' и общайся на нашем '}
-          <Link to={routes.forumPage}>форуме</Link>
+          <Link to={`/${routes.forumPage}`}>форуме</Link>
           {'!'}
         </Typography>
         <Button
           className='game-button'
-          onClick={() => navigate(routes.gamePage)}>
+          onClick={() => navigate(`/${routes.gamePage}`)}>
           START!
         </Button>
       </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Typography } from '@material-tailwind/react';
+
 import Avatar from '../../Components/Avatar';
 import CardContainer from '../../Components/CardContainer';
 import { ChangePasswordModal } from './components/ChangePassword/ChangePassword';

@@ -14,7 +14,9 @@ const PageContainer: FC<TOwnProps> = ({ children }) => {
       <div>
         <Navbar />
       </div>
-      <div style={{ padding: '2em' }}>{children}</div>
+      <div className='page-container'>
+        {children}
+      </div>
     </div>
   );
 };

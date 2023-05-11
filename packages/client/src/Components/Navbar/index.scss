@@ -5,6 +5,7 @@
 
   a {
     @include hover-link;
+    color: $dark-brown;
 
     &.active {
       font-weight: bold;
