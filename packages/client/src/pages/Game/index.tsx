@@ -1,14 +1,22 @@
 import { Button, Typography } from '@material-tailwind/react';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import PageContainer from '../../Components/PageContainer';
 import Game from '../../Components/Game';
 import RestartButton from './components/RestartButton';
+import SuccessModal from './components/SuccessModal';
+import FailureModal from './components/FailureModal';
 
 export default function GamePage() {
   const restart = useCallback(() => {
     return;
   }, []);
+
+  const [openSuccessModal, setOpenFinalModal] = useState(false);
+  const handleOpenSuccessModal = () => setOpenFinalModal(!openSuccessModal);
+
+  const [openFailureModal, setOpenFailureModal] = useState(false);
+  const handleOpenFailureModal = () => setOpenFailureModal(!openFailureModal);
 
   return (
     <PageContainer>
@@ -35,8 +43,15 @@ export default function GamePage() {
         </div>
         <div className='game-page-container'>
           <Game />
-          <SuccessModal open={openSuccessModal} handleOpen={handleOpenSuccessModal} />
-          <FailureModal open={openFailureModal} handleOpen={handleOpenFailureModal} restart={restart} />
+          <SuccessModal
+            open={openSuccessModal}
+            handleOpen={handleOpenSuccessModal}
+          />
+          <FailureModal
+            open={openFailureModal}
+            handleOpen={handleOpenFailureModal}
+            restart={restart}
+          />
         </div>
       </>
     </PageContainer>
