@@ -50,8 +50,7 @@ export default function LeaderboardPage() {
           Рейтинг игроков
         </Typography>
         {leaderboard?.map(user => {
-          return <UserScore user={user} />;
-          return <UserScore user={user} key={user.userName} />;
+          return <UserScore user={user} key={user.userName}/>;
         })}
       </div>
     );
