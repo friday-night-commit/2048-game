@@ -1,4 +1,5 @@
 import { FC, FormEvent } from 'react';
+import PropTypes from 'prop-types';
 
 type TOwnProps = {
   className: string
@@ -13,6 +14,12 @@ const Form: TProps = props => {
   return (
     <form className={className} onSubmit={handlerSubmit}>{children}</form>
   );
+};
+
+Form.propTypes = {
+  children: PropTypes.any,
+  handlerSubmit: PropTypes.any,
+  className: PropTypes.any
 };
 
 export default Form;

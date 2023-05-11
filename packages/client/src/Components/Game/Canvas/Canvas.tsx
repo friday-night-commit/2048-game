@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Engine } from '../Engine/Engine';
+import PropTypes from 'prop-types';
 
 type CanvasProps = React.DetailedHTMLProps<React.CanvasHTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement>;
 
@@ -28,3 +29,7 @@ const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
 };
 
 export default Canvas;
+
+Canvas.propTypes = {
+  width: PropTypes.number,
+};
