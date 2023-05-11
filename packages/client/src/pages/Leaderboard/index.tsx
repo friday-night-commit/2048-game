@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Typography } from '@material-tailwind/react';
 import PageContainer from '../../Components/PageContainer';
-import UserScore from './UserScore';
+import UserScore from './components/UserScore';
 import Preloader from '../../Components/Preloader';
 
 export type leaderboardUser = {
@@ -50,8 +50,7 @@ export default function LeaderboardPage() {
           Рейтинг игроков
         </Typography>
         {leaderboard?.map(user => {
-          return <UserScore user={user} />;
-          return <UserScore user={user} key={user.userName} />;
+          return <UserScore user={user} key={user.userName}/>;
         })}
       </div>
     );
