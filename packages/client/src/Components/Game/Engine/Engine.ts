@@ -204,37 +204,17 @@ export class Engine {
   findingNeighbors(myArray: MatrixArray, i: number, j: number): Cell[] {
     const neighbors: Cell[] = [];
 
-    try {
-      const leftNeighbor = myArray[i][j - 1] || null;
-      if (leftNeighbor) {
-        neighbors.push(leftNeighbor);
-      }
-    } catch (err) {
-      //
+    if(j > 0 && myArray[i][j - 1]) {
+      neighbors.push(<Cell>myArray[i][j - 1]);
     }
-    try {
-      const rightNeighbor = myArray[i][j + 1] || null;
-      if (rightNeighbor) {
-        neighbors.push(rightNeighbor);
-      }
-    } catch (err) {
-      //
+    if(myArray[i]?.length > j + 1 && myArray[i][j + 1]) {
+      neighbors.push(<Cell>myArray[i][j + 1]);
     }
-    try {
-      const topNeighbor = myArray[i - 1][j] || null;
-      if (topNeighbor) {
-        neighbors.push(topNeighbor);
-      }
-    } catch (err) {
-      //
+    if(myArray?.length > i + 1 && myArray[i + 1][j]) {
+      neighbors.push(<Cell>myArray[i + 1][j]);
     }
-    try {
-      const bottomNeighbor = myArray[i + 1][j] || null;
-      if (bottomNeighbor) {
-        neighbors.push(bottomNeighbor);
-      }
-    } catch (err) {
-      //
+    if(i > 0 && myArray[i - 1][j]) {
+      neighbors.push(<Cell>myArray[i - 1][j]);
     }
 
     return neighbors;
