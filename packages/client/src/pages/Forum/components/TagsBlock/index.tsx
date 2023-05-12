@@ -9,20 +9,19 @@ type TOwnProps = {
 
 type TProps = FC<TOwnProps>;
 
-export const TagsBlock: TProps = ({ items, isLoading }) => {
+export const TagsBlock: TProps = ({ items, isLoading }: TOwnProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedTag, setSelectedTag] = useState('');
 
   return (
-    <SideBlock title="Тэги">
+    <SideBlock title='Тэги'>
       <ul>
         {(isLoading ? [...Array(5)] : items).map(tag => (
           <a
             key={tag}
             style={{ textDecoration: 'none', color: 'black' }}
-            onClick={() =>setSelectedTag(tag)}
-          >
-            <span className="tag tag-lg">
+            onClick={() => setSelectedTag(tag)}>
+            <span className='tag tag-lg'>
               {' '}
               {isLoading ? 'Skeleton ...' : '#' + tag}
             </span>

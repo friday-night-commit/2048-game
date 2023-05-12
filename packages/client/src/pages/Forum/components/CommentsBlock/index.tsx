@@ -18,13 +18,13 @@ export const CommentsBlock: TProps = ({
   items,
   children,
   isLoading = true,
-}) => {
+}: TOwnProps) => {
   return (
-    <SideBlock title="Последние комментарии">
+    <SideBlock title='Последние комментарии'>
       <ul>
         {(isLoading ? [...Array(5)] : items).map((obj: Comment, index) => (
           <Fragment key={index}>
-            <div className="flex-start user-block">
+            <div className='flex-start user-block'>
               <div>
                 {isLoading ? (
                   <span>...Skeleton</span>
@@ -37,10 +37,10 @@ export const CommentsBlock: TProps = ({
                   <p>...Skeleton</p>
                 </div>
               ) : (
-                <div className="message">
+                <div className='message'>
                   <span>{obj.user.fullName}</span>
                   <span>{obj.text}</span>
-                  <span className="message__date">
+                  <span className='message__date'>
                     {moment(obj.createdAt).format(
                       DATE_FORMATS.COMPLEX_DATE_FORMAT
                     )}
@@ -48,7 +48,7 @@ export const CommentsBlock: TProps = ({
                 </div>
               )}
             </div>
-            <hr className="solid" />
+            <hr className='solid' />
           </Fragment>
         ))}
         {children}

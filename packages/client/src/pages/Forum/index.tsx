@@ -28,9 +28,9 @@ export default function ForumPage() {
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full'>
             {(isPostsLoading ? [...Array(5)] : posts.items).map(obj =>
               isPostsLoading ? (
-                <p>Skeleton ...</p>
+                <p key={obj.user._id}>Skeleton ...</p>
               ) : (
-                <Post {...obj} isEditable={userData?._id === obj.user._id} />
+                <Post key={obj.user._id} {...obj} isEditable={userData?._id === obj.user._id} />
               )
             )}
           </div>
