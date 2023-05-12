@@ -1,45 +1,59 @@
-import { FC, InputHTMLAttributes } from 'react';
+import React, { FC, useCallback, useState } from 'react';
+import InputValidator, {
+  ValidatorTypes,
+} from '../../Utils/Validators/InputValidator';
+import './index.scss';
+import { Input as TWInput } from '@material-tailwind/react';
 
 type TOwnProps = {
-  id?: string;
   placeholder?: string;
-  className?: string;
   required?: boolean;
   label?: string;
   name: string;
   type?: string;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  validationType: ValidatorTypes;
   error?: string;
-} & InputHTMLAttributes<HTMLInputElement>;
+};
 
 type TProps = FC<TOwnProps>;
 
 const Input: TProps = ({
-  id,
-  required,
-  placeholder,
-  type,
-  value,
-  onChange,
-  name,
-  label,
-  className,
-}: TOwnProps) => {
+                         required,
+                         placeholder,
+                         type,
+                         name,
+                         label,
+                         validationType,
+                       }: TOwnProps) => {
+  const [error, setError] = useState('');
+
+  const handleChange = useCallback(function (
+      e: React.FormEvent<HTMLInputElement>
+    ) {
+      if (!e) {
+        return;
+      }
+      const target = e.target as HTMLInputElement;
+      const validator = new InputValidator(target, validationType);
+      validator.check();
+      const error = validator.getError();
+      setError(error);
+    },
+    []);
+
   return (
-    <label className='form__label'>
-      {label && <span className='block mb-1'>{label}</span>}
-      <input
-        className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${className}`}
-        id={id}
+    <div className='default-input__block'>
+      <TWInput
+        className='px-5 py-2  outline-none'
         name={name}
+        label={label}
         type={type}
         required={required}
+        onBlur={el => handleChange(el)}
         placeholder={placeholder}
-        value={value}
-        onChange={onChange}
       />
-    </label>
+      <span className='default-input__error'>{error}</span>
+    </div>
   );
 };
 

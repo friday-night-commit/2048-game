@@ -1,38 +1,34 @@
-import React, { FC, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Toast from '../Toast';
 import './index.scss';
 
-type TOwnProps = {
-  alert?: string;
-};
-
-type TProps = FC<TOwnProps>;
-
-const Avatar: TProps = ({ alert }: TOwnProps) => {
+const Avatar = () => {
   const [preview, setPreview] = useState('');
   const [error, setError] = useState('');
 
-  function handleUpload(e: React.FormEvent<HTMLInputElement>) {
-    if (!e) {
-      return;
-    }
-    const target = e.target as HTMLInputElement;
-
-    try {
-      if (target.files && target.files.length) {
-        const uri = URL.createObjectURL(target.files[0]);
-        setPreview(uri);
+  const handleUpload = useCallback(
+    function (e: React.FormEvent<HTMLInputElement>) {
+      if (!e) {
+        return;
       }
-    } catch (e) {
-      const err = (e as Error).message;
-      setError(err);
-    }
-  }
+      const target = e.target as HTMLInputElement;
+      try {
+        if (target.files && target.files.length) {
+          const uri = URL.createObjectURL(target.files[0]);
+          setPreview(uri);
+        }
+      } catch (e) {
+        const err = (e as Error).message;
+        setError(err);
+      }
+    },
+    [error]
+  );
 
   return (
     <div>
       <div className='avatar-container'>
-        <img className='avatar-container__image' src={preview} alt={alert} />
+        <img className='avatar-container__image' src={preview} alt='photo' />
         <label className='avatar-container__file'>
           <span className='avatar-container__text'>
             Нажмите чтобы изменить ваш аватар
