@@ -12,16 +12,12 @@ type NavbarLinkProps = {
 
 const NavbarItem: FC<NavbarLinkProps> = ({ url, title }) => {
   return (
-
-    <Typography
-      as='li'
-      variant='h6'
-      className='p-1 font-normal'
-    >
+    <Typography as='li' variant='h6' className='p-1 font-normal'>
       <NavLink
         to={url}
-        className={({ isActive }) => (isActive ? 'flex items-center active' : 'flex items-center')}
-      >
+        className={({ isActive }) =>
+          isActive ? 'flex items-center active' : 'flex items-center'
+        }>
         {title}
       </NavLink>
     </Typography>
