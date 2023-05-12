@@ -5,36 +5,42 @@ import { Link, useNavigate } from 'react-router-dom';
 import routes from '../../routes';
 
 type Form = {
-  login: string
-  password: string
+  login: string;
+  password: string;
 };
 
-const AuthForm = function() {
+const AuthForm = function () {
   const navigate = useNavigate();
 
   const [formInputsData, setFormInputsData] = useState<Form>({
     login: '',
     password: '',
   });
-  
-  const onSubmit = useCallback(function(event: React.FormEvent) {
-    event.preventDefault();
-    // eslint-disable-next-line no-console
-    console.log(formInputsData);
 
-    navigate(routes.mainPage);
-  }, [formInputsData]);
-  
-  const updateInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    const inputName = event.target.getAttribute('name') as keyof Form;
-    const inputValue = event.target.value;
-  
-    setFormInputsData({
-      ...formInputsData,
-      [inputName]: inputValue,
-    });
-  }, [formInputsData]);
+  const onSubmit = useCallback(
+    function (event: React.FormEvent) {
+      event.preventDefault();
+      // Temp console log
+      // eslint-disable-next-line no-console
+      console.log(formInputsData);
 
+      navigate(routes.mainPage);
+    },
+    [formInputsData]
+  );
+
+  const updateInput = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const inputName = event.target.getAttribute('name') as keyof Form;
+      const inputValue = event.target.value;
+
+      setFormInputsData({
+        ...formInputsData,
+        [inputName]: inputValue,
+      });
+    },
+    [formInputsData]
+  );
 
   return (
     <>
@@ -43,12 +49,7 @@ const AuthForm = function() {
       </Typography>
       <form className='w-full' onSubmit={onSubmit}>
         <div className='mb-4 flex flex-col gap-6'>
-          <Input
-            size='lg'
-            label='Логин'
-            name='login'
-            onChange={updateInput}
-          />
+          <Input size='lg' label='Логин' name='login' onChange={updateInput} />
           <Input
             type='password'
             size='lg'

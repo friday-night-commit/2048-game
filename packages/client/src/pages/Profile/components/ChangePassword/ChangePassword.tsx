@@ -2,7 +2,6 @@ import React, { FC, FormEvent, useCallback, useState } from 'react';
 import Modal from '../../../../Components/Modal';
 import { Button } from '@material-tailwind/react';
 import Input from '../../../../Components/Input';
-import Form from '../../../../Components/Form';
 import Toast from '../../../../Components/Toast';
 import { UserFields } from '../../models/UserFields.enum';
 
@@ -42,48 +41,47 @@ export const ChangePasswordModal: FC<TChangePasswordProps> = ({
 
   return (
     <Modal
-      title="Изменить пароль"
+      title='Изменить пароль'
       open={open}
       handleOpen={handleOpen}
-      className="game-modal"
-    >
-      <div className="box-border ">
+      className='game-modal'>
+      <div className='box-border '>
         {error && <Toast text={error} />}
-        <Form handleSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <Input
             name={UserFields.old_password}
-            type="password"
-            validationType="password"
-            label="Старый пароль"
+            type='password'
+            validationType='password'
+            label='Старый пароль'
             required
           />
           <Input
             name={UserFields.new_password}
-            type="password"
-            validationType="password"
-            label="Новый пароль"
+            type='password'
+            validationType='password'
+            label='Новый пароль'
             required
           />
           <Input
             name={UserFields.repeat_password}
-            type="password"
-            validationType="password"
-            label="Повторите пароль"
+            type='password'
+            validationType='password'
+            label='Повторите пароль'
             required
           />
-          <div className="flex mt-2 justify-between ">
+          <div className='flex mt-2 justify-between '>
             <Button
-              color="amber"
-              className="mt-2 mb-4"
-              type="submit"
+              color='amber'
+              className='mt-2 mb-4'
+              type='submit'
               onClick={handleOpen}>
               Отмена
             </Button>
-            <Button className="mt-2 mb-4" type="submit">
+            <Button className='mt-2 mb-4' type='submit'>
               Изменить
             </Button>
           </div>
-        </Form>
+        </form>
       </div>
     </Modal>
   );
