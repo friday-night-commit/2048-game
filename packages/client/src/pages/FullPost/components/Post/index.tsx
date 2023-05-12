@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import './index.scss';
-import { UserData } from '../Forum/stubs';
+import { UserData } from '../../../Forum/stubs';
 import * as moment from 'moment';
-import { DATE_FORMATS } from '../../Utils/dateFormats';
+import { DATE_FORMATS } from '../../../../Utils/dateFormats';
 
 type TOwnProps = {
   _id: string;
@@ -55,7 +55,7 @@ export const Post: TProps = ({
   );
 
   return (
-    <div className="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full">
+    <div key={_id} className="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full">
       <div className="shadow p-4 rounded-lg bg-white">
         {isEditable && (
           <div className="edit-block">
@@ -65,7 +65,7 @@ export const Post: TProps = ({
             <button className="remove-btn" onClick={onRemovePost}></button>
           </div>
         )}
-        <Link to={`/posts/${_id}`}>
+        <Link to={`/forum/posts/${_id}`}>
           <div className="flex justify-center relative rounded-lg overflow-hidden h-52">
             <div className="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
               {imageUrl && (

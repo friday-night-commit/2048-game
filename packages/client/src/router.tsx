@@ -9,6 +9,7 @@ import NoMatch from './pages/NoMatch';
 import ProfilePage from './pages/Profile';
 import Leaderboard from './pages/Leaderboard';
 import ForumPage from './pages/Forum';
+import FullPost from './pages/FullPost';
 
 export default createBrowserRouter([
   { path: routes.mainPage, element: <MainPage /> },
@@ -16,6 +17,13 @@ export default createBrowserRouter([
   { path: routes.gamePage, element: <GamePage /> },
   { path: routes.profilePage, element: <ProfilePage /> },
   { path: routes.leaderboardPage, element: <Leaderboard /> },
-  { path: routes.forumPage, element: <ForumPage /> },
+  {
+    path: routes.forumPage,
+    element: <ForumPage />,
+  /*  children: [
+      { path: `${routes.postsPage}/:id`, element: <FullPost /> }
+    ],*/
+  },
+  { path: `${routes.forumPage}${routes.postsPage}/:id`, element: <FullPost /> },
   { path: '*', element: <NoMatch /> },
 ]);

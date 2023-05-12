@@ -7,10 +7,8 @@ import { useNavigate } from 'react-router-dom';
 
 export const AddPostPage = () => {
   const inputFileRef = useRef(null);
-  const imageUrl =
-    'https://upload.wikimedia.org/wikipedia/commons/a/a4/%D0%97%D0%B0%D0%BA%D0%B0%D1%82_%D0%9F%D0%B0%D0%B0%D0%BD%D0%B0%D1%8F%D1%80%D0%B2%D0%B8.jpg';
 
-  const [preview, setPreview] = useState(imageUrl);
+  const [preview, setPreview] = useState('');
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
@@ -36,54 +34,56 @@ export const AddPostPage = () => {
   }
 
   return (
-    <div className="container mx-auto w-full  add-post">
-      <div className="add-post__left">
-        <div className="mb-4">
+    <div className='container mx-auto w-full  add-post'>
+      <div className='add-post__left'>
+        <div className='mb-4'>
           <Input
-            name="title"
-            type="text"
-            placeholder="Заголовок статьи..."
+            name='title'
+            type='text'
+            placeholder='Заголовок статьи...'
             required={true}
           />
         </div>
-        <div>
+        <>
           <Button
             onClick={() => inputFileRef.current?.click()}
-            className="mb-2 mr-2">
+            className='mb-2 mr-2'>
             Загрузить превью
           </Button>
           <input
             ref={inputFileRef}
-            type="file"
+            type='file'
             onChange={el => handleUpload(el)}
             hidden
           />
-          {imageUrl && (
+          {preview ? (
             <>
-              <Button onClick={onRemovePreview} className="mb-2">
+              <Button onClick={onRemovePreview} className='mb-2'>
                 Удалить
               </Button>
-              <img className="w-100 h-100" src={preview} alt="Uploaded" />
+              <img className='add-post__preview' src={preview} alt='Uploaded' />
             </>
+          ) : (
+            <div className='add-post__preview'></div>
           )}
-        </div>
+        </>
 
-        <Input name="tags" type="text" placeholder="Теги" required={true} />
+        <Input name='tags' type='text' placeholder='Теги' required={true} />
       </div>
 
-      <div className="add-post__right">
-        <TextEditor textAreaHeight={350} />
+      <div className='add-post__right'>
+        <TextEditor textAreaHeight={310} />
       </div>
 
-      <div className="add-post__action">
+      <div className='add-post__action'>
         <Button
           disabled={!!error}
-          className=" mb-2 px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+          className=' mb-2 px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800'>
           Опубликовать
         </Button>
         <Button
           onClick={() => navigate(-1)}
-          className="px-5 py-2.5 text-sm font-medium text-center text-white bg-amber-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+          className='px-5 py-2.5 text-sm font-medium text-center text-white bg-amber-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800'>
           Отмена
         </Button>
       </div>

@@ -1,7 +1,7 @@
 import { lastComments, posts, userData } from '../Forum/stubs';
 import PageContainer from '../../Components/PageContainer';
 import { useParams } from 'react-router-dom';
-import { Post } from '../Post';
+import { Post } from './components/Post';
 import React from 'react';
 import './index.scss';
 import { CommentsBlock } from '../Forum/components/CommentsBlock';
@@ -44,7 +44,7 @@ export default function FullPost() {
 
             <SideBlock title="Оставить комментарий">
               <div className="full-post__editor">
-                <TextEditor textAreaHeight={50}></TextEditor>
+                <TextEditor textAreaHeight={100}></TextEditor>
                 <Button>Отправить</Button>
               </div>
             </SideBlock>

@@ -6,10 +6,7 @@ enum routes {
   leaderboardPage = '/leaderboard',
   forumPage = '/forum',
   postsPage = '/posts',
-  addPostPage = '/add-post',
   gamePage = '/game'
 }
-
-
 
 export default routes;

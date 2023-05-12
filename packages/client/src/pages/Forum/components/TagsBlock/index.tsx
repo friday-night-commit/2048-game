@@ -18,6 +18,7 @@ export const TagsBlock: TProps = ({ items, isLoading }) => {
       <ul>
         {(isLoading ? [...Array(5)] : items).map(tag => (
           <a
+            key={tag}
             style={{ textDecoration: 'none', color: 'black' }}
             onClick={() =>setSelectedTag(tag)}
           >

@@ -1,4 +1,4 @@
-@import './src/variables';
+@import '../../../../variables';
 
 .edit-block {
   justify-content: right;
@@ -38,14 +38,14 @@
 }
 
 .content-icon{
-  background-image: url('../../assets/images/content.svg');
+  background-image: url('../../../../assets/images/content.svg');
   @apply block w-12 h-12 rounded-full relative overflow-hidden;
   @apply bg-no-repeat bg-center;
   height: 30px;
 }
 
 .comments{
-  background-image: url('../../assets/images/comments.svg');
+  background-image: url('../../../../assets/images/comments.svg');
   @apply block w-12 h-12 rounded-full relative overflow-hidden;
   @apply bg-no-repeat bg-center;
   height: 25px;
