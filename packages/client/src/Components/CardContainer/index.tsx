@@ -9,12 +9,10 @@ type TOwnProps = {
   children?: JSX.Element | JSX.Element[];
 };
 
-type TProps = FC<TOwnProps>;
-
-const CardContainer: TProps = ({ className, children }) => {
+const CardContainer: FC<TOwnProps> = ({ className, children }) => {
   return (
     <div className={cx('card-container', className)}>
-      <Card color="white" className="p-12 max-w-md w-full" shadow={false}>
+      <Card color='white' className='p-12 max-w-md w-full' shadow={false}>
         {children}
       </Card>
     </div>

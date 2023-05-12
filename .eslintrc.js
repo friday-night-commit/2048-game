@@ -7,16 +7,19 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
     'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 11,
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'react'],
   rules: {
     '@typescript-eslint/ban-ts-comment': 1,
     '@typescript-eslint/quotes': ['error', 'single'],
+    'jsx-quotes': ['error', 'prefer-single'],
+    'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/semi': ['error', 'always'],
     '@typescript-eslint/object-curly-spacing': ['error', 'always'],
     '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }],
