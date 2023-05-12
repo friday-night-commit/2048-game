@@ -27,17 +27,17 @@ const Avatar = () => {
 
   return (
     <div>
-      <div className="avatar-container">
-        <img className="avatar-container__image" src={preview} alt="photo" />
-        <label className="avatar-container__file">
-          <span className="avatar-container__text">
+      <div className='avatar-container'>
+        <img className='avatar-container__image' src={preview} alt='photo' />
+        <label className='avatar-container__file'>
+          <span className='avatar-container__text'>
             Нажмите чтобы изменить ваш аватар
           </span>
           <input
-            type="file"
-            className="avatar-container__input"
-            name="avatar"
-            accept="image/*"
+            type='file'
+            className='avatar-container__input'
+            name='avatar'
+            accept='image/*'
             onChange={el => handleUpload(el)}
           />
         </label>

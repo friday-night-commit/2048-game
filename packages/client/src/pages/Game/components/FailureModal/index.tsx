@@ -4,9 +4,9 @@ import { FC } from 'react';
 import Modal from '../../../../Components/Modal';
 
 type ModalProps = {
-  open: boolean
-  handleOpen: () => void
-  restart: () => void
+  open: boolean;
+  handleOpen: () => void;
+  restart: () => void;
 };
 
 const FailureModal: FC<ModalProps> = ({ open, handleOpen, restart }) => {
@@ -15,8 +15,7 @@ const FailureModal: FC<ModalProps> = ({ open, handleOpen, restart }) => {
       title='Ничего страшного! Попробуйте еще раз!'
       open={open}
       handleOpen={handleOpen}
-      className='game-modal'
-    >
+      className='game-modal'>
       <div className='text-center'>
         <Typography variant='h6' className='mb-8 font-normal'>
           Ну что, еще поборемся за <b>2048</b>??

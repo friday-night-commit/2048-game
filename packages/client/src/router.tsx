@@ -17,4 +17,3 @@ export default createBrowserRouter([
   { path: routes.leaderboardPage, element: <Leaderboard /> },
   { path: '*', element: <NoMatch /> },
 ]);
-
