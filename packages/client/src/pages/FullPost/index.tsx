@@ -19,8 +19,8 @@ export default function FullPost() {
   const isLoading = false;
   return (
     <PageContainer>
-      <div className="full-post">
-        <div className="full-post__left">
+      <div className='full-post'>
+        <div className='full-post__left'>
           <Post
             _id={post._id}
             title={post.title}
@@ -37,13 +37,13 @@ export default function FullPost() {
           />
         </div>
         {isAuthorized && (
-          <div className="full-post__right">
+          <div className='full-post__right'>
             <CommentsBlock
               items={lastComments}
               isLoading={isLoading}></CommentsBlock>
 
-            <SideBlock title="Оставить комментарий">
-              <div className="full-post__editor">
+            <SideBlock title='Оставить комментарий'>
+              <div className='full-post__editor'>
                 <TextEditor textAreaHeight={100}></TextEditor>
                 <Button>Отправить</Button>
               </div>

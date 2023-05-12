@@ -8,14 +8,9 @@ type TOwnProps = {
 
 type TProps = FC<TOwnProps>;
 
-const Avatar: TProps = ({ alert }) => {
+const Avatar: TProps = ({ alert }: TOwnProps) => {
   const [preview, setPreview] = useState('');
   const [error, setError] = useState('');
-
-  function handleError(e: React.SyntheticEvent<HTMLInputElement>) {
-    // eslint-disable-next-line no-console
-    console.log('Avatar handleError', e);
-  }
 
   function handleUpload(e: React.FormEvent<HTMLInputElement>) {
     if (!e) {
@@ -36,19 +31,18 @@ const Avatar: TProps = ({ alert }) => {
 
   return (
     <div>
-      <div className="avatar-container">
-        <img className="avatar-container__image" src={preview} alt={alert} />
-        <label className="avatar-container__file">
-          <span className="avatar-container__text">
+      <div className='avatar-container'>
+        <img className='avatar-container__image' src={preview} alt={alert} />
+        <label className='avatar-container__file'>
+          <span className='avatar-container__text'>
             Нажмите чтобы изменить ваш аватар
           </span>
           <input
-            type="file"
-            className="avatar-container__input"
-            name="avatar"
-            accept="image/*"
+            type='file'
+            className='avatar-container__input'
+            name='avatar'
+            accept='image/*'
             onChange={el => handleUpload(el)}
-            onError={err => handleError(err)}
           />
         </label>
       </div>

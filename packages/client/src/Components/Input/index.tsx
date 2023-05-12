@@ -25,7 +25,7 @@ const Input: TProps = ({
   name,
   label,
   className,
-}) => {
+}: TOwnProps) => {
   return (
     <label className='form__label'>
       {label && <span className='block mb-1'>{label}</span>}

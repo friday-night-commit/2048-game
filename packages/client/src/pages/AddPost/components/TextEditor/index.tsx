@@ -11,7 +11,7 @@ type TOwnProps = {
   textAreaHeight: number;
 };
 
-export const TextEditor: FC<TOwnProps> = ({ textAreaHeight = 350 }) => {
+export const TextEditor: FC<TOwnProps> = ({ textAreaHeight = 350 }: TOwnProps) => {
   Quill.register(
     {
       'modules/emoji-toolbar': quillEmoji.ToolbarEmoji,
@@ -60,7 +60,7 @@ export const TextEditor: FC<TOwnProps> = ({ textAreaHeight = 350 }) => {
     'image',
     'video',
   ];
-  const handleChange = (html: any) => {
+  const handleChange = (html: unknown) => {
     // eslint-disable-next-line no-console
     console.log('handleChange', html);
   };
