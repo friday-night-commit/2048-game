@@ -35,6 +35,12 @@ export const userSlice = createSlice({
   },
 });
 
-// В дальнейшем при нужде изменить пользователя в store, необходимо импортнуть { userSlice } и вызвать dispatch(userSlice.actions.setUser(userData)\clearUser())
+
+// В дальнейшем при нужде изменить пользователя в store, необходимо:
+// 1) const dispatch = useAppDispatch();
+// 2) Импортнуть { setUser, clearUser }
+// 3) Вызвать dispatch(setUser(userData)) \ dispatch(clearUser())
+
+export const { setUser, clearUser } = userSlice.actions;
 
 export default userSlice.reducer;
