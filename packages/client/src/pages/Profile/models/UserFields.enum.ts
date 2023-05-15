@@ -7,4 +7,5 @@ export enum UserFields {
   old_password = 'oldPassword',
   new_password = 'newPassword',
   repeat_password = 'repeatPassword',
+  password = 'password',
 }

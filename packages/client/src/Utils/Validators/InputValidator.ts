@@ -182,7 +182,7 @@ class InputValidator {
     }
 
     if (validity.valueMissing) {
-      this._addInvalidity('Поле обязательно для заполнения');
+      //this._addInvalidity('Поле обязательно для заполнения');
       if (rules.required.message) {
         this.element.setCustomValidity(rules.required.message);
         this.element.title = rules.required.message;
