@@ -70,7 +70,7 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
         <Link
           to={routes.gamePage}
           className='font-medium text-blue-500 transition-colors hover:text-blue-700 text-center block'>
-          На главную
+          Вернуться на главную
         </Link>
       </div>
     </form>

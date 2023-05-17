@@ -1,0 +1,24 @@
+@import './src/variables';
+
+.full-post {
+  display: flex;
+  border-radius: 30px;
+  gap: .5rem;;
+
+  &__left {
+    width: 70%;
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 30%;
+  }
+
+  &__editor {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
