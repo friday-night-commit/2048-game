@@ -54,8 +54,8 @@ const AuthForm = function () {
           <Input
             name={UserFields.login}
             type='text'
-            label='Имя'
-            validationType='name'
+            label='Логин'
+            validationType='login'
             required
           />
           <Input
