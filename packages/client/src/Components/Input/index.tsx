@@ -24,7 +24,7 @@ const Input: TProps = ({
   name,
   label,
   validationType,
-}) => {
+}: TOwnProps) => {
   const [error, setError] = useState('');
 
   const handleChange = useCallback(function (

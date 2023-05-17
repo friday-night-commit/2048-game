@@ -3,9 +3,9 @@ enum routes {
   authPage = '/auth',
   registerPage = '/register',
   profilePage = '/profile',
-  liderboardPage = '/liderboard',
+  leaderboardPage = '/leaderboard',
   forumPage = '/forum',
-  gamePage = '/game'
+  gamePage = '/game',
 }
 
 export default routes;

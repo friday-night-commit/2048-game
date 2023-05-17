@@ -3,7 +3,7 @@ import { useState, useCallback, FC } from 'react';
 import cx from 'classnames';
 
 type RestartButtonProps = {
-  restart: () => void
+  restart: () => void;
 };
 
 const RestartButton: FC<RestartButtonProps> = ({ restart }) => {
@@ -17,7 +17,9 @@ const RestartButton: FC<RestartButtonProps> = ({ restart }) => {
   }, [confirmRestart]);
 
   return (
-    <Button className={cx('game-button', 'small', { alert: confirmRestart })} onClick={() => handleRestart()}>
+    <Button
+      className={cx('game-button', 'small', { alert: confirmRestart })}
+      onClick={() => handleRestart()}>
       {confirmRestart ? 'Нажми еще раз' : 'Начать заново'}
     </Button>
   );

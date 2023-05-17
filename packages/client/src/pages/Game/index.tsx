@@ -3,7 +3,6 @@ import { useCallback, useState } from 'react';
 
 import PageContainer from '../../Components/PageContainer';
 import Game from '../../Components/Game';
-
 import RestartButton from './components/RestartButton';
 import SuccessModal from './components/SuccessModal';
 import FailureModal from './components/FailureModal';
@@ -25,8 +24,11 @@ export default function GamePage() {
         <div className='game-page-container large'>
           <div className='flex justify-between'>
             <div>
-              <Typography variant='h6' className='mb-8 font-normal leading-[1.2]'>
-                Используй <b>стрелки на клавиатуре</b>, чтобы двигать элементы.<br />
+              <Typography
+                variant='h6'
+                className='mb-8 font-normal leading-[1.2]'>
+                Используй <b>стрелки на клавиатуре</b>, чтобы двигать элементы.
+                <br />
                 Когда одинаковые элементы соединяются, они объединяются в один.
               </Typography>
             </div>
@@ -41,8 +43,15 @@ export default function GamePage() {
         </div>
         <div className='game-page-container'>
           <Game />
-          <SuccessModal open={openSuccessModal} handleOpen={handleOpenSuccessModal} />
-          <FailureModal open={openFailureModal} handleOpen={handleOpenFailureModal} restart={restart} />
+          <SuccessModal
+            open={openSuccessModal}
+            handleOpen={handleOpenSuccessModal}
+          />
+          <FailureModal
+            open={openFailureModal}
+            handleOpen={handleOpenFailureModal}
+            restart={restart}
+          />
         </div>
       </>
     </PageContainer>
