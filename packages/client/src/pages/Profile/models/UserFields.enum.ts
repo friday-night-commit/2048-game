@@ -4,8 +4,8 @@ export enum UserFields {
   login = 'login',
   email = 'email',
   phone = 'phone',
+  password ='password',
   old_password = 'oldPassword',
   new_password = 'newPassword',
   repeat_password = 'repeatPassword',
-  password = 'password',
 }
