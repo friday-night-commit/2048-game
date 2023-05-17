@@ -1,9 +1,8 @@
 import { Button } from '@material-tailwind/react';
 import { FC, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Input from '../Input';
 import { UserFields } from '../../pages/Profile/models/UserFields.enum';
-import routes from '../../routes';
 
 type FormProps = {
   openChangePasswordModal: () => void;
@@ -15,6 +14,8 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
   const handleSubmit = useCallback(function (e: React.FormEvent) {
     e.preventDefault();
   }, []);
+
+  const navigate = useNavigate();
 
   return (
     <form className='w-full' onSubmit={handleSubmit}>
@@ -64,14 +65,12 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
       </div>
 
       <div className='mb-4 flex flex-col'>
-        <Button className='mt-6 mb-4' type='submit'>
+        <Button className='mt-6 mb-4' fullWidth type='submit'>
           Сохранить
         </Button>
-        <Link
-          to={routes.gamePage}
-          className='font-medium text-blue-500 transition-colors hover:text-blue-700 text-center block'>
+        <Button className='mt-6 mb-4' fullWidth onClick={() => navigate(-1)}>
           Вернуться Назад
-        </Link>
+        </Button>
       </div>
     </form>
   );
