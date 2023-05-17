@@ -18,33 +18,33 @@ type TOwnProps = {
 type TProps = FC<TOwnProps>;
 
 const Input: TProps = ({
-                         required,
-                         placeholder,
-                         type,
-                         name,
-                         label,
-                         validationType,
-                       }: TOwnProps) => {
+  required,
+  placeholder,
+  type,
+  name,
+  label,
+  validationType,
+}: TOwnProps) => {
   const [error, setError] = useState('');
 
   const handleChange = useCallback(function (
-      e: React.FormEvent<HTMLInputElement>
-    ) {
-      if (!e) {
-        return;
-      }
-      const target = e.target as HTMLInputElement;
-      const validator = new InputValidator(target, validationType);
-      validator.check();
-      const error = validator.getError();
-      setError(error);
-    },
-    []);
+    e: React.FormEvent<HTMLInputElement>
+  ) {
+    if (!e) {
+      return;
+    }
+    const target = e.target as HTMLInputElement;
+    const validator = new InputValidator(target, validationType);
+    validator.check();
+    const error = validator.getError();
+    setError(error);
+  },
+  []);
 
   return (
     <div className='default-input__block'>
       <TWInput
-        className='px-5 py-2  outline-none'
+        className='px-5 py-2 outline-none'
         name={name}
         label={label}
         type={type}
