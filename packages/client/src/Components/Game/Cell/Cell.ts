@@ -1,4 +1,5 @@
 import { Utils } from '../utils/Utils';
+import { Direction, PIXELS_PER_FRAME } from '../Engine/Engine'
 
 export type Position = {
   x: number;
@@ -8,7 +9,7 @@ export type Position = {
 export class Cell {
   protected readonly _value: number;
   protected _position: Position;
-  protected size: number;
+  size: number;
 
   protected readonly fontText = '20px Arial';
   protected readonly baselineText = 'middle';
@@ -33,10 +34,10 @@ export class Cell {
     return this._position;
   }
 
-  private changeColor() : string {
-    switch (this.value) {
+  private changeColor(value = this.value) : string {
+    switch (value) {
       case 2:
-        return 'rgb(224, 222, 220)';
+        return 'red';
       case 4:
         return 'rgb(209, 206, 203)';
       case 8:
@@ -73,6 +74,32 @@ export class Cell {
     context.fillStyle = this.textColor;
     context.textAlign = this.alignText;
     context.fillText(String(this.value), x * this.size + (this.size / 2), y * this.size + (this.size / 2));
+  }
+
+  update(context: CanvasRenderingContext2D, x: number, y: number, value: number, direction: string) {
+
+    switch (direction) {
+      case Direction.LEFT :
+        context.clearRect(x+PIXELS_PER_FRAME, y, this.size, this.size);
+        break;
+      case Direction.RIGHT :
+        context.clearRect(x-PIXELS_PER_FRAME, y, this.size, this.size);
+        break;
+      case Direction.UP :
+        context.clearRect(x, y+PIXELS_PER_FRAME, this.size, this.size);
+        break;
+      case Direction.DOWN :
+        context.clearRect(x, y-PIXELS_PER_FRAME, this.size, this.size);
+        break;
+    }
+
+    context.fillStyle = this.changeColor(value);
+    context.fillRect(x, y, this.size, this.size);
+    context.font = this.fontText;
+    context.textBaseline = this.baselineText;
+    context.fillStyle = this.textColor;
+    context.textAlign = this.alignText;
+    context.fillText(String(value), x + (this.size / 2), y + (this.size / 2));
   }
 
 }
