@@ -14,9 +14,7 @@ const PageContainer: FC<TOwnProps> = ({ children }) => {
       <div>
         <Navbar />
       </div>
-      <div className='page-container'>
-        {children}
-      </div>
+      <div className='page-container'>{children}</div>
     </div>
   );
 };

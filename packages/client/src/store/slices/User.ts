@@ -31,10 +31,9 @@ export const userSlice = createSlice({
     },
     clearUser(state) {
       state.user = undefined;
-    }
+    },
   },
 });
-
 
 // В дальнейшем при нужде изменить пользователя в store, необходимо:
 // 1) const dispatch = useAppDispatch();

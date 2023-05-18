@@ -104,7 +104,9 @@ export const Post: TProps = ({
             </h2>
             <div className='flex mt-2 text-sm text-gray-800 line-clamp-1'>
               {tags.map((t: string) => (
-                <span key={t} className='tag tag-lg'>#{t}</span>
+                <span key={t} className='tag tag-lg'>
+                  #{t}
+                </span>
               ))}
             </div>
           </div>

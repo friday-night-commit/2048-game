@@ -33,7 +33,7 @@ export class Cell {
     return this._position;
   }
 
-  private changeColor() : string {
+  private changeColor(): string {
     switch (this.value) {
       case 2:
         return 'rgb(224, 222, 220)';
@@ -72,7 +72,10 @@ export class Cell {
     context.textBaseline = this.baselineText;
     context.fillStyle = this.textColor;
     context.textAlign = this.alignText;
-    context.fillText(String(this.value), x * this.size + (this.size / 2), y * this.size + (this.size / 2));
+    context.fillText(
+      String(this.value),
+      x * this.size + this.size / 2,
+      y * this.size + this.size / 2
+    );
   }
-
 }

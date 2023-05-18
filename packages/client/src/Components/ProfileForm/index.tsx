@@ -87,7 +87,6 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
           Вернуться на главную
         </Link>
       </div>
-
     </form>
   );
 };

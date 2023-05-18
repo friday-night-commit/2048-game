@@ -1,19 +1,19 @@
 @import './src/variables';
 
-.forum{
+.forum {
   display: flex;
   height: 700px;
   background: $background-color;
   border-radius: 30px;
-  gap: .5rem;
+  gap: 0.5rem;
 
-  &__left{
+  &__left {
     margin-top: 2rem;
     width: 70%;
     overflow-y: auto;
   }
 
-  &__right{
+  &__right {
     display: flex;
     flex-direction: column;
     width: 30%;

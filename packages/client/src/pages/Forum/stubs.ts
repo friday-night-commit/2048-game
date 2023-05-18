@@ -150,4 +150,3 @@ export interface Comment {
   text: string;
   createdAt: Date;
 }
-
