@@ -9,6 +9,5 @@ export const store = configureStore({
   reducer: reducers,
 });
 
-export type RootStore = ReturnType<typeof reducers>;
-export type AppStore = typeof store;
-export type AppDispatch = AppStore['dispatch'];
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
