@@ -1,14 +1,13 @@
 import { FC } from 'react';
 
 type preloaderProps = {
-  children: JSX.Element;
-  conditional: boolean;
+  children?: JSX.Element;
 };
 
-const Preloader: FC<preloaderProps> = ({ children, conditional }) => {
+const Preloader: FC<preloaderProps> = ({ children }) => {
   return (
     <div className='text-center preloader'>
-      {conditional ? children : 'Идёт получение данных...'}
+      {children || 'Идёт получение данных...'}
     </div>
   );
 };

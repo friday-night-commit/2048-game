@@ -1,17 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ThemeProvider } from '@material-tailwind/react';
-import { Provider } from 'react-redux';
+import { Provider } from 'react-redux';import { RouterProvider } from 'react-router-dom';
+
+import router from './router';
+import { store } from './store';
 
 import './index.scss';
-import App from './App';
-import { store } from './store';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider>
-        <App></App>
+        <RouterProvider router={router} />
       </ThemeProvider>
     </Provider>
   </React.StrictMode>
