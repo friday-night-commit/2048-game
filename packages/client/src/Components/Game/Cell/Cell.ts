@@ -1,5 +1,5 @@
 import { Utils } from '../utils/Utils';
-import { Direction, PIXELS_PER_FRAME } from '../Engine/Engine'
+import { Direction } from '../Engine/Engine';
 
 export type Position = {
   x: number;

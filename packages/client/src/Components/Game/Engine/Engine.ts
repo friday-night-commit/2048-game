@@ -46,10 +46,11 @@ export class Engine {
   private readonly _canvasSize: number;
   private readonly eventListeners: ((event: KeyboardEvent) => void)[];
   private readonly cellSize: number;
+  private continuePlay: boolean;
+
 
   private newPosAnimate: Position;
   private oldPosAnimate: Position;
-  private endAnimation: boolean;
   private requestId: number;
   private previousValue: number;
   private newValue: number;
@@ -74,9 +75,9 @@ export class Engine {
     this._size = size;
     this._canvasSize = canvasSize;
     this.cellSize = canvasSize / size;
-    this.endAnimation = false;
-    this.requestId = 0;
+    this.continuePlay = false;
 
+    this.requestId = 0;
     this.newPosAnimate = { x: 0, y: 0 };
     this.oldPosAnimate = { x: 0, y: 0 };
     this.previousValue = 2;
@@ -155,7 +156,6 @@ export class Engine {
   }
 
   endingAnimation(cell: AnimationCell, delta: number): void {
-      this.endAnimation = true;
       cell.cell.update(this.context, cell.newX, cell.newY, cell.newValue, this.animationDirection, delta);
 
       this.drawGrid();
@@ -204,11 +204,9 @@ export class Engine {
     this.requestId = 0;
     if (newPosition) {
       requestAnimationFrame(this.animate);
-      this.endAnimation = false;
       x = newPosition.x;
       y = newPosition.y;
     } else {
-      this.endAnimation = true;
       x = cell.position.x;
       y = cell.position.y;
     }
@@ -440,7 +438,7 @@ export class Engine {
 
   checkEndGame(): boolean {
     //Набралось ли максимальное количество баллов?
-    if (this.currentMaxNumber < this.maxValue) {
+    if (this.currentMaxNumber < this.maxValue && !this.continuePlay) {
 
       // Существуют ли пустые ячейки?
       for (const row of this._matrix) {
