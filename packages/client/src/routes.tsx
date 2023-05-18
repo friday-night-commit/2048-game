@@ -5,7 +5,8 @@ enum routes {
   profilePage = '/profile',
   leaderboardPage = '/leaderboard',
   forumPage = '/forum',
-  gamePage = '/game',
+  postsPage = '/posts',
+  gamePage = '/game'
 }
 
 export default routes;

@@ -42,9 +42,9 @@ const Input: TProps = ({
   []);
 
   return (
-    <div className='default-input__block'>
+    <div className='default-input'>
       <TWInput
-        className='px-5 py-2 rounded-full outline-none'
+        className='px-5 py-2 outline-none'
         name={name}
         label={label}
         type={type}
