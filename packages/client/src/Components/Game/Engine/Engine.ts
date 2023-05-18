@@ -10,6 +10,22 @@ export enum Direction {
   RIGHT = 'right',
 }
 
+export type DeltaTime = {
+  x: number;
+  y: number;
+};
+
+type AnimationCell = {
+  cell: Cell,
+  id: number,
+  x: number;
+  y: number; 
+  newX: number;
+  newY: number;
+  value: number;
+  newValue: number;
+};
+
 const MAX_VALUE = 2048;
 export const PIXELS_PER_FRAME = 25;
 
@@ -37,7 +53,9 @@ export class Engine {
   private requestId: number;
   private previousValue: number;
   private newValue: number;
-  private cellAnimate?: Cell;
+  private deltaTime: DeltaTime;
+  private timingAnimation: number;
+  private cellAnimate?: AnimationCell[];
   private animationDirection: string;
 
   protected readonly fontText = '20px Arial';
@@ -64,6 +82,9 @@ export class Engine {
     this.previousValue = 2;
     this.newValue = 2;
     this.animationDirection = '';
+    this.deltaTime = { x: 0, y: 0 };
+    this.timingAnimation = 0;
+    this.cellAnimate = [];
 
     this.eventListeners = [];
 
@@ -82,49 +103,61 @@ export class Engine {
   }
 
   animate() {
-   this.requestId = requestAnimationFrame(() => this.animate());
+    if(!this.cellAnimate) {
+      return;
+    }
 
-    switch (this.animationDirection) {
-      case Direction.LEFT:
-        if (this.oldPosAnimate.x && this.newPosAnimate.x < this.oldPosAnimate.x ) {
-          this.cellAnimate?.update(this.context, this.oldPosAnimate.x, this.oldPosAnimate.y, this.previousValue, this.animationDirection);
-          this.oldPosAnimate.x -= PIXELS_PER_FRAME;
-        } else {
-          this.endingAnimation();
-        }
-        break;
-      case Direction.RIGHT:
-        if (this.oldPosAnimate.x <= this._canvasSize && this.newPosAnimate.x > this.oldPosAnimate.x ) {
-          this.cellAnimate?.update(this.context, this.oldPosAnimate.x, this.oldPosAnimate.y, this.previousValue, this.animationDirection);
-          this.oldPosAnimate.x += PIXELS_PER_FRAME;
-        } else {
-          this.endingAnimation();
-        }
-        break;
-      case Direction.UP:
-        if (this.oldPosAnimate.y && this.newPosAnimate.y < this.oldPosAnimate.y ) {
-          this.cellAnimate?.update(this.context, this.oldPosAnimate.x, this.oldPosAnimate.y, this.previousValue, this.animationDirection);
-          this.oldPosAnimate.y -= PIXELS_PER_FRAME;
-        } else {
-          this.endingAnimation();
-        }
-        break;
-      case Direction.DOWN:
-        if (this.oldPosAnimate.y <= this._canvasSize && this.newPosAnimate.y >= this.oldPosAnimate.y) {
-          this.cellAnimate?.update(this.context, this.oldPosAnimate.x, this.oldPosAnimate.y, this.previousValue, this.animationDirection);
-          this.oldPosAnimate.y += PIXELS_PER_FRAME;
-        } else {
-          this.endingAnimation();
-        }
-        break;
+    for (const cell of this.cellAnimate) {
+      const animationCell = cell.cell;
+      const newPosX = cell.newX;
+      const newPosY = cell.newY;
+      const value = cell.value;
+
+      this.requestId = requestAnimationFrame(() => this.animate());
+
+      switch (this.animationDirection) {
+        case Direction.LEFT:
+          if (cell.x && newPosX < cell.x) {
+            animationCell.update(this.context, cell.x, cell.y, value, this.animationDirection, this.deltaTime.x);
+            cell.x -= this.deltaTime.x;
+          } else {
+            this.endingAnimation(cell, this.deltaTime.x);
+          }
+          break;
+        case Direction.RIGHT:
+          if (cell.x <= this._canvasSize && newPosX > cell.x) {
+            animationCell.update(this.context, cell.x, cell.y, value, this.animationDirection, this.deltaTime.x);
+            cell.x += this.deltaTime.x;
+          } else {
+            this.endingAnimation(cell, this.deltaTime.x);
+          }
+          break;
+        case Direction.UP:
+          if (cell.y && newPosY < cell.y) {
+            animationCell.update(this.context, cell.x, cell.y, value, this.animationDirection, this.deltaTime.y);
+            cell.y -= this.deltaTime.y;
+          } else {
+            this.endingAnimation(cell, this.deltaTime.y);
+          }
+          break;
+        case Direction.DOWN:
+          if (cell.y<= this._canvasSize && newPosY >= cell.y) {
+            animationCell.update(this.context, cell.x, cell.y, value, this.animationDirection, this.deltaTime.y);
+            cell.y += this.deltaTime.y;
+          } else {
+            this.endingAnimation(cell, this.deltaTime.y);
+          }
+          break;
+      }
     }
 
     this.drawGrid();
   }
 
-  endingAnimation(): void {
+  endingAnimation(cell: AnimationCell, delta: number): void {
       this.endAnimation = true;
-      this.cellAnimate?.update(this.context, this.newPosAnimate.x, this.newPosAnimate.y, this.newValue, this.animationDirection);
+      cell.cell.update(this.context, cell.newX, cell.newY, cell.newValue, this.animationDirection, delta);
+
       this.drawGrid();
 
       cancelAnimationFrame(this.requestId);
@@ -168,13 +201,12 @@ export class Engine {
 
   addCellToMatrix(cell: Cell, newPosition?: Position): void {
     let x: number,y: number;
-
+    this.requestId = 0;
     if (newPosition) {
-      this.cellAnimate = cell;
+      requestAnimationFrame(this.animate);
       this.endAnimation = false;
       x = newPosition.x;
       y = newPosition.y;
-      requestAnimationFrame(this.animate);
     } else {
       this.endAnimation = true;
       x = cell.position.x;
@@ -182,7 +214,6 @@ export class Engine {
     }
 
     this._matrix[y][x] = cell;
-
   }
 
   copyCell(position: Position, value: number): Cell {
@@ -247,10 +278,31 @@ export class Engine {
       this.removeCellFromMatrix(neighborCell);
       this.removeCellFromMatrix(cell);
 
-      this.newPosAnimate = { x: newX * this.cellSize, y: newY * this.cellSize };
-      this.oldPosAnimate = { x: x * this.cellSize, y: y * this.cellSize };
-      this.previousValue = cell.value;
-      this.newValue = increasedValue;
+      if(this.addedCellForAnimation(cell.id) === -1) {
+        this.cellAnimate?.push(
+          {
+            x: x * this.cellSize,
+            newX:newX * this.cellSize,
+            y: y * this.cellSize,
+            newY: newY * this.cellSize,
+            cell: cell,
+            value: cell.value,
+            newValue: increasedValue,
+            id: cell.id,
+          }
+        );
+      } else {
+        if(!this.cellAnimate) {
+          return;
+        }
+
+        this.cellAnimate[this.addedCellForAnimation(cell.id)].newX = newX * this.cellSize;
+        this.cellAnimate[this.addedCellForAnimation(cell.id)].newY = newY * this.cellSize;
+        this.cellAnimate[this.addedCellForAnimation(cell.id)].newValue = increasedValue;
+      }
+
+      this.deltaTime.x = Math.abs( (x - newX) * PIXELS_PER_FRAME );
+      this.deltaTime.y = Math.abs(( y - newY) * PIXELS_PER_FRAME );
 
       this.addCellToMatrix(this.copyCell({ x: newX, y: newY }, increasedValue ));
 
@@ -265,15 +317,43 @@ export class Engine {
       cell.position = { x: newX, y: newY };
       this.removeCellFromMatrix(cell, { x, y });
 
-      this.newPosAnimate = { x: newX * this.cellSize, y: newY * this.cellSize };
-      this.oldPosAnimate = { x: x * this.cellSize, y: y * this.cellSize };
-      this.previousValue = cell.value;
-      this.newValue = cell.value;
+      if(this.addedCellForAnimation(cell.id) === -1) {
+        this.cellAnimate?.push(
+          {
+            x: x * this.cellSize,
+            newX:newX * this.cellSize,
+            y: y * this.cellSize,
+            newY: newY * this.cellSize,
+            cell: cell,
+            value: cell.value,
+            newValue: cell.value,
+            id: cell.id,
+          }
+        );
+      } else {
+        if(!this.cellAnimate) {
+          return;
+        }
+
+        this.cellAnimate[this.addedCellForAnimation(cell.id)].newX = newX * this.cellSize;
+        this.cellAnimate[this.addedCellForAnimation(cell.id)].newY = newY * this.cellSize;
+        this.cellAnimate[this.addedCellForAnimation(cell.id)].newValue = cell.value;
+      }
+
+      this.deltaTime.x = Math.abs( (x - newX) * PIXELS_PER_FRAME );
+      this.deltaTime.y = Math.abs(( y - newY) * PIXELS_PER_FRAME );
 
       this.addCellToMatrix(cell, { x: newX, y: newY });
 
       this.moveCell(cell, direction);
     }
+  }
+
+  addedCellForAnimation(currentId: number): number {
+    if(this.cellAnimate) {
+      return this.cellAnimate.findIndex(x => x.id === currentId);
+    }
+    return -1;
   }
 
   checkCollision(cell1: Cell, cell2: Cell): boolean {
@@ -312,6 +392,11 @@ export class Engine {
   }
 
   moveMatrixElements(moveDirection: Direction): void {
+
+    if (this.cellAnimate) {
+      this.cellAnimate.length = 0;
+    }
+
     switch (moveDirection) {
       case Direction.UP:
       case Direction.LEFT:
