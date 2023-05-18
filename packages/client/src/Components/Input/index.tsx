@@ -27,7 +27,9 @@ const Input: FC<InputProps> = ({
 }: InputProps) => {
   const [error, setError] = useState('');
 
-  const handleChange = useCallback(function (e: React.ChangeEvent<HTMLInputElement>) {
+  const handleChange = useCallback(function (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) {
     if (!e) {
       return;
     }
@@ -37,7 +39,8 @@ const Input: FC<InputProps> = ({
     const error = validator.getError();
     setError(error);
     if (onChange) onChange(e);
-  }, []);
+  },
+  []);
 
   return (
     <div className='default-input'>

@@ -1,29 +1,29 @@
 import { API_URL } from './consts';
 
 export interface SignupData {
-  'first_name': string,
-  'second_name': string,
-  'login': string,
-  'email': string,
-  'password': string,
-  'phone': string
+  first_name: string;
+  second_name: string;
+  login: string;
+  email: string;
+  password: string;
+  phone: string;
 }
 
 export interface SigninData {
-  'login': string,
-  'password': string
+  login: string;
+  password: string;
 }
 
 export interface User {
-  'id': number,
-  'first_name': string,
-  'second_name': string,
-  'display_name': string,
-  'login': string,
-  'email': string,
-  'phone': string,
-  'avatar': string,
-  'role'?: string
+  id: number;
+  first_name: string;
+  second_name: string;
+  display_name: string;
+  login: string;
+  email: string;
+  phone: string;
+  avatar: string;
+  role?: string;
 }
 
 type OptionsType = {
@@ -33,9 +33,9 @@ type OptionsType = {
 
 const options: OptionsType = {
   headers: {
-    'Content-Type': 'application/json;charset=utf-8'
+    'Content-Type': 'application/json;charset=utf-8',
   },
-  credentials: 'include'
+  credentials: 'include',
 };
 
 export class AuthAPI {
@@ -45,7 +45,7 @@ export class AuthAPI {
     const response = await fetch(`${this.endpoint}/signup`, {
       ...options,
       method: 'POST',
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
     if (!response.ok) {
       const json = await response.json();
@@ -57,7 +57,7 @@ export class AuthAPI {
     const response = await fetch(`${this.endpoint}/signin`, {
       ...options,
       method: 'POST',
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
     if (!response.ok) {
       const json = await response.json();
@@ -66,9 +66,9 @@ export class AuthAPI {
   }
 
   async logout() {
-   const response = await fetch(`${this.endpoint}/logout`, {
+    const response = await fetch(`${this.endpoint}/logout`, {
       ...options,
-      method: 'POST'
+      method: 'POST',
     });
     if (!response.ok) {
       const json = await response.json();
@@ -79,7 +79,7 @@ export class AuthAPI {
   async fetchUser() {
     const response = await fetch(`${this.endpoint}/user`, {
       ...options,
-      method: 'GET'
+      method: 'GET',
     });
     const json = await response.json();
     if (response.ok) {

@@ -51,7 +51,7 @@ const AuthForm = function () {
             type='text'
             label='Логин'
             validationType='login'
-            onChange={(e) => updateInput(e)}
+            onChange={e => updateInput(e)}
             required
           />
           <Input
@@ -59,7 +59,7 @@ const AuthForm = function () {
             type='password'
             label='Пароль'
             validationType='password'
-            onChange={(e) => updateInput(e)}
+            onChange={e => updateInput(e)}
             required
           />
         </div>

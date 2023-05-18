@@ -2,10 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { Engine } from '../Engine/Engine';
 import PropTypes from 'prop-types';
 
-type CanvasProps = React.DetailedHTMLProps<React.CanvasHTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement>;
+type CanvasProps = React.DetailedHTMLProps<
+  React.CanvasHTMLAttributes<HTMLCanvasElement>,
+  HTMLCanvasElement
+>;
 
-const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
-  const canvasRef = useRef<HTMLCanvasElement | null >(null);
+const Canvas: React.FC<CanvasProps> = ({ ...props }) => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -20,12 +23,9 @@ const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
         };
       }
     }
+  }, []);
 
-  },[]);
-
-  return (
-    <canvas ref={canvasRef} width={props.width} height={props.width}/>
-  );
+  return <canvas ref={canvasRef} width={props.width} height={props.width} />;
 };
 
 export default Canvas;

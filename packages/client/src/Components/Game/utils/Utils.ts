@@ -1,7 +1,6 @@
 import { MatrixArray } from '../Engine/Engine';
 
 export class Utils {
-
   static generateValue(): number {
     return Math.random() > 0.75 ? 4 : 2;
   }

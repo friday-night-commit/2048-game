@@ -30,7 +30,11 @@ export default function ForumPage() {
               isPostsLoading ? (
                 <p key={obj.user._id}>Skeleton ...</p>
               ) : (
-                <Post key={obj.user._id} {...obj} isEditable={userData?._id === obj.user._id} />
+                <Post
+                  key={obj.user._id}
+                  {...obj}
+                  isEditable={userData?._id === obj.user._id}
+                />
               )
             )}
           </div>

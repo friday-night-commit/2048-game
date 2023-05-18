@@ -3,15 +3,14 @@
 .tag {
   display: inline-block;
   border-radius: 3px;
-  padding: .2em .2em .1em;
-  background-image: linear-gradient(90deg,$light-red-tile,$light-orange-tile);
+  padding: 0.2em 0.2em 0.1em;
+  background-image: linear-gradient(90deg, $light-red-tile, $light-orange-tile);
   font-weight: 700;
   color: $base-tile;
-  margin: .25em .1em
+  margin: 0.25em 0.1em;
 }
 
 .tag-lg {
   font-size: 1.2em;
-  border-radius: 4px
+  border-radius: 4px;
 }
-
