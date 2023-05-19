@@ -44,7 +44,7 @@ const AuthForm = function () {
       <Typography variant='h4' color='blue-gray' className='text-center mb-8'>
         Авторизация
       </Typography>
-      <form className='w-full' onSubmit={onSubmit}>
+      <form className='w-full' onSubmit={onSubmit} data-testid='auth-form'>
         <div className='mb-4 flex flex-col gap-6'>
           <Input
             name={UserFields.login}
