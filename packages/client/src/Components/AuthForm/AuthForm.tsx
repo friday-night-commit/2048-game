@@ -53,6 +53,7 @@ const AuthForm = function () {
             validationType='login'
             onChange={e => updateInput(e)}
             required
+            data-testid='login-input'
           />
           <Input
             name={UserFields.password}
@@ -61,6 +62,7 @@ const AuthForm = function () {
             validationType='password'
             onChange={e => updateInput(e)}
             required
+            data-testid='password-input'
           />
         </div>
         {loginError && <Toast text={loginError} />}
