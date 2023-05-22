@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { closeModalFailure, closeModalSuccess, openModalFailure, openModalSuccess } from '../../../store/slices/Modal';
 
-type CanvasProps = React.DetailedHTMLProps<React.CanvasHTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement>;
+type CanvasProps = React.DetailedHTMLProps<React.CanvasHTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement> & any;
 
 const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
   const canvasRef = useRef<HTMLCanvasElement | null >(null);
