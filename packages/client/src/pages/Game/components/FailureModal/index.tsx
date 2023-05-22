@@ -1,5 +1,5 @@
 import { Button, Typography } from '@material-tailwind/react';
-import { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 
 import Modal from '../../../../Components/Modal';
 
@@ -9,9 +9,11 @@ type ModalProps = {
 };
 
 const FailureModal: FC<ModalProps> = ({ open, handleOpen }) => {
-  function refreshPage() {
-    window.location.reload();
-  }
+  const refreshPage = useCallback(
+    function () {
+      window.location.reload();
+    },[]
+  );
 
   return (
     <Modal
@@ -24,7 +26,7 @@ const FailureModal: FC<ModalProps> = ({ open, handleOpen }) => {
           Ну что, еще поборемся за <b>2048</b>??
         </Typography>
         <div>
-          <Button className='game-button small' onClick={() => refreshPage()}>
+          <Button className='game-button small' onClick={ refreshPage }>
             Начать сначала
           </Button>
         </div>

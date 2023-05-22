@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { closeModalFailure, closeModalSuccess, openModalFailure, openModalSuccess } from '../../../store/slices/Modal';
 
-type CanvasProps = React.DetailedHTMLProps<React.CanvasHTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement> & any;
+type CanvasProps = React.DetailedHTMLProps<React.CanvasHTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement>
+  & StateProps & DispatchProps;
 
 const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
   const canvasRef = useRef<HTMLCanvasElement | null >(null);
@@ -31,7 +32,8 @@ const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
 };
 
 const mapStateToProps = (state: boolean) => ({
-  isOpen: state
+  isOpenSuccess: state,
+  isOpenFailure: state
 });
 
 const mapDispatchToProps = {
@@ -40,6 +42,9 @@ const mapDispatchToProps = {
   openModalFailure,
   closeModalFailure
 };
+
+export type StateProps = ReturnType<typeof mapStateToProps>;
+export type DispatchProps = typeof mapDispatchToProps;
 
 export default connect(mapStateToProps,mapDispatchToProps)(Canvas);
 
