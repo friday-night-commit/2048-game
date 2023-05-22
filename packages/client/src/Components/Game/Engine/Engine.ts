@@ -441,7 +441,6 @@ export class Engine {
     if (!this.checkEndGame()) {
       this.render();
     } else {
-      console.log(this.currentMaxNumber);
       if(this.currentMaxNumber >= this.maxValue) {
         this._openSuccess();
       } else {
