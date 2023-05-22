@@ -41,7 +41,8 @@ export class Engine {
   private maxValue: number = MAX_VALUE;
   private currentMaxNumber = 0;
   protected _matrix: MatrixArray;
-  //private _previousState: MatrixArray;
+  protected _historyMatrix: MatrixArray;
+
   private readonly _size: number;
   private readonly _canvasSize: number;
   private readonly eventListeners: ((event: KeyboardEvent) => void)[];
@@ -79,6 +80,8 @@ export class Engine {
     this._openFailure = openFailure;
 
     this._matrix = Utils.generateMatrix();
+    this._historyMatrix = Utils.generateMatrix();
+
     this._size = size;
     this._canvasSize = canvasSize;
     this.cellSize = canvasSize / size;
@@ -177,7 +180,14 @@ export class Engine {
       this.moveMatrixElements(listeners[(event as KeyboardEvent).keyCode]);
     };
     this.eventListeners.push(listener);
+
+    const stepBackBtn = document.getElementById('btn-step-back');
+    const historyBack = () => {
+      this.render(true);
+    };
+
     document.addEventListener('keydown', listener);
+    if(stepBackBtn) stepBackBtn.addEventListener('click', historyBack);
   }
 
   generateCell(): void {
@@ -509,16 +519,20 @@ export class Engine {
     this.context.clearRect(0, 0, this._canvasSize, this._canvasSize,);
   }
 
-  render() {
+  render(history?: boolean) {
     this.clear();
     this.drawGrid();
-    this.generateCell();
-    this.renderCells();
+    if(history) {
+      this.renderCells(this._historyMatrix);
+    } else {
+      this.generateCell();
+      this.renderCells(this._matrix);
+    }
     this.drawGrid();
   }
 
-  renderCells(){
-    for (const row of this._matrix) {
+  renderCells(matrix: MatrixArray){
+    for (const row of matrix) {
       for (const cell of row) {
         if (cell) {
           cell.render(this.context);
