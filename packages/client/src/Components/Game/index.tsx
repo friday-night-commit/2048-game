@@ -1,5 +1,5 @@
 import './index.scss';
-import Canvas from './Canvas/Canvas';
+import Canvas from './Canvas';
 
 export default function Game() {
   return (
