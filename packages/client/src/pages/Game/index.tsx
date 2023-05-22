@@ -34,7 +34,7 @@ export default function GamePage() {
               </Typography>
             </div>
             <div>
-              <Button className='game-button small mr-4' disabled>
+              <Button className='game-button small mr-4' id='btn-step-back'>
                 Шаг назад
               </Button>
               {/* [just for tests] open modal on restart click */}
@@ -51,7 +51,6 @@ export default function GamePage() {
           <FailureModal
             open={modalFailure}
             handleOpen={ handleOpenFailureModal }
-            restart={restart}
           />
         </div>
       </>
