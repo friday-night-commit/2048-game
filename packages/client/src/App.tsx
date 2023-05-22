@@ -3,11 +3,14 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 
 import useAuth from './hooks/useAuth';
 import routes from './routes';
+import { initServiceWorker } from './ServiceWorkers/initServiceWorker';
 
 const App = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { getUserData } = useAuth();
+
+  initServiceWorker();
 
   useEffect(() => {
     (async () => {
