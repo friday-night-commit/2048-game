@@ -6,10 +6,9 @@ import Modal from '../../../../Components/Modal';
 type ModalProps = {
   open: boolean;
   handleOpen: () => void;
-  restart: () => void;
 };
 
-const FailureModal: FC<ModalProps> = ({ open, handleOpen, restart }) => {
+const FailureModal: FC<ModalProps> = ({ open, handleOpen }) => {
   function refreshPage() {
     window.location.reload();
   }
