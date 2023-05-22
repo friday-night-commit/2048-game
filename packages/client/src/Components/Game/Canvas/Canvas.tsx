@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { Engine } from '../Engine/Engine';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { closeModalFailure, closeModalSuccess, openModalFailure, openModalSuccess } from '../../../store/slices/Modal';
 
 type CanvasProps = React.DetailedHTMLProps<React.CanvasHTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement>;
 
@@ -13,7 +15,7 @@ const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
       const context = canvas.getContext('2d');
 
       if (context) {
-        const engine = new Engine(context, canvas.offsetWidth, 4);
+        const engine = new Engine(context, canvas.offsetWidth, 4, props.openModalSuccess, props.openModalFailure);
 
         return () => {
           engine.destroy();
@@ -28,7 +30,18 @@ const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
   );
 };
 
-export default Canvas;
+const mapStateToProps = (state: boolean) => ({
+  isOpen: state
+});
+
+const mapDispatchToProps = {
+  openModalSuccess,
+  closeModalSuccess,
+  openModalFailure,
+  closeModalFailure
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(Canvas);
 
 Canvas.propTypes = {
   width: PropTypes.number,

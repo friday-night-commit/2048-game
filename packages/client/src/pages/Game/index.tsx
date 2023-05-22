@@ -1,22 +1,23 @@
 import { Button, Typography } from '@material-tailwind/react';
-import { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 
 import PageContainer from '../../Components/PageContainer';
 import Game from '../../Components/Game';
 import RestartButton from './components/RestartButton';
 import SuccessModal from './components/SuccessModal';
 import FailureModal from './components/FailureModal';
+import { useAppSelector } from '../../hooks/redux';
 
 export default function GamePage() {
   const restart = useCallback(() => {
     return;
   }, []);
 
-  const [openSuccessModal, setOpenFinalModal] = useState(false);
-  const handleOpenSuccessModal = () => setOpenFinalModal(!openSuccessModal);
+  const modalSuccess = useAppSelector(store => store.modalSlice.isOpenSuccess);
+  const modalFailure = useAppSelector(store => store.modalSlice.isOpenFailure);
 
-  const [openFailureModal, setOpenFailureModal] = useState(false);
-  const handleOpenFailureModal = () => setOpenFailureModal(!openFailureModal);
+  const handleOpenSuccessModal = () => !modalSuccess;
+  const handleOpenFailureModal = () => !modalFailure;
 
   return (
     <PageContainer>
@@ -43,13 +44,13 @@ export default function GamePage() {
         </div>
         <div className='game-page-container'>
           <Game />
-          <SuccessModal
-            open={openSuccessModal}
-            handleOpen={handleOpenSuccessModal}
+           <SuccessModal
+            open={modalSuccess}
+            handleOpen={ handleOpenSuccessModal }
           />
           <FailureModal
-            open={openFailureModal}
-            handleOpen={handleOpenFailureModal}
+            open={modalFailure}
+            handleOpen={ handleOpenFailureModal }
             restart={restart}
           />
         </div>

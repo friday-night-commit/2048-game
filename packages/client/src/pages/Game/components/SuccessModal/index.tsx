@@ -26,11 +26,11 @@ const SuccessModal: FC<ModalProps> = ({ open, handleOpen }) => {
           или найди свое имя в рейтинге самых успешных игроков!
         </Typography>
         <div>
-          <Button
-            className='game-button small mr-4'
-            onClick={() => handleOpen()}>
-            Продолжить игру
-          </Button>
+          {/*<Button*/}
+          {/*  className='game-button small mr-4'*/}
+          {/*  onClick={() => handleOpen()}>*/}
+          {/*  Продолжить игру*/}
+          {/*</Button>*/}
           <Button
             className='game-button small'
             onClick={() => navigate(routes.liderboardPage)}>

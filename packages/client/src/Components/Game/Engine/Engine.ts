@@ -59,18 +59,26 @@ export class Engine {
   private cellAnimate?: AnimationCell[];
   private animationDirection: string;
 
+
   protected readonly fontText = '20px Arial';
   protected readonly border = 'rgb(143, 122, 102)';
   protected readonly widthBorder = 3;
   protected readonly background = 'white';
+  public _openSuccess: () => void;
+  public _openFailure: () => void;
 
 
   constructor(
     context: CanvasRenderingContext2D,
     canvasSize: number,
-    size: number
+    size: number,
+    openSuccess: ()=>void,
+    openFailure: ()=>void,
   ) {
     this.context = context;
+    this._openSuccess = openSuccess;
+    this._openFailure = openFailure;
+
     this._matrix = Utils.generateMatrix();
     this._size = size;
     this._canvasSize = canvasSize;
@@ -429,16 +437,22 @@ export class Engine {
       default:
         return;
     }
+
     if (!this.checkEndGame()) {
       this.render();
     } else {
-      alert('Игра окончена!');
+      console.log(this.currentMaxNumber);
+      if(this.currentMaxNumber >= this.maxValue) {
+        this._openSuccess();
+      } else {
+        this._openFailure();
+      }
     }
   }
 
   checkEndGame(): boolean {
     //Набралось ли максимальное количество баллов?
-    if (this.currentMaxNumber < this.maxValue && !this.continuePlay) {
+    if (this.currentMaxNumber < this.maxValue) {
 
       // Существуют ли пустые ячейки?
       for (const row of this._matrix) {
@@ -521,5 +535,5 @@ export class Engine {
       document.removeEventListener('keydown', listener);
     }
   }
-
 }
+
