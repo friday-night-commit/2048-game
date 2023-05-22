@@ -12,7 +12,7 @@ export const enum SoundNames {
   Start = 'start',
 }
 
-export class AudiPlayer {
+export class AudioPlayer {
   private _sounds: Sound[] = [];
   private readonly _load: Promise<Sound[]>;
 

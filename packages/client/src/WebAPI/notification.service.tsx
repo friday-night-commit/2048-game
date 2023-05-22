@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AudiPlayer, SoundNames } from './AudiPlayer';
+import { AudioPlayer, SoundNames } from './AudiPlayer';
 import { Button } from '@material-tailwind/react';
 
 type notificationProps = {
@@ -7,11 +7,11 @@ type notificationProps = {
 };
 
 class DesktopNotification extends Component {
-  private audiPlayer: AudiPlayer;
+  private audiPlayer: AudioPlayer;
 
   constructor(props: notificationProps) {
     super(props);
-    this.audiPlayer = new AudiPlayer();
+    this.audiPlayer = new AudioPlayer();
     this.showNotification = this.showNotification.bind(this);
   }
 
@@ -21,14 +21,16 @@ class DesktopNotification extends Component {
     if (!('Notification' in window)) {
       alert('Браузер не поддерживает Notification API');
     } else if (Notification.permission === 'granted') {
-      this.showNotification();
+      // eslint-disable-next-line no-console
+      console.log('Notification is allowed');
     } else if (Notification.permission !== 'denied') {
       Notification.requestPermission().then(permission => {
         if (permission === 'granted') {
-          this.showNotification();
+          // eslint-disable-next-line no-console
+          console.log('Notification is granted');
         } else {
           // eslint-disable-next-line no-console
-          console.log('Notification is now allowed');
+          console.log('Notification is not allowed');
         }
       });
     }
@@ -38,24 +40,37 @@ class DesktopNotification extends Component {
     this.audiPlayer.getSoundByName(soundName).play();
   }
 
-  showNotification() {
+  showNotification(title: string, content: string) {
     const options: NotificationOptions = {
-      body: 'Нажмите, чтобы прочитать',
+      body: content,
       icon: 'https://cdn-icons-png.flaticon.com/512/8297/8297354.png?    auto=compress&cs=tinysrgb&dpr=1&w=500',
       dir: 'ltr',
       vibrate: 5,
     };
-    new Notification('У вас новое сообщение', options);
+    new Notification(title, options);
   }
 
   render() {
     return (
       <div>
-        <Button className='ml-2 ' onClick={this.showNotification}>Показать уведомление</Button>
-        <Button className='ml-2' onClick={() => this.playSound(SoundNames.Notification)}>
+        <Button
+          className='ml-2 '
+          onClick={() =>
+            this.showNotification(
+              'У вас новое сообщение',
+              'Нажмите, чтобы прочитать'
+            )
+          }>
+          Показать уведомление
+        </Button>
+        <Button
+          className='ml-2'
+          onClick={() => this.playSound(SoundNames.Notification)}>
           Включить звук 1
         </Button>
-        <Button className='ml-2' onClick={() => this.playSound(SoundNames.Start)}>
+        <Button
+          className='ml-2'
+          onClick={() => this.playSound(SoundNames.Start)}>
           Включить звук 2
         </Button>
       </div>
