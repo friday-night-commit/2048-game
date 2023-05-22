@@ -26,9 +26,4 @@ module.exports = {
     'no-multi-spaces': 'error',
     'no-console': 'error',
   },
-  settings: {
-    react: {
-      version: 'detect'
-    }
-  },
 };

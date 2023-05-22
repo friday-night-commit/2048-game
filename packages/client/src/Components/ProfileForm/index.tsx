@@ -1,12 +1,9 @@
 import { Button } from '@material-tailwind/react';
 import { FC, useCallback } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 import Input from '../Input';
-
 import { UserFields } from '../../pages/Profile/models/UserFields.enum';
 import routes from '../../routes';
-import useAuth from '../../hooks/useAuth';
 
 type FormProps = {
   openChangePasswordModal: () => void;
@@ -15,14 +12,6 @@ type FormProps = {
 type TProps = FC<FormProps>;
 
 const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
-  const navigate = useNavigate();
-
-  const { logout } = useAuth();
-  const doLogout = async () => {
-    await logout();
-    navigate(`/${routes.authPage}`);
-  };
-
   const handleSubmit = useCallback(function (e: React.FormEvent) {
     e.preventDefault();
   }, []);
@@ -65,30 +54,26 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
         required
       />
 
+      <div className='mt-4 mb-4 flex flex-col'>
+        <Button
+          onClick={() => openChangePasswordModal()}
+          color='amber'
+          className='small'>
+          Изменить пароль
+        </Button>
+      </div>
+
       <div className='mb-4 flex flex-col'>
         <Button className='mt-6 mb-4' type='submit'>
           Сохранить
         </Button>
-      </div>
-
-      <div className='flex flex-col'>
-        <Button
-          onClick={() => openChangePasswordModal()}
-          color='amber'
-          className='mb-3'>
-          Изменить пароль
-        </Button>
-        <Button className='mb-3' color='red' onClick={() => doLogout()}>
-          Выйти
-        </Button>
         <Link
-          to={routes.mainPage}
+          to={routes.gamePage}
           className='font-medium text-blue-500 transition-colors hover:text-blue-700 text-center block'>
-          Вернуться на главную
+          Вернуться Назад
         </Link>
       </div>
     </form>
   );
 };
-
 export default ProfileForm;

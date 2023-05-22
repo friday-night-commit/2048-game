@@ -33,7 +33,7 @@ const SuccessModal: FC<ModalProps> = ({ open, handleOpen }) => {
           {/*</Button>*/}
           <Button
             className='game-button small'
-            onClick={() => navigate(`/${routes.leaderboardPage}`)}>
+            onClick={() => navigate(routes.liderboardPage)}>
             Посмотреть рейтинг
           </Button>
         </div>

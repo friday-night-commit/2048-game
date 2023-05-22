@@ -5,30 +5,30 @@ import InputValidator, {
 import './index.scss';
 import { Input as TWInput } from '@material-tailwind/react';
 
-type InputProps = {
+type TOwnProps = {
   placeholder?: string;
   required?: boolean;
   label?: string;
   name: string;
   type?: string;
   validationType: ValidatorTypes;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
 };
 
-const Input: FC<InputProps> = ({
+type TProps = FC<TOwnProps>;
+
+const Input: TProps = ({
   required,
   placeholder,
   type,
   name,
   label,
   validationType,
-  onChange,
-}: InputProps) => {
+}: TOwnProps) => {
   const [error, setError] = useState('');
 
   const handleChange = useCallback(function (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.FormEvent<HTMLInputElement>
   ) {
     if (!e) {
       return;
@@ -38,19 +38,18 @@ const Input: FC<InputProps> = ({
     validator.check();
     const error = validator.getError();
     setError(error);
-    if (onChange) onChange(e);
   },
   []);
 
   return (
-    <div className='default-input'>
+    <div className='default-input__block'>
       <TWInput
-        className='px-5 py-2 outline-none'
+        className='px-5 py-2 rounded-full outline-none'
         name={name}
         label={label}
         type={type}
         required={required}
-        onBlur={e => handleChange(e)}
+        onBlur={el => handleChange(el)}
         placeholder={placeholder}
       />
       <span className='default-input__error'>{error}</span>

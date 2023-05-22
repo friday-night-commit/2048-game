@@ -1,40 +1,43 @@
-import { Button, Typography } from '@material-tailwind/react';
+import { Input, Button, Typography } from '@material-tailwind/react';
 import { useCallback, ChangeEvent, useState } from 'react';
-import { Link } from 'react-router-dom';
-
-import Toast from '../Toast';
-import Input from '../Input';
+import { Link, useNavigate } from 'react-router-dom';
 
 import routes from '../../routes';
-import useAuth from '../../hooks/useAuth';
-import { SigninData } from '../../api/AuthAPI';
-import { UserFields } from '../../pages/Profile/models/UserFields.enum';
+
+type Form = {
+  login: string;
+  password: string;
+};
 
 const AuthForm = function () {
-  const { login, loginError } = useAuth();
+  const navigate = useNavigate();
 
-  const [formInputsData, setFormInputsData] = useState<SigninData>({
+  const [formInputsData, setFormInputsData] = useState<Form>({
     login: '',
     password: '',
   });
 
   const onSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      login(formInputsData);
+    function (event: React.FormEvent) {
+      event.preventDefault();
+      // Temp console log
+      // eslint-disable-next-line no-console
+      console.log(formInputsData);
+
+      navigate(routes.mainPage);
     },
     [formInputsData]
   );
 
   const updateInput = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      const inputName = event.target.getAttribute('name') as keyof SigninData;
+      const inputName = event.target.getAttribute('name') as keyof Form;
       const inputValue = event.target.value;
 
-      setFormInputsData(formInputsData => ({
+      setFormInputsData({
         ...formInputsData,
         [inputName]: inputValue,
-      }));
+      });
     },
     [formInputsData]
   );
@@ -46,29 +49,20 @@ const AuthForm = function () {
       </Typography>
       <form className='w-full' onSubmit={onSubmit}>
         <div className='mb-4 flex flex-col gap-6'>
+          <Input size='lg' label='Логин' name='login' onChange={updateInput} />
           <Input
-            name={UserFields.login}
-            type='text'
-            label='Логин'
-            validationType='login'
-            onChange={e => updateInput(e)}
-            required
-          />
-          <Input
-            name={UserFields.password}
             type='password'
+            size='lg'
             label='Пароль'
-            validationType='password'
-            onChange={e => updateInput(e)}
-            required
+            name='password'
+            onChange={updateInput}
           />
         </div>
-        {loginError && <Toast text={loginError} />}
         <Button className='mt-6 mb-4' fullWidth type='submit'>
           Войти
         </Button>
         <Link
-          to={`/${routes.registerPage}`}
+          to={routes.registerPage}
           className='font-medium text-blue-500 transition-colors hover:text-blue-700 text-center block'>
           Регистрация
         </Link>

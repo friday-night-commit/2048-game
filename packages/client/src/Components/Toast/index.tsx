@@ -4,11 +4,11 @@ type TOwnProps = {
   text: string;
 };
 
-const Toast: FC<TOwnProps> = ({ text }: TOwnProps) => {
+const Toast: FC<TOwnProps> = ({ text }) => {
   return (
     <div
       id='toast-warning'
-      className='flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800'
+      className='flex items-center w-full max-w-xs p-4 space-x-2 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800 mb-2'
       role='alert'>
       <svg
         aria-hidden='true'

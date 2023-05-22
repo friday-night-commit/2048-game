@@ -58,8 +58,8 @@ export default function LeaderboardPage() {
 
   return (
     <PageContainer>
-      <Preloader>
-        {leaderboard.length > 0 ? renderLeaderboard() : undefined}
+      <Preloader conditional={leaderboard.length > 0}>
+        {renderLeaderboard()}
       </Preloader>
     </PageContainer>
   );
