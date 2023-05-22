@@ -64,6 +64,7 @@ export class Engine {
     const listener = (event: KeyboardEvent) => {
       this.moveMatrixElements(listeners[(event as KeyboardEvent).keyCode]);
     };
+
     this.eventListeners.push(listener);
     document.addEventListener('keydown', listener);
   }
@@ -216,7 +217,6 @@ export class Engine {
     if(i > 0 && myArray[i - 1][j]) {
       neighbors.push(<Cell>myArray[i - 1][j]);
     }
-
     return neighbors;
   }
 

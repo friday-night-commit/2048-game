@@ -15,10 +15,12 @@ import PageContainer from '../../Components/PageContainer';
 import { TagsBlock } from './components/TagsBlock';
 import { Post } from '../FullPost/components/Post';
 import { AddPostPage } from '../AddPost';
+import DesktopNotification from '../../WebAPI/notification.service';
 
 export default function ForumPage() {
   const isPostsLoading = posts.status === 'loading';
   const isTagsLoading = tags.status === 'loading';
+
   const tabsData = [
     {
       label: 'Посты',
@@ -30,7 +32,11 @@ export default function ForumPage() {
               isPostsLoading ? (
                 <p key={obj.user._id}>Skeleton ...</p>
               ) : (
-                <Post key={obj.user._id} {...obj} isEditable={userData?._id === obj.user._id} />
+                <Post
+                  key={obj.user._id}
+                  {...obj}
+                  isEditable={userData?._id === obj.user._id}
+                />
               )
             )}
           </div>
@@ -51,6 +57,7 @@ export default function ForumPage() {
 
   return (
     <PageContainer>
+      <DesktopNotification></DesktopNotification>
       <div className='text-center'>
         <Typography variant='h3' className='mb-8 font-normal md:font-bold'>
           Форум
