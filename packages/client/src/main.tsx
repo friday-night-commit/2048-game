@@ -8,6 +8,7 @@ import router from './router';
 import { store } from './store';
 
 import './index.scss';
+import { initServiceWorker } from './ServiceWorkers/initServiceWorker';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -18,3 +19,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     </Provider>
   </React.StrictMode>
 );
+
+initServiceWorker();

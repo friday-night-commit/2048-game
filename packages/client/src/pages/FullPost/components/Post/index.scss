@@ -9,7 +9,7 @@
 
   .remove-btn {
     @apply block w-12 h-12 rounded-full relative overflow-hidden;
-    @apply bg-[url('../../assets/images/remove-btn.svg')];
+    @apply bg-[url('../../../../assets/images/remove-btn.svg')];
     @apply bg-no-repeat bg-center;
     height: 20px;
   }
@@ -32,7 +32,7 @@
 
 .views {
   @apply block w-12 h-12 rounded-full relative overflow-hidden;
-  @apply bg-[url('../../assets/images/views.svg')];
+  @apply bg-[url('../../../../assets/images/views.svg')];
   @apply bg-no-repeat bg-center;
   height: 25px;
 }
