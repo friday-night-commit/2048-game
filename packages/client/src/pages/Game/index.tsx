@@ -7,7 +7,7 @@ import RestartButton from './components/RestartButton';
 import SuccessModal from './components/SuccessModal';
 import FailureModal from './components/FailureModal';
 import { useAppSelector } from '../../hooks/redux';
-import { closeModalFailure, closeModalSuccess, openModalFailure, openModalSuccess } from '../../store/slices/Modal'
+import { closeModalFailure, closeModalSuccess, openModalFailure, openModalSuccess } from '../../store/slices/Modal';
 import { useDispatch } from 'react-redux';
 
 export default function GamePage() {
