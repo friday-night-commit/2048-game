@@ -1,25 +1,13 @@
-import React, { Component } from 'react';
-import { AudioPlayer, SoundNames } from './AudiPlayer';
-import { Button } from '@material-tailwind/react';
-
-type notificationProps = {
-  title: boolean;
-};
-
-class DesktopNotification extends Component {
-  private audiPlayer: AudioPlayer;
-
-  constructor(props: notificationProps) {
-    super(props);
-    this.audiPlayer = new AudioPlayer();
+class DesktopNotification {
+  constructor() {
     this.showNotification = this.showNotification.bind(this);
+    this.init();
   }
 
-  componentDidMount() {
-    this.audiPlayer.init().then();
-
+  init() {
     if (!('Notification' in window)) {
-      alert('Браузер не поддерживает Notification API');
+      // eslint-disable-next-line no-console
+      console.log('Notification API is not allowed');
     } else if (Notification.permission === 'granted') {
       // eslint-disable-next-line no-console
       console.log('Notification is allowed');
@@ -34,10 +22,7 @@ class DesktopNotification extends Component {
         }
       });
     }
-  }
-
-  playSound(soundName: string): void {
-    this.audiPlayer.getSoundByName(soundName).play();
+    return this;
   }
 
   showNotification(title: string, content: string) {
@@ -48,33 +33,6 @@ class DesktopNotification extends Component {
       vibrate: 5,
     };
     new Notification(title, options);
-  }
-
-  render() {
-    return (
-      <div>
-        <Button
-          className='ml-2 '
-          onClick={() =>
-            this.showNotification(
-              'У вас новое сообщение',
-              'Нажмите, чтобы прочитать'
-            )
-          }>
-          Показать уведомление
-        </Button>
-        <Button
-          className='ml-2'
-          onClick={() => this.playSound(SoundNames.Notification)}>
-          Включить звук 1
-        </Button>
-        <Button
-          className='ml-2'
-          onClick={() => this.playSound(SoundNames.Start)}>
-          Включить звук 2
-        </Button>
-      </div>
-    );
   }
 }
 

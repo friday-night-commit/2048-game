@@ -1,6 +1,7 @@
 import Sound from './Sound';
-import notificationSoundUrl from '../assets/sounds/notification.mp3';
-import laserSound from '../assets/sounds/laser.mp3';
+import notificationSoundURL from '../assets/sounds/notification.mp3';
+import laserSoundURL from '../assets/sounds/laser.mp3';
+import victorySoundURL from '../assets/sounds/victory.mp3';
 
 type TSound = {
   name: string;
@@ -10,7 +11,23 @@ type TSound = {
 export const enum SoundNames {
   Notification = 'notification',
   Start = 'start',
+  Victory = 'victory',
 }
+
+const TRACKS: TSound[] = [
+  {
+    name: SoundNames.Notification,
+    url: notificationSoundURL,
+  },
+  {
+    name: SoundNames.Start,
+    url: laserSoundURL,
+  },
+  {
+    name: SoundNames.Victory,
+    url: victorySoundURL,
+  },
+];
 
 export class AudioPlayer {
   private _sounds: Sound[] = [];
@@ -20,7 +37,7 @@ export class AudioPlayer {
 
   constructor() {
     this._load = Promise.all(
-      listSounds.map(sound =>
+      TRACKS.map(sound =>
         fetch(sound.url)
           .then(res => res.arrayBuffer())
           .then((res: ArrayBuffer) => this._decodeAudioData(res))
@@ -45,18 +62,7 @@ export class AudioPlayer {
 
   private _decodeAudioData(audioData: ArrayBuffer) {
     return new Promise<AudioBuffer>((resolve, reject) => {
-      this._audioContext.decodeAudioData(audioData, resolve, reject);
+      this._audioContext.decodeAudioData(audioData, resolve, reject).then();
     });
   }
 }
-
-export const listSounds: TSound[] = [
-  {
-    name: SoundNames.Notification,
-    url: notificationSoundUrl,
-  },
-  {
-    name: SoundNames.Start,
-    url: laserSound,
-  },
-];

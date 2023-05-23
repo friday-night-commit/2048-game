@@ -4,8 +4,12 @@ import Input from '../../Components/Input';
 import { TextEditor } from './components/TextEditor';
 import './index.scss';
 import { useNavigate } from 'react-router-dom';
+import DesktopNotification from '../../WebAPI/notification.service';
 
 export const AddPostPage = () => {
+  // Как лучше использовать этот класс в компоненте реакта?
+  const desktopNotification = new DesktopNotification().init();
+
   const inputFileRef = useRef(null);
 
   const [preview, setPreview] = useState('');
@@ -29,9 +33,14 @@ export const AddPostPage = () => {
     }
   }
 
-  function onRemovePreview() {
+  const onRemovePreview = () => {
     setPreview('');
-  }
+
+  };
+
+  const onPublishPost = () => {
+    desktopNotification.showNotification('Новый пост', 'React + Angular + Vue');
+  };
 
   return (
     <div className='container mx-auto w-full  add-post'>
@@ -40,6 +49,7 @@ export const AddPostPage = () => {
           <Input
             name='title'
             type='text'
+            validationType='default'
             placeholder='Заголовок статьи...'
             required={true}
           />
@@ -68,7 +78,13 @@ export const AddPostPage = () => {
           )}
         </>
 
-        <Input name='tags' type='text' placeholder='Теги' required={true} />
+        <Input
+          name='tags'
+          type='text'
+          placeholder='Теги'
+          required={true}
+          validationType='default'
+        />
       </div>
 
       <div className='add-post__right'>
@@ -78,6 +94,7 @@ export const AddPostPage = () => {
       <div className='add-post__action'>
         <Button
           disabled={!!error}
+          onClick={onPublishPost}
           className=' mb-2 px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800'>
           Опубликовать
         </Button>
