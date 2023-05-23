@@ -50,7 +50,6 @@ export class Engine {
 
   private newPosAnimate: Position;
   private oldPosAnimate: Position;
-  private endAnimation: boolean;
   private requestId: number;
   private previousValue: number;
   private newValue: number;
@@ -85,7 +84,6 @@ export class Engine {
     this._size = size;
     this._canvasSize = canvasSize;
     this.cellSize = canvasSize / size;
-    this.endAnimation = false;
     this.requestId = 0;
 
     this.newPosAnimate = { x: 0, y: 0 };
@@ -166,7 +164,6 @@ export class Engine {
   }
 
   endingAnimation(cell: AnimationCell, delta: number): void {
-      this.endAnimation = true;
       cell.cell.update(this.context, cell.newX, cell.newY, cell.newValue, this.animationDirection, delta);
 
       this.drawGrid();
@@ -222,11 +219,9 @@ export class Engine {
     this.requestId = 0;
     if (newPosition) {
       requestAnimationFrame(this.animate);
-      this.endAnimation = false;
       x = newPosition.x;
       y = newPosition.y;
     } else {
-      this.endAnimation = true;
       x = cell.position.x;
       y = cell.position.y;
     }

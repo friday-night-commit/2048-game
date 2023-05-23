@@ -1,14 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 import { Engine } from '../Engine/Engine';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { closeModalFailure, closeModalSuccess, openModalFailure, openModalSuccess } from '../../../store/slices/Modal';
+import { openModalFailure, openModalSuccess } from '../../../store/slices/Modal';
+import { useAppDispatch } from '../../../hooks/redux'
 
-type CanvasProps = React.DetailedHTMLProps<React.CanvasHTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement>
-  & StateProps & DispatchProps;
+type CanvasProps = React.DetailedHTMLProps<React.CanvasHTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement>;
 
 const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
   const canvasRef = useRef<HTMLCanvasElement | null >(null);
+  const dispatch = useAppDispatch();
+
+  const openSuccess = () => dispatch(openModalSuccess());
+  const openFailure = () => dispatch(openModalFailure());
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -16,7 +19,7 @@ const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
       const context = canvas.getContext('2d');
 
       if (context) {
-        const engine = new Engine(context, canvas.offsetWidth, 4, props.openModalSuccess, props.openModalFailure);
+        const engine = new Engine(context, canvas.offsetWidth, 4, openSuccess, openFailure);
 
         return () => {
           engine.destroy();
@@ -31,22 +34,7 @@ const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
   );
 };
 
-const mapStateToProps = (state: boolean) => ({
-  isOpenSuccess: state,
-  isOpenFailure: state
-});
-
-const mapDispatchToProps = {
-  openModalSuccess,
-  closeModalSuccess,
-  openModalFailure,
-  closeModalFailure
-};
-
-export type StateProps = ReturnType<typeof mapStateToProps>;
-export type DispatchProps = typeof mapDispatchToProps;
-
-export default connect(mapStateToProps,mapDispatchToProps)(Canvas);
+export default Canvas;
 
 Canvas.propTypes = {
   width: PropTypes.number,
