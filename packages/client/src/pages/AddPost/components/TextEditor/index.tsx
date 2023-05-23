@@ -11,7 +11,9 @@ type TOwnProps = {
   textAreaHeight: number;
 };
 
-export const TextEditor: FC<TOwnProps> = ({ textAreaHeight = 350 }: TOwnProps) => {
+export const TextEditor: FC<TOwnProps> = ({
+  textAreaHeight = 350,
+}: TOwnProps) => {
   Quill.register(
     {
       'modules/emoji-toolbar': quillEmoji.ToolbarEmoji,

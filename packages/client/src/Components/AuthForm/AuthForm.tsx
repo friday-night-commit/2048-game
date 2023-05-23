@@ -1,45 +1,40 @@
 import { Button, Typography } from '@material-tailwind/react';
 import { useCallback, ChangeEvent, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+import Toast from '../Toast';
+import Input from '../Input';
 
 import routes from '../../routes';
-import Input from '../Input';
+import useAuth from '../../hooks/useAuth';
+import { SigninData } from '../../api/AuthAPI';
 import { UserFields } from '../../pages/Profile/models/UserFields.enum';
 
-type Form = {
-  login: string;
-  password: string;
-};
-
 const AuthForm = function () {
-  const navigate = useNavigate();
+  const { login, loginError } = useAuth();
 
-  const [formInputsData, setFormInputsData] = useState<Form>({
+  const [formInputsData, setFormInputsData] = useState<SigninData>({
     login: '',
     password: '',
   });
 
   const onSubmit = useCallback(
-    function (event: React.FormEvent) {
-      event.preventDefault();
-      // eslint-disable-next-line no-console
-      console.log(formInputsData);
-
-      navigate(routes.mainPage);
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      login(formInputsData);
     },
     [formInputsData]
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const updateInput = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      const inputName = event.target.getAttribute('name') as keyof Form;
+      const inputName = event.target.getAttribute('name') as keyof SigninData;
       const inputValue = event.target.value;
 
-      setFormInputsData({
+      setFormInputsData(formInputsData => ({
         ...formInputsData,
         [inputName]: inputValue,
-      });
+      }));
     },
     [formInputsData]
   );
@@ -56,6 +51,7 @@ const AuthForm = function () {
             type='text'
             label='Логин'
             validationType='login'
+            onChange={e => updateInput(e)}
             required
           />
           <Input
@@ -63,14 +59,16 @@ const AuthForm = function () {
             type='password'
             label='Пароль'
             validationType='password'
+            onChange={e => updateInput(e)}
             required
           />
         </div>
+        {loginError && <Toast text={loginError} />}
         <Button className='mt-6 mb-4' fullWidth type='submit'>
           Войти
         </Button>
         <Link
-          to={routes.registerPage}
+          to={`/${routes.registerPage}`}
           className='font-medium text-blue-500 transition-colors hover:text-blue-700 text-center block'>
           Регистрация
         </Link>
