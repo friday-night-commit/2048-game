@@ -1,4 +1,4 @@
-import { Utils } from '../../../../../../../../../../Desktop/кккк/Game/utils/Utils';
+import { Utils } from '../utils/Utils';
 import { Direction } from '../Engine/Engine';
 
 export type Position = {

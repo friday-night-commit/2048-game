@@ -1,5 +1,5 @@
 import { Cell, Position } from '../Cell/Cell';
-import { Utils } from '../../../../../../../../../../Desktop/кккк/Game/utils/Utils';
+import { Utils } from '../utils/Utils';
 
 export type MatrixArray = (Cell | undefined)[][];
 
