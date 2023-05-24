@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Engine } from '../Engine/Engine';
 import PropTypes from 'prop-types';
 import { openModalFailure, openModalSuccess } from '../../../store/slices/Modal';
-import { useAppDispatch } from '../../../hooks/redux'
+import { useAppDispatch } from '../../../hooks/redux';
 
 type CanvasProps = React.DetailedHTMLProps<React.CanvasHTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement>;
 
