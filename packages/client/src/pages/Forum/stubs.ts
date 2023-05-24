@@ -9,7 +9,7 @@ export const posts: Posts = {
       commentsCount: 5,
       isNew: true,
       user: {
-        _id: '645279d661497cc4ce589cb8',
+        _id: '645279d661497cc4ce544cb8',
         fullName: 'Alexander Laktionov',
         avatar:
           'https://thumbnail.imgbin.com/10/8/9/imgbin-elon-musk-tesla-motors-tesla-model-3-spacex-tesla-dJ5CpnLwMCeHCuT7A11U0JV38_t.jpg',
@@ -61,7 +61,7 @@ export const posts: Posts = {
       commentsCount: 112,
       isNew: false,
       user: {
-        _id: '645279d661497cc4ce589cb8',
+        _id: '645279d661497cc10ce589cb4',
         fullName: 'Konstantin Petrov',
         email: 'test111@mail.ru',
         avatar: 'https://freesvg.org/img/elon-musk-col.png',
