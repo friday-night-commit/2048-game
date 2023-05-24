@@ -1,0 +1,15 @@
+{
+  "short_name": "2048-game",
+  "name": "2048",
+  "icons": [
+    {
+      "src": "vite.svg",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

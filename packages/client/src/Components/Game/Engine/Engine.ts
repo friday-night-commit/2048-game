@@ -1,5 +1,7 @@
 import { Cell, Position } from '../Cell/Cell';
 import { Utils } from '../utils/Utils';
+import { AudioPlayer, SoundNames } from '../../../WebAPI/AudioPlayer';
+
 
 export type MatrixArray = (Cell | undefined)[][];
 
@@ -63,9 +65,11 @@ export class Engine {
   protected readonly border = 'rgb(143, 122, 102)';
   protected readonly widthBorder = 3;
   protected readonly background = 'white';
+
   public _openSuccess: () => void;
   public _openFailure: () => void;
 
+  private readonly audioPlayer: AudioPlayer;
 
   constructor(
     context: CanvasRenderingContext2D,
@@ -84,6 +88,7 @@ export class Engine {
     this._size = size;
     this._canvasSize = canvasSize;
     this.cellSize = canvasSize / size;
+
     this.requestId = 0;
 
     this.newPosAnimate = { x: 0, y: 0 };
@@ -99,12 +104,17 @@ export class Engine {
 
     this.animate = this.animate.bind(this);
 
+
+    this.eventListeners = [];
+    this.audioPlayer = new AudioPlayer();
+
     this.init();
   }
 
   init() {
     this.createListeners();
     this.render();
+    this.audioPlayer.init().then();
   }
 
   get size(): number {
@@ -176,6 +186,7 @@ export class Engine {
     const listener = (event: KeyboardEvent) => {
       this.moveMatrixElements(listeners[(event as KeyboardEvent).keyCode]);
     };
+
     this.eventListeners.push(listener);
 
     const stepBackBtn = document.getElementById('btn-step-back');
@@ -400,7 +411,6 @@ export class Engine {
     if(i > 0 && myArray[i - 1][j]) {
       neighbors.push(<Cell>myArray[i - 1][j]);
     }
-
     return neighbors;
   }
 
@@ -453,6 +463,9 @@ export class Engine {
       } else {
         this._openFailure();
       }
+
+      this.audioPlayer.getSoundByName(SoundNames.Victory).play();
+      alert('Игра окончена!');
     }
   }
 
@@ -478,7 +491,6 @@ export class Engine {
         }
       }
     }
-
     return true;
   }
 
