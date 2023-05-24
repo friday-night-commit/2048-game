@@ -53,7 +53,9 @@ const Input: FC<InputProps> = ({
         onBlur={e => handleChange(e)}
         placeholder={placeholder}
       />
-      <span className='default-input__error'>{error}</span>
+      <span className='default-input__error' data-testid='error-element'>
+        {error}
+      </span>
     </div>
   );
 };
