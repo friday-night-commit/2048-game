@@ -1,12 +1,12 @@
-import { Utils } from '../utils/Utils';
-import { Direction } from '../Engine/Engine';
+import { Utils } from '../Utils';
+import { Direction } from '../Engine';
 
 export type Position = {
   x: number;
   y: number;
 };
 
-export class Cell {
+export default class Cell {
   protected readonly _value: number;
   protected _position: Position;
   size: number;
