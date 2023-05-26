@@ -42,7 +42,7 @@ describe('Engine class', () => {
     const generateMatrix = Utils.generateMatrix.bind(Utils);
     const spy = jest
       .spyOn(Utils, 'generateMatrix')
-      .mockImplementation(jest.fn((size) => generateMatrix(size)));
+      .mockImplementation(jest.fn(size => generateMatrix(size)));
     engine = createEngine(ctx, 6);
 
     expect(engine.size).toBe(6);

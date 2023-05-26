@@ -35,7 +35,6 @@ export const AddPostPage = () => {
 
   const onRemovePreview = () => {
     setPreview('');
-
   };
 
   const onPublishPost = () => {

@@ -4,7 +4,7 @@ import modalSlice from './slices/Modal';
 
 export const reducers = combineReducers({
   userSlice,
-  modalSlice
+  modalSlice,
 });
 
 export const store = configureStore({

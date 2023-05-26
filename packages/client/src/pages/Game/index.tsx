@@ -10,13 +10,12 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { closeModalFailure, closeModalSuccess } from '../../store/slices/Modal';
 
 export default function GamePage() {
-
   const modalSuccess = useAppSelector(store => store.modalSlice.isOpenSuccess);
   const modalFailure = useAppSelector(store => store.modalSlice.isOpenFailure);
   const dispatch = useAppDispatch();
 
   const handleCloseSuccessModal = () => dispatch(closeModalSuccess());
-  const handleCloseFailureModal = () =>dispatch(closeModalFailure());
+  const handleCloseFailureModal = () => dispatch(closeModalFailure());
 
   return (
     <PageContainer>
@@ -37,19 +36,19 @@ export default function GamePage() {
                 Шаг назад
               </Button>
               {/* [just for tests] open modal on restart click */}
-              <RestartButton restart={ handleCloseSuccessModal } />
+              <RestartButton restart={handleCloseSuccessModal} />
             </div>
           </div>
         </div>
         <div className='game-page-container'>
           <Game />
-           <SuccessModal
+          <SuccessModal
             open={modalSuccess}
-            handleOpen={ handleCloseSuccessModal }
+            handleOpen={handleCloseSuccessModal}
           />
           <FailureModal
-            open={ modalFailure }
-            handleOpen={ handleCloseFailureModal }
+            open={modalFailure}
+            handleOpen={handleCloseFailureModal}
           />
         </div>
       </>
