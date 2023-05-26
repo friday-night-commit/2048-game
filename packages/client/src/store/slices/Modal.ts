@@ -25,8 +25,8 @@ export const modalSlice = createSlice({
     },
     closeModalFailure(state) {
       state.isOpenFailure = false;
-    }
-  }
+    },
+  },
 });
 
 // В дальнейшем при нужде изменить пользователя в store, необходимо:
@@ -34,6 +34,11 @@ export const modalSlice = createSlice({
 // 2) Импортнуть { setUser, clearUser }
 // 3) Вызвать dispatch(setUser(userData)) \ dispatch(clearUser())
 
-export const { openModalSuccess, closeModalSuccess, openModalFailure, closeModalFailure } = modalSlice.actions;
+export const {
+  openModalSuccess,
+  closeModalSuccess,
+  openModalFailure,
+  closeModalFailure,
+} = modalSlice.actions;
 
 export default modalSlice.reducer;

@@ -63,7 +63,7 @@ describe('components/Input', () => {
   });
 
   it('function onChange was called after change', async () => {
-		const onChange = jest.fn();
+    const onChange = jest.fn();
     const view = render(
       <Input
         required={true}
