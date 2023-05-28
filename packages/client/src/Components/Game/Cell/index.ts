@@ -68,6 +68,7 @@ export default class Cell {
   }
 
   render(context: CanvasRenderingContext2D) {
+    console.log('render')
     context.fillStyle = this.changeColor();
     const { x, y } = this.position;
     context.fillRect(x * this.size, y * this.size, this.size, this.size);

@@ -16,7 +16,7 @@ export default function GamePage() {
   const dispatch = useAppDispatch();
 
   const handleCloseSuccessModal = () => dispatch(closeModalSuccess());
-  const handleCloseFailureModal = () =>dispatch(closeModalFailure());
+  const handleCloseFailureModal = () => dispatch(closeModalFailure());
 
   return (
     <PageContainer>
@@ -37,7 +37,7 @@ export default function GamePage() {
                 Шаг назад
               </Button>
               {/* [just for tests] open modal on restart click */}
-              <RestartButton restart={ handleCloseSuccessModal } />
+              <RestartButton />
             </div>
           </div>
         </div>

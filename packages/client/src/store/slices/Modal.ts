@@ -1,13 +1,20 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+export interface Game {
+  maxValue: number;
+  newMatrix?: boolean;
+}
 
 type modalState = {
   isOpenSuccess: boolean;
   isOpenFailure: boolean;
+  maxValue: Game;
 };
 
 const initialState: modalState = {
   isOpenSuccess: false,
   isOpenFailure: false,
+  maxValue: { maxValue: 0, newMatrix: false },
 };
 
 export const modalSlice = createSlice({
@@ -25,15 +32,22 @@ export const modalSlice = createSlice({
     },
     closeModalFailure(state) {
       state.isOpenFailure = false;
-    }
+    },
+    setRecord(state, action: PayloadAction<Game>) {
+      state.maxValue = action.payload;
+    },
+    cleanRecord(state) {
+      state.maxValue.maxValue = 0;
+    },
+    renewMatrix(state) {
+      state.maxValue.newMatrix = true;
+    },
+    wasRenewedMatrix(state) {
+      state.maxValue.newMatrix = false;
+    },
   }
 });
 
-// В дальнейшем при нужде изменить пользователя в store, необходимо:
-// 1) const dispatch = useAppDispatch();
-// 2) Импортнуть { setUser, clearUser }
-// 3) Вызвать dispatch(setUser(userData)) \ dispatch(clearUser())
-
-export const { openModalSuccess, closeModalSuccess, openModalFailure, closeModalFailure } = modalSlice.actions;
+export const { openModalSuccess, closeModalSuccess, openModalFailure, closeModalFailure, setRecord, cleanRecord, renewMatrix, wasRenewedMatrix } = modalSlice.actions;
 
 export default modalSlice.reducer;

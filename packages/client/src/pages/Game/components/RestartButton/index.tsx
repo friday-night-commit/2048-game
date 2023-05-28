@@ -1,17 +1,16 @@
 import { Button } from '@material-tailwind/react';
 import { useState, useCallback, FC } from 'react';
 import cx from 'classnames';
+import { renewMatrix } from '../../../../store/slices/Modal';
+import { useAppDispatch } from '../../../../hooks/redux';
 
-type RestartButtonProps = {
-  restart: () => void;
-};
-
-const RestartButton: FC<RestartButtonProps> = ({ restart }) => {
+const RestartButton: FC = () => {
   const [confirmRestart, setConfirmRestart] = useState(false);
+  const dispatch = useAppDispatch();
 
   const handleRestart = useCallback(() => {
     if (confirmRestart) {
-      restart();
+      dispatch(renewMatrix());
     }
     setConfirmRestart(!confirmRestart);
   }, [confirmRestart]);

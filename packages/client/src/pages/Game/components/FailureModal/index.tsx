@@ -2,6 +2,8 @@ import { Button, Typography } from '@material-tailwind/react';
 import React, { FC, useCallback } from 'react';
 
 import Modal from '../../../../Components/Modal';
+import { useAppDispatch } from '../../../../hooks/redux';
+import { closeModalFailure, renewMatrix } from '../../../../store/slices/Modal';
 
 type ModalProps = {
   open: boolean;
@@ -9,9 +11,12 @@ type ModalProps = {
 };
 
 const FailureModal: FC<ModalProps> = ({ open, handleOpen }) => {
+  const dispatch = useAppDispatch();
+
   const refreshPage = useCallback(
     function () {
-      window.location.reload();
+      dispatch(renewMatrix());
+      dispatch(closeModalFailure());
     },[]
   );
 
