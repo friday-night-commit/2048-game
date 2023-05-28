@@ -49,7 +49,6 @@ export default class Engine {
   private readonly cellSize: number;
 
   private _historyMatrix: HistoryMatrixArray;
-  private _steps: number;
 
   private requestId: number;
   private deltaTime: DeltaTime;
@@ -88,7 +87,6 @@ export default class Engine {
 
     this._matrix = Utils.generateMatrix(size);
     this._historyMatrix = [];
-    this._steps = 0;
     this._stepsBack = 0;
     this.historyBack = this.historyBackStep.bind(this);
 
@@ -240,7 +238,6 @@ export default class Engine {
 
   addHistory(): void {
     this._historyMatrix.push({ stepIndex: this._stepsBack, historyMatrix: this.clonePrevMatrix(this._matrix) });
-    this._steps += 1;
     this._stepsBack += 1;
   }
 
@@ -255,6 +252,9 @@ export default class Engine {
   historyBackStep(): void {
       this._historyMatrix.splice(this._stepsBack-1, 1);
       this._stepsBack -= 1;
+      if(this._stepsBack === 0) {
+        return;
+      }
       console.log('history check')
       console.log(this._historyMatrix)
       console.log(this._stepsBack)
