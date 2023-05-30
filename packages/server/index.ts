@@ -1,21 +1,22 @@
 import dotenv from 'dotenv';
-import cors from 'cors';
+import { app } from './app';
+import http from 'node:http';
+
 dotenv.config();
 
-import express from 'express';
-import { createClientAndConnect } from './db';
-
-const app = express();
-app.use(cors());
 const port = Number(process.env.SERVER_PORT) || 3001;
+app.set('port', port);
 
-createClientAndConnect();
+const server: http.Server = http.createServer(app);
 
-app.get('/', (_, res) => {
-  res.json('👋 Howdy from the server :)');
-});
-
-app.listen(port, () => {
+server.on('error', e => {
   // eslint-disable-next-line no-console
-  console.log(`  ➜ 🎸 Server is listening on port: ${port}`);
+  console.log('Error Server', e);
 });
+
+server.on('listening', () => {
+  // eslint-disable-next-line no-console
+  console.log(`2048 Game server listening at port: ${port}`);
+});
+
+server.listen(port);
