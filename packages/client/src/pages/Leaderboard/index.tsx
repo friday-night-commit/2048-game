@@ -12,8 +12,9 @@ export type leaderboardUser = {
 
 export default function LeaderboardPage() {
   const [leaderboard, setLeaderboard] = useState<leaderboardUser[]>([]);
-
+    
   const getLeaderboard = useCallback(async () => {
+
     // return mock data
     let gotData: leaderboardUser[] = [
       {
