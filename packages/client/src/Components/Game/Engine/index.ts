@@ -66,6 +66,8 @@ export default class Engine {
 
   public _openSuccess: () => void;
   public _openFailure: () => void;
+  private _openModalSuccess: boolean;
+  private _openModalFail: boolean;
 
   private readonly audioPlayer: AudioPlayer;
 
@@ -75,7 +77,10 @@ export default class Engine {
     size: number,
     openSuccess: () => void,
     openFailure: () => void,
+    openModalSuccess: boolean,
+    openModalFail: boolean,
   ) {
+
     if (size < 2) {
       throw Error('Invalid size for cell matrix');
     }
@@ -83,6 +88,8 @@ export default class Engine {
     this.context = context;
     this._openSuccess = openSuccess;
     this._openFailure = openFailure;
+    this._openModalSuccess = openModalSuccess;
+    this._openModalFail = openModalFail;
 
     this._matrix = Utils.generateMatrix(size);
     this._historyMatrix = [];
@@ -229,9 +236,10 @@ export default class Engine {
 
   createListeners(): void {
     const listener = (event: KeyboardEvent) => {
-      this.moveCells(LISTENERS[(event as KeyboardEvent).keyCode]);
-
-      this.historyButtonClick();
+      if(!this._openModalSuccess && !this._openModalFail) {
+        this.moveCells(LISTENERS[(event as KeyboardEvent).keyCode]);
+        this.historyButtonClick();
+      }
     };
 
     this.eventListeners.push(listener);
