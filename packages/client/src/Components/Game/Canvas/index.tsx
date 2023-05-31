@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Engine from '../Engine';
-import { openModalFailure, openModalSuccess, setRecord, wasRenewedMatrix } from '../../../store/slices/Modal';
+import { openModalFailure, openModalSuccess, wasRenewedMatrix } from '../../../store/slices/Modal';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 
 type CanvasProps = React.DetailedHTMLProps<
@@ -13,17 +13,10 @@ type CanvasProps = React.DetailedHTMLProps<
 const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
   const canvasRef = useRef<HTMLCanvasElement | null >(null);
   const dispatch = useAppDispatch();
-  const maxValue = useAppSelector(store => store.modalSlice.maxValue);
-  const newMatrix = maxValue.newMatrix;
+  const isNewMatrix = useAppSelector(store => store.modalSlice.isNewMatrix);
 
   const openSuccess = () => dispatch(openModalSuccess());
   const openFailure = () => dispatch(openModalFailure());
-
-  const handleSubmit = useCallback((maxScore: number) => {
-    if (maxScore > maxValue.maxValue) {
-      dispatch(setRecord({ maxValue: maxScore } ));
-    }
-  }, []);
 
   useEffect(() => {
     dispatch(wasRenewedMatrix());
@@ -32,7 +25,7 @@ const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
       const context = canvas.getContext('2d');
 
       if (context) {
-        const engine = new Engine(context, canvas.offsetWidth, 4, openSuccess, openFailure, handleSubmit);
+        const engine = new Engine(context, canvas.offsetWidth, 4, openSuccess, openFailure);
 
         return () => {
           engine.destroy();
@@ -42,7 +35,7 @@ const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
       }
     }
 
-  },[newMatrix]);
+  },[isNewMatrix]);
 
   return (
     <canvas ref={canvasRef} width={props.width} height={props.width}/>

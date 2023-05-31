@@ -1,20 +1,15 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface Game {
-  maxValue: number;
-  newMatrix?: boolean;
-}
+import { createSlice } from '@reduxjs/toolkit';
 
 type modalState = {
   isOpenSuccess: boolean;
   isOpenFailure: boolean;
-  maxValue: Game;
+  isNewMatrix: boolean;
 };
 
 const initialState: modalState = {
   isOpenSuccess: false,
   isOpenFailure: false,
-  maxValue: { maxValue: 0, newMatrix: false },
+  isNewMatrix: false,
 };
 
 export const modalSlice = createSlice({
@@ -33,21 +28,15 @@ export const modalSlice = createSlice({
     closeModalFailure(state) {
       state.isOpenFailure = false;
     },
-    setRecord(state, action: PayloadAction<Game>) {
-      state.maxValue = action.payload;
-    },
-    cleanRecord(state) {
-      state.maxValue.maxValue = 0;
-    },
     renewMatrix(state) {
-      state.maxValue.newMatrix = true;
+      state.isNewMatrix= true;
     },
     wasRenewedMatrix(state) {
-      state.maxValue.newMatrix = false;
+      state.isNewMatrix = false;
     },
   }
 });
 
-export const { openModalSuccess, closeModalSuccess, openModalFailure, closeModalFailure, setRecord, cleanRecord, renewMatrix, wasRenewedMatrix } = modalSlice.actions;
+export const { openModalSuccess, closeModalSuccess, openModalFailure, closeModalFailure, renewMatrix, wasRenewedMatrix } = modalSlice.actions;
 
 export default modalSlice.reducer;

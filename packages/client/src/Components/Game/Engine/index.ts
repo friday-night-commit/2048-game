@@ -49,6 +49,10 @@ export default class Engine {
   private readonly cellSize: number;
 
   private _historyMatrix: HistoryMatrixArray;
+  private _stepsBack: number;
+  private _isHistoryMove: boolean;
+  private historyBack: () => void;
+  private historyBtn: HTMLButtonElement;
 
   private requestId: number;
   private deltaTime: DeltaTime;
@@ -64,9 +68,6 @@ export default class Engine {
   public _openFailure: () => void;
 
   private readonly audioPlayer: AudioPlayer;
-  public _setScore: (maxNumber: number) => void;
-  private _stepsBack: number;
-  private historyBack: () => void;
 
   constructor(
     context: CanvasRenderingContext2D,
@@ -74,9 +75,7 @@ export default class Engine {
     size: number,
     openSuccess: () => void,
     openFailure: () => void,
-    setScore: (maxNumber: number) => void,
   ) {
-    this._setScore = setScore;
     if (size < 2) {
       throw Error('Invalid size for cell matrix');
     }
@@ -88,7 +87,9 @@ export default class Engine {
     this._matrix = Utils.generateMatrix(size);
     this._historyMatrix = [];
     this._stepsBack = 0;
+    this.historyMove = false;
     this.historyBack = this.historyBackStep.bind(this);
+    this.historyBtn = document.getElementById('btn-step-back') as HTMLButtonElement;
 
     this._size = size;
     this._canvasSize = canvasSize;
@@ -111,6 +112,7 @@ export default class Engine {
   }
 
   init() {
+    this.historyBtn.disabled = true;
     this.createListeners();
     this.render();
     this.addHistory();
@@ -229,7 +231,7 @@ export default class Engine {
     const listener = (event: KeyboardEvent) => {
       this.moveCells(LISTENERS[(event as KeyboardEvent).keyCode]);
 
-      this.buttonClick();
+      this.historyButtonClick();
     };
 
     this.eventListeners.push(listener);
@@ -239,20 +241,19 @@ export default class Engine {
   addHistory(): void {
     this._historyMatrix.push({ stepIndex: this._stepsBack, historyMatrix: this.clonePrevMatrix(this._matrix) });
     this._stepsBack += 1;
+    this._isHistoryMove = true;
   }
 
-  buttonClick(): void {
-    const stepBackBtn = document.getElementById('btn-step-back') as HTMLButtonElement;
-
-    if (stepBackBtn) stepBackBtn.addEventListener('click', this.historyBack);
-
-    this.removeBtnListener(stepBackBtn);
+  historyButtonClick(): void {
+    this._isHistoryMove ? this.historyBtn.disabled = false : this.historyBtn.disabled = true;
+    this.historyBtn.addEventListener('click', this.historyBack);
   }
 
   historyBackStep(): void {
       this._historyMatrix.splice(this._stepsBack-1, 1);
       this._stepsBack -= 1;
       if(this._stepsBack === 0) {
+        this._isHistoryMove = false;
         return;
       }
       console.log('history check')
@@ -511,9 +512,6 @@ export default class Engine {
       this.render();
       this.addHistory();
     } else {
-
-      this._setScore(this.score);
-
       if (this.score >= Engine.FINAL_SCORE) {
         this._openSuccess();
       } else {
@@ -612,9 +610,6 @@ export default class Engine {
     for (const listener of this.eventListeners) {
       document.removeEventListener('keydown', listener);
     }
-  }
-
-  removeBtnListener(item: HTMLButtonElement): void {
-    item.removeEventListener('click', this.historyBackStep);
+    this.historyBtn.removeEventListener('click', this.historyBackStep);
   }
 }

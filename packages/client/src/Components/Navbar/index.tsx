@@ -42,8 +42,7 @@ const NAVBAR_ITEMS = [
 
 export default function Navbar() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  //const [maxScore, setMaxScore] = useState(4096); // TODO: get value from API
-  const maxScore = useAppSelector(store => store.modalSlice.maxValue);
+  const [maxScore, setMaxScore] = useState(4096); // TODO: get value from API
 
   return (
     <MaterialNavbar className='navbar mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4'>
@@ -63,7 +62,7 @@ export default function Navbar() {
           </ul>
         </div>
         <span className='score-container'>
-          {`Максимум сегодня: ${maxScore.maxValue}`}
+          {`Максимум сегодня: ${maxScore}`}
         </span>
       </div>
     </MaterialNavbar>
