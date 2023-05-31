@@ -87,7 +87,7 @@ export default class Engine {
     this._matrix = Utils.generateMatrix(size);
     this._historyMatrix = [];
     this._stepsBack = 0;
-    this.historyMove = false;
+    this._isHistoryMove = false;
     this.historyBack = this.historyBackStep.bind(this);
     this.historyBtn = document.getElementById('btn-step-back') as HTMLButtonElement;
 
