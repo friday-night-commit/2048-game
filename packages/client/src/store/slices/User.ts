@@ -1,24 +1,22 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-interface User {
-  // Заменить на импорт из ветки FRI-31
-  id: number;
-  first_name: string;
-  second_name: string;
-  display_name: string;
-  login: string;
-  email: string;
-  phone: string;
-  avatar: string;
-  role?: string;
-}
-
 type userState = {
-  user: undefined | User;
+  user: User;
+};
+
+const initialUser = {
+  id: 0,
+  avatar: '',
+  display_name: '',
+  email: '',
+  first_name: '',
+  login: '',
+  phone: '',
+  second_name: ''
 };
 
 const initialState: userState = {
-  user: undefined,
+  user: initialUser,
 };
 
 export const userSlice = createSlice({
@@ -30,7 +28,7 @@ export const userSlice = createSlice({
       state.user = action.payload;
     },
     clearUser(state) {
-      state.user = undefined;
+      state.user = initialUser;
     },
   },
 });
