@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 
 import renderBundle from './bundle';
-import type { RootState } from 'client/src/store';
+import { store } from 'client/src/store';
 
 export interface RenderData {
   value: string;
@@ -9,18 +9,12 @@ export interface RenderData {
 
 export default (req: Request, res: Response, next: NextFunction) => {
   const location = req.url;
-  const bundleName = 'style';
-  const initialState: any | RootState = {
-    // Убрать any
-    reducer: 'test',
-  };
+  const initialState = store.getState();
   const html = renderBundle({
-    bundleName,
     location,
-    data: { value: 'sss' },
+    data: { value: 'test' },
     initialState,
   });
   res.status(200).send(html);
-
   next();
 };

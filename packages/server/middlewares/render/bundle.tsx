@@ -2,36 +2,33 @@ import htmlescape from 'htmlescape';
 import { renderToStaticMarkup, renderToString } from 'react-dom/server';
 import type { RootState } from 'client/src/store';
 import type { RenderData } from './render';
-
-function getBundle(bundleName: string, lang: string) {
-  const module = `../../../ssr.bundles.${lang}`;
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  return require(module).bundles[bundleName];
-}
+import { Provider } from 'react-redux';
+import type React from 'react';
+import { StaticRouter } from 'react-router-dom/server';
+import { initialStore } from 'client/src/store'; // Ошибка импорта  Must use import to load ES Module:
 
 interface PageHtmlParams {
-  bundleName: string;
   bundleHtml: string;
   data: RenderData;
-  initialState: any | RootState;
+  initialState: RootState;
 }
 
 function getPageHtml(params: PageHtmlParams) {
-  const { bundleName, bundleHtml, data } = params;
-  const baseUrl = '';
-  const bundleFilePath = `${baseUrl}${bundleName}.bundle`;
+  const { bundleHtml, data, initialState } = params;
 
   const html = renderToStaticMarkup(
     <html>
       <head>
         <link rel='icon' type='image/svg+xml' href='/vite.svg' />
-        <link rel='stylesheet' href={`${bundleFilePath}.css`} />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
       </head>
       <body>
         <div id='root' dangerouslySetInnerHTML={{ __html: bundleHtml }} />
         <script
           dangerouslySetInnerHTML={{
-            __html: `Client.default(${htmlescape(data)});`,
+            __html: `Client.default(${htmlescape(data)},${htmlescape(
+              initialState
+            )});`,
           }}
         />
       </body>
@@ -41,31 +38,37 @@ function getPageHtml(params: PageHtmlParams) {
 }
 
 interface RenderBundleArguments {
-  bundleName: string;
   location: string;
   data: RenderData;
   initialState: RootState;
 }
 
-export default ({
-  bundleName,
-  location,
-  data,
-  initialState,
-}: RenderBundleArguments) => {
-  const Bundle = getBundle(bundleName, 'ru');
-  if (!Bundle) {
-    throw new Error(`Bundle ${bundleName} not found`);
-  }
-  const bundleHtml = renderToString(<Bundle data={data} />);
+export default (props: RenderBundleArguments) => {
+  const bundleHtml = renderToString(
+    <Bundle
+      location={props.location}
+      initialState={props.initialState}
+      data={props.data}
+    />
+  );
   // eslint-disable-next-line no-console
-  console.log('location', location);
+  console.log('location', props.location);
   return {
     html: getPageHtml({
-      bundleName,
+      data: props.data,
+      initialState: props.initialState,
       bundleHtml,
-      data,
-      initialState,
     }),
   };
+};
+
+export const Bundle: React.FC<RenderBundleArguments> = props => {
+  const { location, initialState } = props;
+  return (
+    <Provider store={initialStore(initialState)}>
+      <StaticRouter location={location}>
+        <label>Test Bundle</label>
+      </StaticRouter>
+    </Provider>
+  );
 };

@@ -7,6 +7,14 @@ export const reducers = combineReducers({
   modalSlice,
 });
 
+
+export const initialStore = (preloadedState = {}) => {
+  return configureStore({
+    reducer: reducers,
+    preloadedState,
+  });
+};
+
 export const store = configureStore({
   reducer: reducers,
 });
