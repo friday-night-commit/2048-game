@@ -3,6 +3,8 @@ import { getUser } from '../../controllers/user';
 
 const userRouter: Router = Router();
 
-userRouter.route('user').get(getUser);
+userRouter
+  .route('user')
+  .get(getUser);
 
 export default userRouter;
