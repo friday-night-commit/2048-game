@@ -6,8 +6,11 @@
   justify-content: center;
   align-items: center;
   @apply block rounded-full  relative overflow-hidden;
-  @apply bg-[url('../../assets/images/not-found.svg')];
   @apply bg-no-repeat bg-center;
+  
+  .not-found {
+    @apply bg-[url('../../assets/images/not-found.svg')];
+  }
 
   &__image {
     width: 100%;

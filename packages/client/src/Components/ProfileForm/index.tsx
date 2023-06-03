@@ -7,6 +7,9 @@ import Input from '../Input';
 import { UserFields } from '../../pages/Profile/models/UserFields.enum';
 import routes from '../../routes';
 import useAuth from '../../hooks/useAuth';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import ProfileController from '../../Controllers/ProfileController';
+import { setUser } from '../../store/slices/User';
 
 type FormProps = {
   openChangePasswordModal: () => void;
@@ -22,18 +25,45 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
     await logout();
     navigate(`/${routes.authPage}`);
   };
+  const dispatch = useAppDispatch();
 
-  const handleSubmit = useCallback(function (e: React.FormEvent) {
+  const currentUser = useAppSelector(store => store.userSlice.user);
+
+  const handleSubmit = useCallback(async function (
+    e: React.FormEvent<HTMLFormElement>
+  ) {
     e.preventDefault();
-  }, []);
+    const formData = new FormData(e.currentTarget);
+    const userData: Partial<User> = {};
+    for(const pair of formData.entries()) {
+      const [key, value] = pair as [UserFields, string];
+      // @ts-ignore
+      userData[key] = value;
+    }
+    
+    const updatedUser = await ProfileController.changeUser(userData);
+    if (updatedUser) {
+      dispatch(setUser(updatedUser));
+    }
+  },
+  [currentUser]);
 
   return (
     <form className='w-full' onSubmit={handleSubmit}>
+      <Input
+        name={UserFields.display_name}
+        type='text'
+        label='Никнейм'
+        validationType='default'
+        value={currentUser?.display_name}
+        required
+      />
       <Input
         name={UserFields.first_name}
         type='text'
         label='Имя'
         validationType='name'
+        value={currentUser?.first_name}
         required
       />
       <Input
@@ -41,6 +71,7 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
         type='text'
         label='Фамилия'
         validationType='name'
+        value={currentUser?.second_name}
         required
       />
       <Input
@@ -48,6 +79,7 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
         type='text'
         label='Логин'
         validationType='login'
+        value={currentUser?.login}
         required
       />
       <Input
@@ -55,6 +87,7 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
         type='email'
         label='Почта'
         validationType='email'
+        value={currentUser?.email}
         required
       />
       <Input
@@ -62,6 +95,7 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
         type='tel'
         label='Телефон'
         validationType='phone'
+        value={currentUser?.phone}
         required
       />
 
@@ -82,7 +116,7 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
           Выйти
         </Button>
         <Link
-          to={routes.mainPage}
+          to={`/${routes.mainPage}`}
           className='font-medium text-blue-500 transition-colors hover:text-blue-700 text-center block'>
           Вернуться на главную
         </Link>

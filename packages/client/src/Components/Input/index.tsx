@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import InputValidator, {
   ValidatorTypes,
 } from '../../Utils/Validators/InputValidator';
@@ -12,6 +12,7 @@ type InputProps = {
   name: string;
   type?: string;
   validationType: ValidatorTypes;
+  value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
 };
@@ -23,9 +24,17 @@ const Input: FC<InputProps> = ({
   name,
   label,
   validationType,
+  value,
   onChange,
 }: InputProps) => {
   const [error, setError] = useState('');
+  const [inputValue, setInputValue] = useState(value || '');
+
+  useEffect(() => {
+    if(value) {
+      setInputValue(value);
+    }
+  }, [value]);
 
   const handleChange = useCallback(function (
     e: React.ChangeEvent<HTMLInputElement>
@@ -33,6 +42,7 @@ const Input: FC<InputProps> = ({
     if (!e) {
       return;
     }
+    setInputValue(e.currentTarget.value);
     const target = e.target as HTMLInputElement;
     const validator = new InputValidator(target, validationType);
     validator.check();
@@ -41,7 +51,7 @@ const Input: FC<InputProps> = ({
     if (onChange) onChange(e);
   },
   []);
-
+  
   return (
     <div className='default-input'>
       <TWInput
@@ -50,8 +60,9 @@ const Input: FC<InputProps> = ({
         label={label}
         type={type}
         required={required}
-        onBlur={e => handleChange(e)}
+        onChange={handleChange}
         placeholder={placeholder}
+        value={inputValue}
       />
       <span className='default-input__error' data-testid='error-element'>
         {error}
