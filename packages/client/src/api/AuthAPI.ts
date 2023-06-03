@@ -1,10 +1,5 @@
 import { API_URL } from './consts';
 
-type OptionsType = {
-  headers: { 'Content-Type': string };
-  credentials: RequestCredentials | undefined;
-};
-
 const options: OptionsType = {
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
