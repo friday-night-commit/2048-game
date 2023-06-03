@@ -2,11 +2,6 @@ import { API_URL } from './consts';
 
 type leaderboardAPIData = Promise<Array<Record<'data', leaderboardUser>>>;
 
-type OptionsType = {
-  headers: { 'Content-Type': string };
-  credentials: RequestCredentials | undefined;
-};
-
 const options: OptionsType = {
   headers: {
     'Content-Type': 'application/json;charset=utf-8',

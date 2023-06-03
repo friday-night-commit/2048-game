@@ -14,12 +14,13 @@ class LeaderboardController {
     try {
       const data = await LeaderboardAPI.getLeaderboard(cursor, limit);
       for (const userData of data) {
-        const { userId, userName, userImage, score } = userData.data;
+        const { userId, userName, userImage, score, timestamp } = userData.data;
         resultData.push({
           score,
           userImage,
           userName,
           userId,
+          timestamp
         });
       }
     } catch (err) {

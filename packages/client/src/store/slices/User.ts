@@ -1,22 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 type userState = {
-  user: User;
-};
-
-const initialUser = {
-  id: 0,
-  avatar: '',
-  display_name: '',
-  email: '',
-  first_name: '',
-  login: '',
-  phone: '',
-  second_name: ''
+  user: User | undefined;
 };
 
 const initialState: userState = {
-  user: initialUser,
+  user: undefined,
 };
 
 export const userSlice = createSlice({
@@ -28,7 +17,7 @@ export const userSlice = createSlice({
       state.user = action.payload;
     },
     clearUser(state) {
-      state.user = initialUser;
+      state.user = undefined;
     },
   },
 });

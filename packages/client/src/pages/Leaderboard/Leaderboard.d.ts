@@ -3,4 +3,5 @@ type leaderboardUser = {
   userImage: string | undefined;
   userName: string;
   score: number;
+  timestamp: number;
 };
