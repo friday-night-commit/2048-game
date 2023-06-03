@@ -38,6 +38,14 @@
     &.alert {
       background: $orange-tile;
     }
+
+    &.fullscreen {
+      width: 120px;
+      font-size: 10px;
+      margin-left: 10px;
+      text-align: left;
+      padding: 13px;
+    }
   }
 
   h5 a {
