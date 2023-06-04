@@ -260,16 +260,13 @@ export default class Engine {
   historyBackStep(): void {
       this._historyMatrix.splice(this._stepsBack-1, 1);
       this._stepsBack -= 1;
-      if(this._stepsBack === 0) {
+
+      if(this._historyMatrix.length === 1) {
         this._isHistoryMove = false;
-        return;
+        this.historyButtonClick();
       }
-      console.log('history check')
-      console.log(this._historyMatrix)
-      console.log(this._stepsBack)
-      console.log(this._historyMatrix[this._stepsBack-1])
+      
       this._matrix = this.clonePrevMatrix(this._historyMatrix[this._stepsBack-1].historyMatrix)
-      console.log(this._matrix)
       this.render(true);
   }
 
@@ -601,10 +598,8 @@ export default class Engine {
     for (let i = 0; i<matrix.length; i++) {
       for (let j = 0; j<matrix[i].length; j++){
           if(matrix[i][j]) {
-            console.log(`i ${i} j${j}`)
-            console.log(matrix[i][j])
-            matrix[i][j].position = { x: j, y: i };
-            matrix[i][j].render(this.context);
+            matrix[i][j]!.position = { x: j, y: i };
+            matrix[i][j]!.render(this.context);
           }
       }
     }
@@ -618,6 +613,6 @@ export default class Engine {
     for (const listener of this.eventListeners) {
       document.removeEventListener('keydown', listener);
     }
-    this.historyBtn.removeEventListener('click', this.historyBackStep);
+    this.historyBtn.removeEventListener('click', this.historyBack);
   }
 }
