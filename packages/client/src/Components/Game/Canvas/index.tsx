@@ -16,6 +16,7 @@ const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
   const isNewMatrix = useAppSelector(store => store.modalSlice.isNewMatrix);
   const isOpenModalSuccess = useAppSelector(store => store.modalSlice.isOpenFailure);
   const isOpenModalFail = useAppSelector(store => store.modalSlice.isOpenSuccess);
+  const isContinuePlay = useAppSelector(store => store.modalSlice.isContinuePlay);
 
   const openSuccess = () => dispatch(openModalSuccess());
   const openFailure = () => dispatch(openModalFailure());
@@ -51,7 +52,7 @@ const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
 
 
       if (context) {
-        const engine = new Engine(context, canvas.offsetWidth, 4, openSuccess, openFailure, isOpenModalSuccess, isOpenModalFail);
+        const engine = new Engine(context, canvas.offsetWidth, 4, openSuccess, openFailure, isOpenModalSuccess, isOpenModalFail, isContinuePlay);
 
         return () => {
           engine.destroy();
@@ -59,7 +60,7 @@ const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
       }
     }
 
-  },[isNewMatrix]);
+  },[isNewMatrix, isContinuePlay]);
 
   return (
     <canvas ref={canvasRef} width={props.width} height={props.width}/>

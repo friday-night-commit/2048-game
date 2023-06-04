@@ -4,12 +4,14 @@ type modalState = {
   isOpenSuccess: boolean;
   isOpenFailure: boolean;
   isNewMatrix: boolean;
+  isContinuePlay: boolean;
 };
 
 const initialState: modalState = {
   isOpenSuccess: false,
   isOpenFailure: false,
   isNewMatrix: false,
+  isContinuePlay: false,
 };
 
 export const modalSlice = createSlice({
@@ -34,9 +36,27 @@ export const modalSlice = createSlice({
     wasRenewedMatrix(state) {
       state.isNewMatrix = false;
     },
+    continuePlay(state) {
+      state.isContinuePlay= true;
+      state.isOpenSuccess = false;
+      state.isOpenFailure = false;
+
+    },
+    stopPlay(state) {
+      state.isContinuePlay = false;
+    },
   }
 });
 
-export const { openModalSuccess, closeModalSuccess, openModalFailure, closeModalFailure, renewMatrix, wasRenewedMatrix } = modalSlice.actions;
+export const {
+  openModalSuccess,
+  closeModalSuccess,
+  openModalFailure,
+  closeModalFailure,
+  renewMatrix,
+  wasRenewedMatrix,
+  continuePlay,
+  stopPlay
+} = modalSlice.actions;
 
 export default modalSlice.reducer;

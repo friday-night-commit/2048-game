@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import Modal from '../../../../Components/Modal';
 
 import routes from '../../../../routes';
+import { useAppDispatch } from '../../../../hooks/redux';
+import { continuePlay } from '../../../../store/slices/Modal'
 
 type ModalProps = {
   open: boolean;
@@ -13,6 +15,9 @@ type ModalProps = {
 
 const SuccessModal: FC<ModalProps> = ({ open, handleOpen }) => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const handleContinuePlay = () => dispatch(continuePlay());
 
   return (
     <Modal
@@ -28,7 +33,7 @@ const SuccessModal: FC<ModalProps> = ({ open, handleOpen }) => {
         <div>
           <Button
             className='game-button small mr-4'
-            onClick={() => handleOpen()}>
+            onClick={ handleContinuePlay }>
             Продолжить игру
           </Button>
           <Button

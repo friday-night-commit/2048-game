@@ -68,6 +68,7 @@ export default class Engine {
   public _openFailure: () => void;
   private _openModalSuccess: boolean;
   private _openModalFail: boolean;
+  private _isContinuePlay: boolean;
 
   private readonly audioPlayer: AudioPlayer;
 
@@ -79,6 +80,7 @@ export default class Engine {
     openFailure: () => void,
     openModalSuccess: boolean,
     openModalFail: boolean,
+    isContinuePlay: boolean,
   ) {
 
     if (size < 2) {
@@ -90,6 +92,8 @@ export default class Engine {
     this._openFailure = openFailure;
     this._openModalSuccess = openModalSuccess;
     this._openModalFail = openModalFail;
+    this._isContinuePlay = isContinuePlay;
+
 
     this._matrix = Utils.generateMatrix(size);
     this._historyMatrix = [];
@@ -517,6 +521,7 @@ export default class Engine {
       this.render();
       this.addHistory();
     } else {
+
       if (this.score >= Engine.FINAL_SCORE) {
         this._openSuccess();
       } else {
@@ -535,7 +540,7 @@ export default class Engine {
 
   get isGameOver(): boolean {
     return (
-      this._score >= Engine.FINAL_SCORE || // 2048 reached OR
+      (this._score >= Engine.FINAL_SCORE && !this._isContinuePlay) || // 2048 reached and it is not game continue OR
       (!this.emptyCellExists && !this.hasCollisions) // no empty cell and possible moves
     );
   }
