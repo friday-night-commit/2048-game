@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { Fragment, useEffect, useRef } from 'react';
 import Engine from '../Engine';
 import { openModalFailure, openModalSuccess, wasRenewedMatrix } from '../../../store/slices/Modal';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -10,7 +10,7 @@ type CanvasProps = React.DetailedHTMLProps<
   width: number;
 };
 
-const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
+const Canvas:React.FC<CanvasProps> = ({ ..._props }) => {
   const canvasRef = useRef<HTMLCanvasElement | null >(null);
   const dispatch = useAppDispatch();
   const isNewMatrix = useAppSelector(store => store.modalSlice.isNewMatrix);
@@ -52,18 +52,30 @@ const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
 
 
       if (context) {
-        const engine = new Engine(context, canvas.offsetWidth, 4, openSuccess, openFailure, isOpenModalSuccess, isOpenModalFail, isContinuePlay);
+        const engine = new Engine(4, openSuccess, openFailure, isOpenModalSuccess, isOpenModalFail, isContinuePlay);
 
         return () => {
           engine.destroy();
         };
       }
+    } else {
+      // console.log('we are here');
+      const engine = new Engine(
+        4,
+        openSuccess,
+        openFailure,
+        isOpenModalSuccess,
+        isOpenModalFail,
+        isContinuePlay
+      );
+      engine.renderToDOM();
     }
 
   },[isNewMatrix, isContinuePlay]);
 
   return (
-    <canvas ref={canvasRef} width={props.width} height={props.width}/>
+    <Fragment />
+    // <canvas ref={canvasRef} width={props.width} height={props.width}/>
   );
 };
 

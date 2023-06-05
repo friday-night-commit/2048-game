@@ -37,7 +37,7 @@ const LISTENERS: Record<number, Direction> = {
 };
 
 export default class Engine {
-  static FINAL_SCORE = 2048;
+  static FINAL_SCORE = 32;
   static PIXELS_PER_FRAME = 25;
 
   protected readonly context: CanvasRenderingContext2D;
@@ -69,12 +69,13 @@ export default class Engine {
   private _openModalSuccess: boolean;
   private _openModalFail: boolean;
   private _isContinuePlay: boolean;
+  private _canvas: HTMLCanvasElement;
 
   private readonly audioPlayer: AudioPlayer;
 
   constructor(
-    context: CanvasRenderingContext2D,
-    canvasSize: number,
+    // context: CanvasRenderingContext2D,
+    // canvasSize: number,
     size: number,
     openSuccess: () => void,
     openFailure: () => void,
@@ -87,7 +88,12 @@ export default class Engine {
       throw Error('Invalid size for cell matrix');
     }
 
-    this.context = context;
+    this._canvas = document.createElement('canvas');
+    this._canvas.width = 500;
+    this._canvas.height = 500;
+    this.context = this._canvas.getContext('2d') as CanvasRenderingContext2D;
+
+    // this.context = context;
     this._openSuccess = openSuccess;
     this._openFailure = openFailure;
     this._openModalSuccess = openModalSuccess;
@@ -103,8 +109,8 @@ export default class Engine {
     this.historyBtn = document.getElementById('btn-step-back') as HTMLButtonElement;
 
     this._size = size;
-    this._canvasSize = canvasSize;
-    this.cellSize = canvasSize / size;
+    this._canvasSize = 500;
+    this.cellSize = 500 / size;
 
     this.requestId = 0;
 
@@ -270,7 +276,7 @@ export default class Engine {
         this.historyButtonClick();
       }
       
-      this._matrix = this.clonePrevMatrix(this._historyMatrix[this._stepsBack-1].historyMatrix)
+      this._matrix = this.clonePrevMatrix(this._historyMatrix[this._stepsBack-1].historyMatrix);
       this.render(true);
   }
 
@@ -619,5 +625,10 @@ export default class Engine {
       document.removeEventListener('keydown', listener);
     }
     this.historyBtn.removeEventListener('click', this.historyBack);
+  }
+
+  renderToDOM() {
+    const body = document.getElementById('insert-game') as HTMLElement;
+    body.appendChild(this._canvas);
   }
 }
