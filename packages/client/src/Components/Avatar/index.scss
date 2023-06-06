@@ -8,7 +8,7 @@
   @apply block rounded-full  relative overflow-hidden;
   @apply bg-no-repeat bg-center;
   
-  .not-found {
+  &.not-found {
     @apply bg-[url('../../assets/images/not-found.svg')];
   }
 

@@ -42,7 +42,7 @@ const Avatar: FC<AvatarProps> = ({ userAvatar }) => {
 
   return (
     <div>
-      <div className={`avatar-container ${!preview && 'not-found'}`}>
+      <div className={`avatar-container ${!userAvatar && 'not-found'}`}>
         <img className='avatar-container__image' src={preview} alt='photo' />
         <label className='avatar-container__file'>
           <span className='avatar-container__text'>
