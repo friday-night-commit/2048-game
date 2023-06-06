@@ -39,18 +39,16 @@ interface RenderBundleArguments {
   initialState: UserState;
 }
 
-export default (props: RenderBundleArguments) => {
+export default (props: RenderBundleArguments): string => {
   const bundleHtml = renderToString(
     <Bundle location={props.location} initialState={props.initialState} />
   );
   // eslint-disable-next-line no-console
   console.log('location', props.location);
-  return {
-    html: getPageHtml({
-      initialState: props.initialState,
-      bundleHtml,
-    }),
-  };
+  return getPageHtml({
+    initialState: props.initialState,
+    bundleHtml,
+  });
 };
 
 export const Bundle: React.FC<RenderBundleArguments> = props => {
@@ -59,7 +57,7 @@ export const Bundle: React.FC<RenderBundleArguments> = props => {
   return (
     <Provider store={store}>
       <StaticRouter location={location}>
-        <label>Test Bundle</label>
+  {/*    Here  SSR component */}
       </StaticRouter>
     </Provider>
   );

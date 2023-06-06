@@ -1,11 +1,11 @@
 import type { NextFunction, Request, Response } from 'express';
 
-import renderBundle from './bundle';
+import render from './bundle';
 import { initialUserState } from './initialStore';
 
 export default (req: Request, res: Response, next: NextFunction) => {
   const location = req.url;
-  const html = renderBundle({
+  const html = render({
     location,
     initialState: initialUserState, // Для примера
   });
