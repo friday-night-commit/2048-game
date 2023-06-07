@@ -4,11 +4,11 @@ import { AuthForm } from '../../Components/AuthForm';
 import CardContainer from '../../Components/CardContainer';
 
 import routes from '../../routes';
-import useAuth from '../../hooks/useAuth';
+import { useAppSelector } from '../../hooks/redux';
 
 export default function AuthPage() {
-  const { user } = useAuth();
   const navigate = useNavigate();
+  const user = useAppSelector(store => store.userSlice.user);
 
   if (user) navigate(`/${routes.mainPage}`);
 

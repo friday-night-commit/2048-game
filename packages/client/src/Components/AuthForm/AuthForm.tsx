@@ -7,7 +7,6 @@ import Input from '../Input';
 
 import routes from '../../routes';
 import useAuth from '../../hooks/useAuth';
-import { SigninData } from '../../api/AuthAPI';
 import { UserFields } from '../../pages/Profile/models/UserFields.enum';
 
 const AuthForm = function () {
