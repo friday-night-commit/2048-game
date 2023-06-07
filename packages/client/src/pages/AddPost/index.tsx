@@ -29,7 +29,8 @@ export const AddPostPage = () => {
         setPreview(uri);
       }
     } catch (e) {
-      setError(e);
+      const err = (e as Error).message;
+      setError(err);
     }
   }
 
@@ -54,9 +55,7 @@ export const AddPostPage = () => {
           />
         </div>
         <>
-          <Button
-            onClick={() => inputFileRef.current?.click()}
-            className='mb-2 mr-2'>
+          <Button onClick={() => inputFileRef.current} className='mb-2 mr-2'>
             Загрузить превью
           </Button>
           <input

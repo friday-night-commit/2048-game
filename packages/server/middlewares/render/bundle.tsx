@@ -1,10 +1,10 @@
-import htmlescape from 'htmlescape';
-import { renderToStaticMarkup, renderToString } from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import type React from 'react';
 import { StaticRouter } from 'react-router-dom/server';
 import { configureStore } from '@reduxjs/toolkit';
 import { userSlice, UserState } from './initialStore';
+import { Route, Routes } from 'react-router-dom';
 
 interface PageHtmlParams {
   bundleHtml: string;
@@ -13,24 +13,23 @@ interface PageHtmlParams {
 
 function getPageHtml(params: PageHtmlParams) {
   const { bundleHtml, initialState } = params;
-
-  const html = renderToStaticMarkup(
+  // eslint-disable-next-line no-console
+  console.log('bundleHtml', bundleHtml);
+  const html = `
     <html>
       <head>
-        <title>2048-Game</title>
+        <title>2048-Game SSR</title>
         <link rel='icon' type='image/svg+xml' href='/vite.svg' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </head>
       <body>
-        <div id='root' dangerouslySetInnerHTML={{ __html: bundleHtml }} />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `Client.default(${htmlescape(initialState)});`,
-          }}
-        />
+      <div id='root'>${bundleHtml}</div>
+        <script>
+          window.__INITIAL_STATE__ =${JSON.stringify(initialState)}
+        </script>
       </body>
     </html>
-  );
+  `;
   return `<!doctype html>${html}`;
 }
 
@@ -57,8 +56,21 @@ export const Bundle: React.FC<RenderBundleArguments> = props => {
   return (
     <Provider store={store}>
       <StaticRouter location={location}>
-  {/*    Here  SSR component */}
+        <SSR_APP_Component />
       </StaticRouter>
     </Provider>
+  );
+};
+
+const SSR_APP_Component = () => {
+  return (
+    <>
+      <Routes>
+        <Route
+          path='/'
+          element={<div>Here should be React Component From Client</div>}
+        />
+      </Routes>
+    </>
   );
 };
