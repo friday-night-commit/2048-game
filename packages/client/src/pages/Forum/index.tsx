@@ -10,7 +10,6 @@ import {
   Typography,
 } from '@material-tailwind/react';
 import { lastComments, posts, tags, userData } from './stubs';
-import React from 'react';
 import PageContainer from '../../Components/PageContainer';
 import { TagsBlock } from './components/TagsBlock';
 import { Post } from '../FullPost/components/Post';

@@ -13,59 +13,51 @@ import FullPost from './pages/FullPost';
 import NoMatch from './pages/NoMatch';
 
 import ProtectedRoute from './Components/ProtectedRoute';
-import App from './App';
 
-export default createBrowserRouter([
+export const routesArr = [
+  { path: `/${routes.authPage}`, element: <AuthPage /> },
+  { path: `/${routes.registerPage}`, element: <RegisterPage /> },
   {
-    path: '/',
-    element: <App />,
-    children: [
-      { path: routes.authPage, element: <AuthPage /> },
-      { path: routes.registerPage, element: <RegisterPage /> },
-      {
-        path: routes.profilePage,
-        element: (
-          <ProtectedRoute>
-            <ProfilePage />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: routes.mainPage,
-        element: (
-          <ProtectedRoute>
-            <MainPage />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: routes.gamePage,
-        element: (
-          <ProtectedRoute>
-            <GamePage />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: routes.leaderboardPage,
-        element: (
-          <ProtectedRoute>
-            <Leaderboard />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: routes.forumPage,
-        element: <ForumPage />,
-        // children: [
-        //   { path: `${routes.postsPage}/:id`, element: <FullPost /> }
-        // ],
-      },
-      {
-        path: `${routes.forumPage}${routes.postsPage}/:id`,
-        element: <FullPost />,
-      },
-    ],
+    path: `/${routes.profilePage}`,
+    element: (
+      <ProtectedRoute>
+        <ProfilePage />
+      </ProtectedRoute>
+    ),
   },
+  {
+    path: `/${routes.mainPage}`,
+    element: (
+      <ProtectedRoute>
+        <MainPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: `/${routes.gamePage}`,
+    element: (
+      <ProtectedRoute>
+        <GamePage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: `/${routes.leaderboardPage}`,
+    element: (
+      <ProtectedRoute>
+        <Leaderboard />
+      </ProtectedRoute>
+    ),
+  },
+  // {
+  //   path: `/${routes.forumPage}`,
+  //   element: <ForumPage />
+  // },
+  // {
+  //   path: `/${routes.forumPage}${routes.postsPage}/:id`,
+  //   element: <FullPost />,
+  // },
   { path: '*', element: <NoMatch /> },
-]);
+];
+
+// export default createBrowserRouter(routesArr);
