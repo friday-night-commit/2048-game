@@ -10,11 +10,7 @@ import App from './App-ssr';
 
 import './index.scss';
 
-const store = createStore(
-  window.__REDUX_INITIAL_STATE__
-    ? JSON.parse(window.__REDUX_INITIAL_STATE__)
-    : {}
-);
+const store = createStore(window.__REDUX_INITIAL_STATE__);
 delete window.__REDUX_INITIAL_STATE__;
 
 hydrateRoot(
