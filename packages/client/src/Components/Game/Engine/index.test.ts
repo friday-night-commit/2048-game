@@ -30,6 +30,7 @@ describe('Engine class', () => {
   beforeEach(() => {
     canvas = document.createElement('canvas');
     ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    document.body.innerHTML ='<button id="btn-step-back">Hello</button>';
   });
 
   // cannot test by snapshots because matrix generated with random initial state every time
