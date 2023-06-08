@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { hydrateRoot } from 'react-dom/client';
 import { ThemeProvider } from '@material-tailwind/react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
@@ -10,7 +10,7 @@ import './index.scss';
 import { initServiceWorker } from './ServiceWorkers/initServiceWorker';
 import App from './App-ssr';
 
-ReactDOM.hydrateRoot(
+hydrateRoot(
   document.getElementById('root') as HTMLElement,
   <React.StrictMode>
     <BrowserRouter>

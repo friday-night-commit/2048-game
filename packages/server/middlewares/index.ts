@@ -1,1 +1,1 @@
-export { default as renderSSR } from './render/render';
+export { default as renderSSR } from './render';
