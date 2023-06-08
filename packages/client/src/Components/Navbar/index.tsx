@@ -4,7 +4,6 @@ import { Link, NavLink } from 'react-router-dom';
 
 import routes from '../../routes';
 import './index.scss';
-import { useAppSelector } from '../../hooks/redux';
 
 type NavbarLinkProps = {
   url: string;
