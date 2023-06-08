@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { Typography } from '@material-tailwind/react';
-import { leaderboardUser } from '../../index';
 import './style.scss';
 
 type userScoreProps = {
@@ -11,7 +10,7 @@ type userScoreProps = {
 const UserScore: FC<userScoreProps> = ({ user, className }) => {
   return (
     <div className={`mb-4 p-1 leaderboard__el ${className}`}>
-      <Typography variant='h5' className='leaderboard__name font-medium'>
+      <Typography variant='h5' className='leaderboard__name flex font-medium'>
         {user.userImage && (
           <img
             className='leaderboard__image mr-3'

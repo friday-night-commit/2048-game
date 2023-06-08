@@ -3,38 +3,34 @@ import { Typography } from '@material-tailwind/react';
 import PageContainer from '../../Components/PageContainer';
 import UserScore from './components/UserScore';
 import Preloader from '../../Components/Preloader';
+import LeaderboardController from '../../Controllers/LeaderboardController';
+import { Link } from 'react-router-dom';
+import routes from '../../routes';
 
-export type leaderboardUser = {
-  userImage: string | undefined;
-  userName: string;
-  score: number;
+type pagination = {
+  limit: number;
+  cursor: number;
 };
 
 export default function LeaderboardPage() {
   const [leaderboard, setLeaderboard] = useState<leaderboardUser[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [pagination, setPagination] = useState<pagination>({
+    limit: 100,
+    cursor: 0,
+  });
 
   const getLeaderboard = useCallback(async () => {
-    // return mock data
-    let gotData: leaderboardUser[] = [
-      {
-        userImage:
-          'https://centauri-dreams.org/wp-content/uploads/2008/05/omega_centauri_2.jpg',
-        userName: 'user1',
-        score: 2048,
-      },
-      {
-        userImage:
-          'https://centauri-dreams.org/wp-content/uploads/2008/05/omega_centauri_2.jpg',
-        userName: 'user2',
-        score: 1024,
-      },
-      { userImage: undefined, userName: 'user3', score: 4096 },
-    ];
-    gotData = gotData.sort((a, b) => b.score - a.score);
-
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Эмуляция получения данных
-
-    return gotData;
+    const leaderboardData = await LeaderboardController.getData(
+      pagination.cursor,
+      pagination.limit
+    );
+    setPagination({
+      ...pagination,
+      cursor: pagination.cursor + leaderboardData.length,
+    });
+    setIsLoading(false);
+    return leaderboardData;
   }, []);
 
   useEffect(() => {
@@ -50,7 +46,7 @@ export default function LeaderboardPage() {
           Рейтинг игроков
         </Typography>
         {leaderboard?.map(user => {
-          return <UserScore user={user} key={user.userName} />;
+          return <UserScore user={user} key={user.userId} />;
         })}
       </div>
     );
@@ -59,7 +55,18 @@ export default function LeaderboardPage() {
   return (
     <PageContainer>
       <Preloader>
-        {leaderboard.length > 0 ? renderLeaderboard() : undefined}
+        {!isLoading ? (
+          leaderboard.length > 0 ? (
+            renderLeaderboard()
+          ) : (
+            <Typography variant='h3'>
+              В текущий момент в списке никого нет.{' '}
+              <Typography className='underline font-bold mt-4'>
+                <Link to={`/${routes.gamePage}`}>Вы можете стать первым!</Link>
+              </Typography>
+            </Typography>
+          )
+        ) : undefined}
       </Preloader>
     </PageContainer>
   );

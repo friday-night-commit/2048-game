@@ -69,6 +69,7 @@ export default class Engine {
   private _openModalSuccess: boolean;
   private _openModalFail: boolean;
   private _isContinuePlay: boolean;
+  private readonly _addUserToLeaderboard: (score: number) => void;
 
   private readonly audioPlayer: AudioPlayer;
 
@@ -81,6 +82,7 @@ export default class Engine {
     openModalSuccess: boolean,
     openModalFail: boolean,
     isContinuePlay: boolean,
+    addUserToLeaderboard: (score: number) => void
   ) {
 
     if (size < 2) {
@@ -94,6 +96,7 @@ export default class Engine {
     this._openModalFail = openModalFail;
     this._isContinuePlay = isContinuePlay;
 
+    this._addUserToLeaderboard = addUserToLeaderboard;
 
     this._matrix = Utils.generateMatrix(size);
     this._historyMatrix = [];
@@ -529,6 +532,7 @@ export default class Engine {
       }
 
       this.audioPlayer.getSoundByName(SoundNames.Victory).play();
+      this._addUserToLeaderboard(this.score);
     }
   }
 

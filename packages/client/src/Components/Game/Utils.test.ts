@@ -51,7 +51,9 @@ describe('Utils for game engine', () => {
 
     it('should return matrix of indefined values', () => {
       const result = Utils.generateMatrix();
-      const filtered = Array.prototype.concat.apply([], result).filter(el => el !== undefined);
+      const filtered = Array.prototype.concat
+        .apply([], result)
+        .filter(el => el !== undefined);
       expect(filtered).toHaveLength(0);
     });
 

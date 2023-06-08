@@ -1,20 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-interface User {
-  // Заменить на импорт из ветки FRI-31
-  id: number;
-  first_name: string;
-  second_name: string;
-  display_name: string;
-  login: string;
-  email: string;
-  phone: string;
-  avatar: string;
-  role?: string;
-}
-
 type userState = {
-  user: undefined | User;
+  user: User | undefined;
 };
 
 const initialState: userState = {

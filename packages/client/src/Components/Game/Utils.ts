@@ -10,7 +10,7 @@ export class Utils {
     if (difference < 0) {
       throw Error('Invalid min and max arguments');
     }
-  
+
     let rand = Math.random();
     rand = Math.floor(rand * difference);
     rand = rand + min;
