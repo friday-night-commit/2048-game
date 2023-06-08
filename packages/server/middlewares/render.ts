@@ -39,11 +39,10 @@ export default async (
     }
     const { render } = mod;
     const [initialState, appHtml] = await render(url);
-    const initStateSerialized = JSON.stringify(initialState);
 
     const html = template
       .replace('<!--ssr-outlet-->', appHtml)
-      .replace('<!--store-data-->', initStateSerialized);
+      .replace('<!--store-data-->', JSON.stringify(initialState));
 
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
   } catch (e) {
