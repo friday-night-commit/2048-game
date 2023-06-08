@@ -13,7 +13,7 @@ interface User {
   role?: string;
 }
 
-type userState = {
+export type userState = {
   user: undefined | User;
 };
 

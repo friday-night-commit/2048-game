@@ -1,14 +1,19 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 
-import userSlice from './slices/User';
-import modalSlice from './slices/Modal';
+import userSlice, { userState } from './slices/User';
+import modalSlice, { modalState } from './slices/Modal';
+
+export type StoreState = {
+  userSlice: userState,
+  modalSlice: modalState
+};
 
 const reducer = combineReducers({
   userSlice,
   modalSlice,
 });
 
-export const createStore = (preloadedState = {}) => {
+export const createStore = (preloadedState?: StoreState) => {
   return configureStore({
     reducer,
     preloadedState,
