@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import Engine from '../Engine';
 import { openModalFailure, openModalSuccess, wasRenewedMatrix } from '../../../store/slices/Modal';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { Utils } from '../Utils';
 
 type CanvasProps = React.DetailedHTMLProps<
   React.CanvasHTMLAttributes<HTMLCanvasElement>,
@@ -27,31 +28,7 @@ const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
     if (canvas) {
       const context = canvas.getContext('2d');
 
-      const toggler = document.getElementById('btn-fullscreen-mode') as HTMLButtonElement;
-      const navbar = document.getElementById('navbar-item-menu') as HTMLDivElement;
-
-      toggler.addEventListener('click', () => {
-        if (!document.fullscreenElement) {
-          activateFullscreen(document.documentElement);
-          toggler.textContent = 'Выключить полноэкранный режим';
-          toggler.style.border = '3px solid black';
-          navbar.style.display = 'none';
-        } else {
-          deactivateFullscreen();
-          toggler.textContent = 'Включить полноэкранный режим';
-          toggler.style.border = 'none';
-          navbar.style.display = 'block';
-        }
-      });
-
-      const activateFullscreen = (element: HTMLElement) => {
-        element.requestFullscreen();
-      };
-
-      const deactivateFullscreen = () => {
-        document.exitFullscreen();
-      };
-
+      Utils.fullscreenOpen('btn-fullscreen-mode');
 
       if (context) {
         const engine = new Engine(context, canvas.offsetWidth, 4, openSuccess, openFailure, isOpenModalSuccess, isOpenModalFail, isContinuePlay);

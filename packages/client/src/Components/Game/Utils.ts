@@ -22,4 +22,32 @@ export class Utils {
       Array.from({ length }, () => undefined)
     );
   }
+
+  static fullscreenOpen(idComponent: string): void {
+    const toggler = document.getElementById(idComponent) as HTMLButtonElement;
+    const navbar = document.getElementById('navbar-item-menu') as HTMLDivElement;
+
+    toggler.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        activateFullscreen(document.documentElement);
+        toggler.textContent = 'Выключить полноэкранный режим';
+        toggler.style.border = '3px solid black';
+        navbar.style.display = 'none';
+      } else {
+        deactivateFullscreen();
+        toggler.textContent = 'Включить полноэкранный режим';
+        toggler.style.border = 'none';
+        navbar.style.display = 'block';
+      }
+    });
+
+    const activateFullscreen = (element: HTMLElement) => {
+      element.requestFullscreen();
+    };
+
+    const deactivateFullscreen = () => {
+      document.exitFullscreen();
+    };
+
+  }
 }
