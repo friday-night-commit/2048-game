@@ -273,7 +273,7 @@ export default class Engine {
         this.historyButtonClick();
       }
       
-      this._matrix = this.clonePrevMatrix(this._historyMatrix[this._stepsBack-1].historyMatrix)
+      this._matrix = this.clonePrevMatrix(this._historyMatrix[this._stepsBack-1].historyMatrix);
       this.render(true);
   }
 

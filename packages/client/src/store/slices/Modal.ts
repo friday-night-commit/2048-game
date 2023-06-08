@@ -47,8 +47,6 @@ export const modalSlice = createSlice({
     },
   }
 });
-  },
-});
 
 // В дальнейшем при нужде изменить пользователя в store, необходимо:
 // 1) const dispatch = useAppDispatch();

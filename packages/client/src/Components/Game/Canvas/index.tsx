@@ -49,6 +49,9 @@ const Canvas: React.FC<CanvasProps> = ({ ...props }) => {
           4,
           openSuccess,
           openFailure,
+          isContinuePlay,
+          isOpenModalSuccess,
+          isOpenModalFail,
           addUserToLeaderboard
         );
 
