@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import router from './routes';
 
+import { createProxyMiddleware } from 'http-proxy-middleware';
 import path from 'node:path';
 import { distPath, initVite } from './services/init-vite';
 import { renderSSR } from './middlewares';
@@ -16,7 +17,17 @@ async function startServer() {
     .use(express.json())
     .use(cookieParser())
     .use(cors())
-    .use('/api', router);
+    .use('/api', router)
+    .use(
+      '/api/v2',
+      createProxyMiddleware({
+        changeOrigin: true,
+        cookieDomainRewrite: {
+          '*': '',
+        },
+        target: 'https://ya-praktikum.tech',
+      })
+    );
 
   const vite = await initVite(app);
 
