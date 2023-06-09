@@ -8,7 +8,7 @@ import Input from '../Input';
 import routes from '../../routes';
 import useAuth from '../../hooks/useAuth';
 import { UserFields } from '../../pages/Profile/models/UserFields.enum';
-import { getAppId, getRedirectUri } from '../../api/yandex';
+import { getAppId, getRedirectUri } from '../../Controllers/YandexController';
 
 const AuthForm = function () {
   const { login, loginError } = useAuth();

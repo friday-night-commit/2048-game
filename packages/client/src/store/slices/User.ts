@@ -4,7 +4,7 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-import { doLoginWithCode, logoutUser } from '../../api/yandex';
+import { doLoginWithCode, logoutUser } from '../../Controllers/YandexController';
 
 const initialState: userState = {
   user: undefined,
