@@ -25,7 +25,6 @@ export const createStore = (
   });
 };
 
-export const store = configureStore({ reducer });
-
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof reducer>;
+export type AppStore = ReturnType<typeof createStore>;
+export type AppDispatch = AppStore['dispatch'];

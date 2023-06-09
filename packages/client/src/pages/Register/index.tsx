@@ -6,21 +6,20 @@ import CardContainer from '../../Components/CardContainer';
 import { selectIsAuthenticated } from '../../store/slices/User';
 
 import routes from '../../routes';
-import Preloader from '../../Components/Preloader';
+import { useEffect } from 'react';
 
 export default function RegisterPage() {
-  const [completed, isAuthenticated] = useAppSelector(selectIsAuthenticated);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, isAuthenticated] = useAppSelector(selectIsAuthenticated);
   const navigate = useNavigate();
 
-  if (isAuthenticated) navigate(`/${routes.mainPage}`);
+  useEffect(() => {
+    if (isAuthenticated) navigate(`/${routes.mainPage}`);
+  }, [isAuthenticated]);
 
   return (
-    <Preloader>
-      {completed ? (
-        <CardContainer className='register-page'>
-          <RegisterForm />
-        </CardContainer>
-      ) : undefined}
-    </Preloader>
+    <CardContainer className='register-page'>
+      <RegisterForm />
+    </CardContainer>
   );
 }

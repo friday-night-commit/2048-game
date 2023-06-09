@@ -1,7 +1,6 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import router from './routes';
 
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import path from 'node:path';
@@ -13,27 +12,26 @@ const isDev = process.env.NODE_ENV === 'development';
 async function startServer() {
   const port = Number(process.env.SERVER_PORT) || 5000;
 
-  const app = express()
-    .use(express.json())
-    .use(cookieParser())
-    .use(cors())
-    .use('/api', router)
-    .use(
-      '/api/v2',
-      createProxyMiddleware({
-        changeOrigin: true,
-        cookieDomainRewrite: {
-          '*': '',
-        },
-        target: 'https://ya-praktikum.tech',
-      })
-    );
+  const app = express().use(cookieParser()).use(cors());
 
   const vite = await initVite(app);
 
   if (!isDev && !!distPath) {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')));
   }
+
+  app.use(
+    '/api/v2',
+    createProxyMiddleware({
+      changeOrigin: true,
+      cookieDomainRewrite: {
+        '*': '',
+      },
+      target: 'https://ya-praktikum.tech',
+    })
+  );
+
+  app.use(express.json());
 
   app.use('*', async (req, res, next) => renderSSR(req, res, next, vite));
 
@@ -43,4 +41,4 @@ async function startServer() {
   });
 }
 
-startServer().then();
+startServer();

@@ -5,10 +5,8 @@ export async function getAppId() {
   const response = await fetch(
     `${API_ROOT}/oauth/yandex/service-id?redirect_uri=${REDIRECT_URI}`
   );
-  const {
-    data: { service_id },
-  } = await response.json();
-  return service_id;
+  const data = await response.json();
+  return data['service_id'];
 }
 
 export function getRedirectUri() {

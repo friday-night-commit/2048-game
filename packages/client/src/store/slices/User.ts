@@ -31,7 +31,9 @@ const authByCode = createAsyncThunk<void, string>(
   'root/authByCode',
   async (code, { dispatch }) => {
     await doLoginWithCode(code);
-    dispatch(loadMe());
+    setTimeout(() => {
+      dispatch(loadMe());
+    }, 500);
   }
 );
 
@@ -45,7 +47,7 @@ const selectIsAuthenticated = createSelector(
   selectIsAuthCompleted,
   (userSlice, authCompleted) => [
     authCompleted,
-    authCompleted && userSlice.user !== undefined,
+    authCompleted && userSlice.user !== undefined && userSlice.user !== null,
   ]
 );
 

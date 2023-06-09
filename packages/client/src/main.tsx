@@ -14,7 +14,7 @@ import './index.scss';
 
 const store = createStore(
   new UserService(new YandexAPIRepository()),
-  window.__REDUX_INITIAL_STATE__
+  JSON.parse(window.__REDUX_INITIAL_STATE__)
 );
 delete window.__REDUX_INITIAL_STATE__;
 
