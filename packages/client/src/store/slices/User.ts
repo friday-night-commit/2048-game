@@ -11,7 +11,7 @@ interface User {
   phone: string;
   avatar: string;
   role?: string;
-};
+}
 
 export type userState = {
   user: undefined | User;
