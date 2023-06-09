@@ -55,7 +55,9 @@ export const AddPostPage = () => {
           />
         </div>
         <>
-          <Button onClick={() => inputFileRef.current} className='mb-2 mr-2'>
+          <Button
+            onClick={() => inputFileRef.current?.click()}
+            className='mb-2 mr-2'>
             Загрузить превью
           </Button>
           <input

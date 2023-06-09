@@ -67,7 +67,7 @@ const AuthForm = function () {
             name={UserFields.password}
             type='password'
             label='Пароль'
-            validationType='default'
+            validationType='password'
             onChange={e => updateInput(e)}
             required
             data-testid='password-input'

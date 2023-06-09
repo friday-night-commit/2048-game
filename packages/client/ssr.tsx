@@ -19,7 +19,6 @@ async function render(uri, repository) {
   }
   
   const initialState = store.getState();
-
   const renderResult = renderToString(
     <StaticRouter location={uri}>
       <Provider store={store}>

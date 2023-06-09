@@ -43,9 +43,12 @@ export const ChangePasswordModal: FC<TChangePasswordProps> = ({
       setError(error);
 
       if (!error) {
-        const response = await ProfileController.changePassword({ newPassword, oldPassword });
+        const response = await ProfileController.changePassword({
+          newPassword,
+          oldPassword,
+        });
 
-        if(response !== true && typeof response === 'string') {
+        if (response !== true && typeof response === 'string') {
           setError(response);
           return;
         }
