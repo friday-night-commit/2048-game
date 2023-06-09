@@ -30,7 +30,7 @@ export const AddPostPage = () => {
       }
     } catch (e) {
       const err = (e as Error).message;
-      setError(`${e}`);
+      setError(`${err}`);
     }
   }
 

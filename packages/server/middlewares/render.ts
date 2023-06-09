@@ -3,11 +3,12 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { distPath, srcPath, ssrClientPath } from '../services/init-vite';
 import type { ViteDevServer } from 'vite';
+import { YandexAPIRepository } from '../repository/YandexAPIRepository';
 
 const isDev = process.env.NODE_ENV === 'development';
 
 interface SSRModule {
-  render: (uri: string) => Promise<[Record<string, unknown>, string]>;
+  render: (uri: string, repository: any) => Promise<[Record<string, unknown>, string]>;
 }
 
 export default async (
@@ -38,7 +39,10 @@ export default async (
       mod = await import(ssrClientPath);
     }
     const { render } = mod;
-    const [initialState, appHtml] = await render(url);
+    const [initialState, appHtml] = await render(
+      url,
+      new YandexAPIRepository(req.headers?.cookie)
+    );
 
     const html = template
       .replace('<!--ssr-outlet-->', appHtml)

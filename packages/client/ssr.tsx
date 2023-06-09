@@ -5,9 +5,10 @@ import { Provider } from 'react-redux';
 
 import App from './src/App-ssr';
 import { createStore } from './src/store';
+import { UserService } from './src/api/UserService';
 
-async function render(uri) {
-  const store = createStore();
+async function render(uri, repository) {
+  const store = createStore(new UserService(repository));
   const initialState = store.getState();
 
   const renderResult = renderToString(

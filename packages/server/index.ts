@@ -11,7 +11,7 @@ import { renderSSR } from './middlewares';
 const isDev = process.env.NODE_ENV === 'development';
 
 async function startServer() {
-  const port = Number(process.env.SERVER_PORT) || 3001;
+  const port = Number(process.env.SERVER_PORT) || 5000;
 
   const app = express()
     .use(express.json())

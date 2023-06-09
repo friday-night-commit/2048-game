@@ -1,22 +1,27 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 
-import userSlice, { userState } from './slices/User';
-import modalSlice, { modalState } from './slices/Modal';
-
-export type StoreState = {
-  userSlice: userState,
-  modalSlice: modalState
-};
+import userSlice from './slices/User';
+import modalSlice from './slices/Modal';
 
 const reducer = combineReducers({
   userSlice,
   modalSlice,
 });
 
-export const createStore = (preloadedState?: StoreState) => {
+export const createStore = (
+  service: IUserService,
+  preloadedState?: StoreState
+) => {
   return configureStore({
     reducer,
     preloadedState,
+    middleware: getDefaultMiddleware => {
+      return getDefaultMiddleware({
+        thunk: {
+          extraArgument: service,
+        },
+      });
+    },
   });
 };
 

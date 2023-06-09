@@ -1,20 +1,21 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { useAppSelector } from '../../hooks/redux';
+import { selectIsAuthenticated } from '../../store/slices/User';
+import Preloader from '../Preloader';
 import routes from '../../routes';
-import useAuth from '../../hooks/useAuth';
 
 type ProtectedRouteProps = {
   children: JSX.Element | JSX.Element[];
 };
 
 const ProtectedRoute: FC<ProtectedRouteProps> = ({ children }) => {
-  const { user } = useAuth();
+  const [completed, isAuthenticated] = useAppSelector(selectIsAuthenticated);
   const navigate = useNavigate();
+  
+  if (!isAuthenticated) navigate(`/${routes.authPage}`);
 
-  if (!user) navigate(`/${routes.authPage}`);
-
-  return <>{children}</>;
+  return <Preloader>{completed ? children : undefined}</Preloader>;
 };
 
 export default ProtectedRoute;

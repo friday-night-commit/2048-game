@@ -1,10 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export type modalState = {
-  isOpenSuccess: boolean;
-  isOpenFailure: boolean;
-};
-
 const initialState: modalState = {
   isOpenSuccess: false,
   isOpenFailure: false,

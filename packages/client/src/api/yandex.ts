@@ -1,4 +1,4 @@
-const REDIRECT_URI = 'http://localhost:3000';
+const REDIRECT_URI = 'http://localhost:5000';
 const API_ROOT = `${REDIRECT_URI}/api/v2`;
 
 export async function getAppId() {
