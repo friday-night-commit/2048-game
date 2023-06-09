@@ -7,7 +7,6 @@ import Input from '../Input';
 
 import routes from '../../routes';
 import useAuth from '../../hooks/useAuth';
-import { SigninData } from '../../api/AuthAPI';
 import { UserFields } from '../../pages/Profile/models/UserFields.enum';
 
 const AuthForm = function () {
@@ -59,7 +58,7 @@ const AuthForm = function () {
             name={UserFields.password}
             type='password'
             label='Пароль'
-            validationType='password'
+            validationType='default'
             onChange={e => updateInput(e)}
             required
             data-testid='password-input'

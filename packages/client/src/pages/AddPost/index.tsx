@@ -10,7 +10,7 @@ export const AddPostPage = () => {
   // Как лучше использовать этот класс в компоненте реакта?
   const desktopNotification = new DesktopNotification().init();
 
-  const inputFileRef = useRef(null);
+  const inputFileRef = useRef<HTMLInputElement>(null);
 
   const [preview, setPreview] = useState('');
   const [error, setError] = useState('');
@@ -29,8 +29,7 @@ export const AddPostPage = () => {
         setPreview(uri);
       }
     } catch (e) {
-      const err = (e as Error).message;
-      setError(err);
+      setError(`${e}`);
     }
   }
 
@@ -55,7 +54,9 @@ export const AddPostPage = () => {
           />
         </div>
         <>
-          <Button onClick={() => inputFileRef.current} className='mb-2 mr-2'>
+          <Button
+            onClick={() => inputFileRef.current?.click()}
+            className='mb-2 mr-2'>
             Загрузить превью
           </Button>
           <input

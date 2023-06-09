@@ -59,6 +59,7 @@ export default class Engine {
 
   public _openSuccess: () => void;
   public _openFailure: () => void;
+  private readonly _addUserToLeaderboard: (score: number) => void;
 
   private readonly audioPlayer: AudioPlayer;
 
@@ -67,7 +68,8 @@ export default class Engine {
     canvasSize: number,
     size: number,
     openSuccess: () => void,
-    openFailure: () => void
+    openFailure: () => void,
+    addUserToLeaderboard: (score: number) => void
   ) {
     if (size < 2) {
       throw Error('Invalid size for cell matrix');
@@ -76,6 +78,7 @@ export default class Engine {
     this.context = context;
     this._openSuccess = openSuccess;
     this._openFailure = openFailure;
+    this._addUserToLeaderboard = addUserToLeaderboard;
 
     this._matrix = Utils.generateMatrix(size);
     this._historyMatrix = Utils.generateMatrix(size);
@@ -477,6 +480,7 @@ export default class Engine {
       }
 
       this.audioPlayer.getSoundByName(SoundNames.Victory).play();
+      this._addUserToLeaderboard(this.score);
     }
   }
 

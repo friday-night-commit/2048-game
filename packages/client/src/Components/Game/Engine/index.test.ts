@@ -9,7 +9,8 @@ const createEngine = (ctx: CanvasRenderingContext2D, size = 2): Engine =>
     100,
     size,
     () => {},
-    () => {}
+    () => {},
+    () => {},
   );
 
 describe('Engine class', () => {
