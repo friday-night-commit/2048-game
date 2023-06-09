@@ -4,11 +4,14 @@ import { ThemeProvider } from '@material-tailwind/react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
-import { store } from './store';
-
-import './index.scss';
+import { createStore } from './store';
 import { initServiceWorker } from './ServiceWorkers/initServiceWorker';
 import App from './App-ssr';
+
+import './index.scss';
+
+const store = createStore(window.__REDUX_INITIAL_STATE__);
+delete window.__REDUX_INITIAL_STATE__;
 
 hydrateRoot(
   document.getElementById('root') as HTMLElement,
