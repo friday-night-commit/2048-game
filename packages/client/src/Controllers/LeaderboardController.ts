@@ -1,13 +1,13 @@
 import LeaderboardAPI from '../api/LeaderboardAPI';
 
 class LeaderboardController {
-	async addRecord(leaderboardUser: leaderboardUser) {
-		try {
-			await LeaderboardAPI.addUser(leaderboardUser);
-		} catch(err) {
-			alert(err);
-		}
-	}
+  async addRecord(leaderboardUser: leaderboardUser) {
+    try {
+      await LeaderboardAPI.addUser(leaderboardUser);
+    } catch (err) {
+      alert(err);
+    }
+  }
 
   async getData(cursor: number, limit: number): Promise<leaderboardUser[]> {
     const resultData: leaderboardUser[] = [];
@@ -20,7 +20,7 @@ class LeaderboardController {
           userImage,
           userName,
           userId,
-          timestamp
+          timestamp,
         });
       }
     } catch (err) {

@@ -31,7 +31,7 @@ const Input: FC<InputProps> = ({
   const [inputValue, setInputValue] = useState(value || '');
 
   useEffect(() => {
-    if(value) {
+    if (value) {
       setInputValue(value);
     }
   }, [value]);
@@ -51,7 +51,7 @@ const Input: FC<InputProps> = ({
     if (onChange) onChange(e);
   },
   []);
-  
+
   return (
     <div className='default-input'>
       <TWInput

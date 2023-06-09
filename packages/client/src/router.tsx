@@ -10,8 +10,6 @@ import NoMatch from './pages/NoMatch';
 
 import ProtectedRoute from './Components/ProtectedRoute';
 
-
-
 export const routesArr = [
   { path: `/${routes.authPage}`, element: <AuthPage /> },
   { path: `/${routes.registerPage}`, element: <RegisterPage /> },

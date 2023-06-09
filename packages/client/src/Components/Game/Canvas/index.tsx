@@ -23,17 +23,20 @@ const Canvas: React.FC<CanvasProps> = ({ ...props }) => {
 
   const user = useAppSelector(store => store.userSlice.user);
 
-  const addUserToLeaderboard = useCallback(async (score: number) => {
-    if(user === undefined) return;
+  const addUserToLeaderboard = useCallback(
+    async (score: number) => {
+      if (user === undefined) return;
 
-    return await LeaderboardController.addRecord({
-      userId: user.id,
-      userImage: user.avatar,
-      score,
-      userName: user.display_name || user.first_name ,
-      timestamp: Date.now()
-    });
-  }, [user]);
+      return await LeaderboardController.addRecord({
+        userId: user.id,
+        userImage: user.avatar,
+        score,
+        userName: user.display_name || user.first_name,
+        timestamp: Date.now(),
+      });
+    },
+    [user]
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current;
