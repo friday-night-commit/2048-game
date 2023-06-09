@@ -1,0 +1,183 @@
+/* Colors */
+/* Game tile colors */
+/* Variables */
+/* Mixins */
+.default-input {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 8px;
+}
+.default-input:hover {
+    border-color: rgb(143, 122, 102);
+}
+.default-input__error {
+    font-size: 14px;
+    color: rgb(246, 94, 59);
+    opacity: 0.8;
+}.card-container {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     min-height: 100vh;
+     background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+     background-size: 400% 400%;
+     animation: gradient 15s ease infinite;
+ }
+
+@keyframes gradient {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}/* Colors */
+/* Game tile colors */
+/* Variables */
+/* Mixins */
+.navbar {
+    color: rgb(119, 110, 101);
+}
+.navbar a {
+    color: rgb(143, 122, 102);
+}
+.navbar a:hover {
+    color: #5b554e;
+}
+.navbar a.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+.navbar a.title {
+    font-size: 80px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+.navbar a.title:hover {
+    color: rgb(245, 149, 99);
+}
+.navbar .score-container {
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+    background: rgb(245, 149, 99);
+    padding: 15px 25px;
+    border-radius: 3px;
+}/* Colors */
+/* Game tile colors */
+/* Variables */
+/* Mixins */
+.page-container {
+    padding: 2em;
+}
+.page-container .game-page-container {
+    width: 500px;
+    margin: auto;
+}
+.page-container .game-page-container.large {
+    width: 1000px;
+}
+.page-container .game-modal .title,
+.page-container .game-modal .content {
+    color: rgb(119, 110, 101);
+}
+.page-container .game-button {
+    line-height: 28px;
+    font-size: 28px;
+    background: rgb(143, 122, 102);
+    border-width: 0px;
+    box-shadow: none;
+}
+.page-container .game-button:hover {
+    box-shadow: 2px 2px 6px #bbada0 !important;
+}
+.page-container .game-button.small {
+    line-height: 12px;
+    font-size: 12px;
+}
+.page-container .game-button.alert {
+    background: rgb(245, 149, 99);
+}
+.page-container h5 a {
+    text-decoration: underline;
+    font-weight: bold;
+}
+.page-container h5 a:hover {
+    color: #5b554e;
+}/* Colors */
+/* Game tile colors */
+/* Variables */
+/* Mixins */
+.game-container {
+    background: rgb(187, 173, 160);
+    border-radius: 10px;
+    width: 500px;
+    height: 500px;
+}/* Colors */
+/* Game tile colors */
+/* Variables */
+/* Mixins */
+.leaderboard__el {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    grid-gap: 2rem;
+    border-bottom: 1px solid rgb(143, 122, 102);
+}
+.leaderboard__image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    -o-object-position: center;
+    object-position: center;
+}
+.leaderboard__name {
+    align-items: center;
+}/* Colors */
+/* Game tile colors */
+/* Variables */
+/* Mixins */
+.avatar-container {
+    width: 240px;
+    height: 240px;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: 9999px;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+DQogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSIxMDAiIGZpbGw9InJnYigyNDUsIDE0OSwgOTkpIi8+DQogICAgPHBhdGggZD0iTTE0Ni4zNTIgNjYuNzY5MkgxMjguMjVMMTIzLjkzNyA1NC43OTU2QzEyMy42NCA1My45NzYzIDEyMy4wOTQgNTMuMjY4MSAxMjIuMzc0IDUyLjc2NzdDMTIxLjY1NSA1Mi4yNjczIDEyMC43OTcgNTEuOTk5MiAxMTkuOTE4IDUySDc5LjA4MjJDNzcuMjg1MyA1MiA3NS42NzQ4IDUzLjEyMDkgNzUuMDc1OCA1NC43OTU2TDcwLjc1IDY2Ljc2OTJINTIuNjQ4MUM0Ni43NjUgNjYuNzY5MiA0MiA3MS40OTAxIDQyIDc3LjMxODdWMTM3LjQ1MUM0MiAxNDMuMjc5IDQ2Ljc2NSAxNDggNTIuNjQ4MSAxNDhIMTQ2LjM1MkMxNTIuMjM1IDE0OCAxNTcgMTQzLjI3OSAxNTcgMTM3LjQ1MVY3Ny4zMTg3QzE1NyA3MS40OTAxIDE1Mi4yMzUgNjYuNzY5MiAxNDYuMzUyIDY2Ljc2OTJaTTk5LjUgMTI2LjkwMUM4Ny43MzM4IDEyNi45MDEgNzguMjAzNyAxMTcuNDU5IDc4LjIwMzcgMTA1LjgwMkM3OC4yMDM3IDk0LjE0NTEgODcuNzMzOCA4NC43MDMzIDk5LjUgODQuNzAzM0MxMTEuMjY2IDg0LjcwMzMgMTIwLjc5NiA5NC4xNDUxIDEyMC43OTYgMTA1LjgwMkMxMjAuNzk2IDExNy40NTkgMTExLjI2NiAxMjYuOTAxIDk5LjUgMTI2LjkwMVpNODYuNzIyMiAxMDUuODAyQzg2LjcyMjIgMTA5LjE2IDg4LjA2ODQgMTEyLjM4IDkwLjQ2NDcgMTE0Ljc1NEM5Mi44NjEgMTE3LjEyOCA5Ni4xMTExIDExOC40NjIgOTkuNSAxMTguNDYyQzEwMi44ODkgMTE4LjQ2MiAxMDYuMTM5IDExNy4xMjggMTA4LjUzNSAxMTQuNzU0QzExMC45MzIgMTEyLjM4IDExMi4yNzggMTA5LjE2IDExMi4yNzggMTA1LjgwMkMxMTIuMjc4IDEwMi40NDUgMTEwLjkzMiA5OS4yMjQ4IDEwOC41MzUgOTYuODUwN0MxMDYuMTM5IDk0LjQ3NjYgMTAyLjg4OSA5My4xNDI5IDk5LjUgOTMuMTQyOUM5Ni4xMTExIDkzLjE0MjkgOTIuODYxIDk0LjQ3NjYgOTAuNDY0NyA5Ni44NTA3Qzg4LjA2ODQgOTkuMjI0OCA4Ni43MjIyIDEwMi40NDUgODYuNzIyMiAxMDUuODAyWiINCiAgICAgICAgICBmaWxsPSJ3aGl0ZSIvPg0KPC9zdmc+DQo=");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.avatar-container__image {
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    display: block;
+}
+.avatar-container__file {
+    opacity: 0;
+    cursor: pointer;
+    background-color: rgb(143, 122, 102);
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    transition: opacity 0.3s;
+    display: flex;
+    position: absolute;
+    inset: 0;
+}
+.avatar-container__text {
+    color: rgb(245, 149, 99);
+}
