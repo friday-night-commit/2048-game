@@ -42,7 +42,7 @@ const Canvas:React.FC<CanvasProps> = ({ ...props }) => {
   },[isNewMatrix, isContinuePlay]);
 
   return (
-    <canvas ref={canvasRef} width={props.width} height={props.width}/>
+    <canvas ref={canvasRef} width={props.width} height={props.width} id='canvas-game'/>
   );
 };
 

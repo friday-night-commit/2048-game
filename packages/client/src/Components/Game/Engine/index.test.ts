@@ -9,7 +9,10 @@ const createEngine = (ctx: CanvasRenderingContext2D, size = 2): Engine =>
     100,
     size,
     () => {},
-    () => {}
+    () => {},
+    false,
+    false,
+    false
   );
 
 describe('Engine class', () => {
@@ -46,7 +49,7 @@ describe('Engine class', () => {
     engine = createEngine(ctx, 6);
 
     expect(engine.size).toBe(6);
-    expect(Utils.generateMatrix).toBeCalledTimes(2);
+    expect(Utils.generateMatrix).toBeCalledTimes(1);
     expect(Utils.generateMatrix).toBeCalledWith(6);
 
     spy.mockClear();
