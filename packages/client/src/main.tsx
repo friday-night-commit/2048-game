@@ -12,9 +12,16 @@ import { UserService } from './api/UserService';
 
 import './index.scss';
 
+let initialState = {};
+try {
+  initialState = JSON.parse(window.__REDUX_INITIAL_STATE__);
+} catch (e) {
+  //
+}
+
 const store = createStore(
   new UserService(new YandexAPIRepository()),
-  JSON.parse(window.__REDUX_INITIAL_STATE__)
+  initialState as StoreState
 );
 delete window.__REDUX_INITIAL_STATE__;
 

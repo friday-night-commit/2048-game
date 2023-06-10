@@ -54,7 +54,7 @@ export default async (
 
     const html = template
       .replace('<!--ssr-outlet-->', appHtml)
-      .replace('<!--store-data-->', JSON.stringify(initStateSerialized));
+      .replace('<!--store-data-->', initStateSerialized);
 
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
   } catch (e) {
