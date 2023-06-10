@@ -1,4 +1,4 @@
-const REDIRECT_URI = 'http://localhost:5000';
+import { API_URL as REDIRECT_URI } from '../api/consts';
 const API_ROOT = `${REDIRECT_URI}/api/v2`;
 
 export class YandexAPIRepository implements UserRepository {
