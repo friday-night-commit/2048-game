@@ -9,10 +9,21 @@ import ProfilePage from './pages/Profile';
 import NoMatch from './pages/NoMatch';
 
 import ProtectedRoute from './Components/ProtectedRoute';
+import { loadMe } from './store/slices/User';
+import { AppDispatch } from './store';
+
+const commonLoader = (dispatch: AppDispatch) => {
+  return dispatch(loadMe());
+};
 
 export const routesArr = [
-  { path: `/${routes.authPage}`, element: <AuthPage /> },
-  { path: `/${routes.registerPage}`, element: <RegisterPage /> },
+  { path: '/', element: <></>, loader: commonLoader },
+  { path: `/${routes.authPage}`, element: <AuthPage />, loader: commonLoader },
+  {
+    path: `/${routes.registerPage}`,
+    element: <RegisterPage />,
+    loader: commonLoader,
+  },
   {
     path: `/${routes.profilePage}`,
     element: (
@@ -20,6 +31,7 @@ export const routesArr = [
         <ProfilePage />
       </ProtectedRoute>
     ),
+    loader: commonLoader,
   },
   {
     path: `/${routes.mainPage}`,
@@ -28,6 +40,7 @@ export const routesArr = [
         <MainPage />
       </ProtectedRoute>
     ),
+    loader: commonLoader,
   },
   {
     path: `/${routes.gamePage}`,
@@ -36,6 +49,7 @@ export const routesArr = [
         <GamePage />
       </ProtectedRoute>
     ),
+    loader: commonLoader,
   },
   {
     path: `/${routes.leaderboardPage}`,
@@ -44,6 +58,7 @@ export const routesArr = [
         <Leaderboard />
       </ProtectedRoute>
     ),
+    loader: commonLoader,
   },
   // {
   //   path: `/${routes.forumPage}`,

@@ -29,7 +29,8 @@ export const AddPostPage = () => {
         setPreview(uri);
       }
     } catch (e) {
-      setError(`${e}`);
+      const err = (e as Error).message;
+      setError(`${err}`);
     }
   }
 

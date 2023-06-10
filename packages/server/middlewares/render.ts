@@ -3,11 +3,16 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { distPath, srcPath, ssrClientPath } from '../services/init-vite';
 import type { ViteDevServer } from 'vite';
+import { YandexAPIRepository } from '../repository/YandexAPIRepository';
+import jsesc from 'jsesc';
 
 const isDev = process.env.NODE_ENV === 'development';
 
 interface SSRModule {
-  render: (uri: string) => Promise<[Record<string, unknown>, string]>;
+  render: (
+    uri: string,
+    repository: any
+  ) => Promise<[Record<string, unknown>, string]>;
 }
 
 export default async (
@@ -29,7 +34,6 @@ export default async (
     }
 
     let mod: SSRModule;
-
     if (isDev && vite) {
       mod = (await vite.ssrLoadModule(
         path.resolve(srcPath, 'ssr.tsx')
@@ -38,11 +42,19 @@ export default async (
       mod = await import(ssrClientPath);
     }
     const { render } = mod;
-    const [initialState, appHtml] = await render(url);
+    const [initialState, appHtml] = await render(
+      url,
+      new YandexAPIRepository(req.headers?.cookie)
+    );
+
+    const initStateSerialized = jsesc(initialState, {
+      json: true,
+      isScriptContext: true,
+    });
 
     const html = template
       .replace('<!--ssr-outlet-->', appHtml)
-      .replace('<!--store-data-->', JSON.stringify(initialState));
+      .replace('<!--store-data-->', initStateSerialized);
 
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
   } catch (e) {
