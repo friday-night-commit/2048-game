@@ -8,7 +8,7 @@ const options: OptionsType = {
 };
 
 export class AuthAPI {
-  private endpoint = `${API_URL}/auth`;
+  private endpoint = `${API_URL}/api/v2/auth`;
 
   async signup(data: SignupData) {
     const response = await fetch(`${this.endpoint}/signup`, {

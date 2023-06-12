@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:ssr": "tsc && vite build --config ssr.config.ts",
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -12,6 +13,7 @@
   },
   "dependencies": {
     "@material-tailwind/react": "1.4.2",
+    "@types/mocha": "^10.0.1",
     "dotenv": "16.0.2",
     "eslint-config-prettier": "8.5.0",
     "moment": "^2.29.4",

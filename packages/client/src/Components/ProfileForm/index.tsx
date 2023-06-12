@@ -29,24 +29,24 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
 
   const currentUser = useAppSelector(store => store.userSlice.user);
 
-  const handleSubmit = useCallback(async function (
-    e: React.FormEvent<HTMLFormElement>
-  ) {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const userData: Partial<User> = {};
-    for(const pair of formData.entries()) {
-      const [key, value] = pair as [UserFields, string];
-      // @ts-ignore
-      userData[key] = value;
-    }
-    
-    const updatedUser = await ProfileController.changeUser(userData);
-    if (updatedUser) {
-      dispatch(setUser(updatedUser));
-    }
-  },
-  [currentUser]);
+  const handleSubmit = useCallback(
+    async function (e: React.FormEvent<HTMLFormElement>) {
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+      const userData: Partial<User> = {};
+      for (const pair of formData.entries()) {
+        const [key, value] = pair as [UserFields, string];
+        // @ts-ignore
+        userData[key] = value;
+      }
+
+      const updatedUser = await ProfileController.changeUser(userData);
+      if (updatedUser) {
+        dispatch(setUser(updatedUser));
+      }
+    },
+    [currentUser]
+  );
 
   return (
     <form className='w-full' onSubmit={handleSubmit}>

@@ -10,7 +10,7 @@ const options: OptionsType = {
 };
 
 class LeaderboardAPI {
-  private endpoint = `${API_URL}/leaderboard`;
+  private endpoint = `${API_URL}/api/v2/leaderboard`;
   private teamName = 'fridaynightcommit';
   private ratingSortField = 'score';
 
@@ -33,7 +33,7 @@ class LeaderboardAPI {
 
     return true;
   }
-  
+
   async getLeaderboard(cursor = 0, limit = 10): leaderboardAPIData {
     const data = { ratingFieldName: this.ratingSortField, cursor, limit };
     const endpoint = `${this.endpoint}/${this.teamName}`;
