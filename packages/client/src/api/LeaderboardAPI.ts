@@ -10,7 +10,7 @@ const options: OptionsType = {
 };
 
 class LeaderboardAPI {
-  private endpoint = `${API_URL}/leaderboard`;
+  private endpoint = `${API_URL}/api/v2/leaderboard`;
   private teamName = 'fridaynightcommit';
   private ratingSortField = 'score';
 

@@ -8,7 +8,7 @@ const options: OptionsType = {
 };
 
 class UserAPI {
-  private endpoint = `${API_URL}/user`;
+  private endpoint = `${API_URL}/api/v2/user`;
 
   async changeUser(data: Partial<User>): Promise<User | never> {
     const response = await fetch(`${this.endpoint}/profile`, {
