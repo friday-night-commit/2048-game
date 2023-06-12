@@ -9,6 +9,8 @@ import FailureModal from './components/FailureModal';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { closeModalFailure, closeModalSuccess } from '../../store/slices/Modal';
 
+import Engine from '../../Components/Game/Engine';
+
 export default function GamePage() {
   const modalSuccess = useAppSelector(store => store.modalSlice.isOpenSuccess);
   const modalFailure = useAppSelector(store => store.modalSlice.isOpenFailure);
@@ -32,7 +34,7 @@ export default function GamePage() {
               </Typography>
             </div>
             <div>
-              <Button className='game-button small mr-4' id='btn-step-back'>
+              <Button className='game-button small mr-4' id='btn-step-back' onClick={() => Engine.clear()}>
                 Шаг назад
               </Button>
               {/* [just for tests] open modal on restart click */}

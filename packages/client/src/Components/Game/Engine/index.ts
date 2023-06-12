@@ -34,11 +34,11 @@ const LISTENERS: Record<number, Direction> = {
   40: Direction.DOWN,
 };
 
-export default class Engine {
+export class Engine {
   static FINAL_SCORE = 2048;
   static PIXELS_PER_FRAME = 25;
 
-  protected readonly context: CanvasRenderingContext2D;
+  private _context: CanvasRenderingContext2D | undefined;
   private _score = 0;
   private _matrix: MatrixArray;
   private _historyMatrix: MatrixArray;
@@ -64,7 +64,7 @@ export default class Engine {
   private readonly audioPlayer: AudioPlayer;
 
   constructor(
-    context: CanvasRenderingContext2D,
+    // _context: CanvasRenderingContext2D,
     canvasSize: number,
     size: number,
     openSuccess: () => void,
@@ -75,7 +75,7 @@ export default class Engine {
       throw Error('Invalid size for cell matrix');
     }
 
-    this.context = context;
+    // this._context = _context;
     this._openSuccess = openSuccess;
     this._openFailure = openFailure;
     this._addUserToLeaderboard = addUserToLeaderboard;
@@ -103,10 +103,16 @@ export default class Engine {
     this.init();
   }
 
+  set context(context: CanvasRenderingContext2D) {
+    this._context = context;
+  };
+
   init() {
-    this.createListeners();
-    this.render();
-    this.audioPlayer.init().then();
+    if (this._context) {
+      this.createListeners();
+      this.render();
+      this.audioPlayer.init().then();
+    }
   }
 
   get size(): number {
@@ -130,7 +136,7 @@ export default class Engine {
         case Direction.LEFT:
           if (cell.x && newPosX < cell.x) {
             animationCell.update(
-              this.context,
+              this._context as CanvasRenderingContext2D,
               cell.x,
               cell.y,
               value,
@@ -145,7 +151,7 @@ export default class Engine {
         case Direction.RIGHT:
           if (cell.x <= this._canvasSize && newPosX > cell.x) {
             animationCell.update(
-              this.context,
+              this._context as CanvasRenderingContext2D,
               cell.x,
               cell.y,
               value,
@@ -160,7 +166,7 @@ export default class Engine {
         case Direction.UP:
           if (cell.y && newPosY < cell.y) {
             animationCell.update(
-              this.context,
+              this._context as CanvasRenderingContext2D,
               cell.x,
               cell.y,
               value,
@@ -175,7 +181,7 @@ export default class Engine {
         case Direction.DOWN:
           if (cell.y <= this._canvasSize && newPosY >= cell.y) {
             animationCell.update(
-              this.context,
+              this._context as CanvasRenderingContext2D,
               cell.x,
               cell.y,
               value,
@@ -195,7 +201,7 @@ export default class Engine {
 
   endingAnimation(cell: AnimationCell, delta: number): void {
     cell.cell.update(
-      this.context,
+      this._context as CanvasRenderingContext2D,
       cell.newX,
       cell.newY,
       cell.newValue,
@@ -498,35 +504,38 @@ export default class Engine {
   }
 
   drawGrid(): void {
+    if (!this._context) return;
+
     const w = this._canvasSize;
     const h = this._canvasSize;
     const step = this.cellSize;
 
-    this.context.beginPath();
-    this.context.fillStyle = this.background;
+    this._context.beginPath();
+    this._context.fillStyle = this.background;
 
     for (let x = 0; x <= w; x += step) {
-      this.context.moveTo(x, 0);
-      this.context.lineTo(x, h);
+      this._context.moveTo(x, 0);
+      this._context.lineTo(x, h);
     }
-    this.context.font = this.fontText;
+    this._context.font = this.fontText;
 
-    this.context.strokeStyle = this.border;
-    this.context.lineWidth = this.widthBorder;
-    this.context.stroke();
+    this._context.strokeStyle = this.border;
+    this._context.lineWidth = this.widthBorder;
+    this._context.stroke();
 
-    this.context.beginPath();
+    this._context.beginPath();
     for (let y = 0; y <= h; y += step) {
-      this.context.moveTo(0, y);
-      this.context.lineTo(w, y);
+      this._context.moveTo(0, y);
+      this._context.lineTo(w, y);
     }
-    this.context.strokeStyle = this.border;
-    this.context.lineWidth = this.widthBorder;
-    this.context.stroke();
+    this._context.strokeStyle = this.border;
+    this._context.lineWidth = this.widthBorder;
+    this._context.stroke();
   }
 
   clear() {
-    this.context.clearRect(0, 0, this._canvasSize, this._canvasSize);
+    if (!this._context) return;
+    this._context.clearRect(0, 0, this._canvasSize, this._canvasSize);
   }
 
   render(history?: boolean) {
@@ -542,10 +551,11 @@ export default class Engine {
   }
 
   renderCells(matrix: MatrixArray) {
+    if (!this._context) return;
     for (const row of matrix) {
       for (const cell of row) {
         if (cell) {
-          cell.render(this.context);
+          cell.render(this._context);
         }
       }
     }
@@ -561,3 +571,5 @@ export default class Engine {
     }
   }
 }
+
+export default new Engine(500, 4, () => {}, () => {}, () => {});
