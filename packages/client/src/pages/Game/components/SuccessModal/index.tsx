@@ -6,7 +6,7 @@ import Modal from '../../../../Components/Modal';
 
 import routes from '../../../../routes';
 import { useAppDispatch } from '../../../../hooks/redux';
-import { continuePlay } from '../../../../store/slices/Modal'
+import { continuePlay } from '../../../../store/slices/Modal';
 
 type ModalProps = {
   open: boolean;

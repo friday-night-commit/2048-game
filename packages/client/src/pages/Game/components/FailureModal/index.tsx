@@ -31,7 +31,7 @@ const FailureModal: FC<ModalProps> = ({ open, handleOpen }) => {
           Ну что, еще поборемся за <b>2048</b>??
         </Typography>
         <div>
-          <Button className='game-button small' onClick={ refreshPage }>
+          <Button className='game-button small' onClick={refreshPage}>
             Начать сначала
           </Button>
         </div>

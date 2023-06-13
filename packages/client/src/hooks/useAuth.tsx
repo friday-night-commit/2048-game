@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import AuthAPI, { SigninData, SignupData, User } from '../api/AuthAPI';
+import AuthAPI from '../api/AuthAPI';
 import { useAppSelector, useAppDispatch } from './redux';
 import { setUser, clearUser } from '../store/slices/User';
 import routes from '../routes';

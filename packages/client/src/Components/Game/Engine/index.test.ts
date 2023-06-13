@@ -12,7 +12,8 @@ const createEngine = (ctx: CanvasRenderingContext2D, size = 2): Engine =>
     () => {},
     false,
     false,
-    false
+    false,
+    () => {}
   );
 
 describe('Engine class', () => {
@@ -29,6 +30,7 @@ describe('Engine class', () => {
   beforeEach(() => {
     canvas = document.createElement('canvas');
     ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    document.body.innerHTML ='<button id="btn-step-back">Hello</button>';
   });
 
   // cannot test by snapshots because matrix generated with random initial state every time
@@ -45,7 +47,7 @@ describe('Engine class', () => {
     const generateMatrix = Utils.generateMatrix.bind(Utils);
     const spy = jest
       .spyOn(Utils, 'generateMatrix')
-      .mockImplementation(jest.fn((size) => generateMatrix(size)));
+      .mockImplementation(jest.fn(size => generateMatrix(size)));
     engine = createEngine(ctx, 6);
 
     expect(engine.size).toBe(6);

@@ -10,7 +10,7 @@ export const AddPostPage = () => {
   // Как лучше использовать этот класс в компоненте реакта?
   const desktopNotification = new DesktopNotification().init();
 
-  const inputFileRef = useRef(null);
+  const inputFileRef = useRef<HTMLInputElement>(null);
 
   const [preview, setPreview] = useState('');
   const [error, setError] = useState('');
@@ -29,13 +29,13 @@ export const AddPostPage = () => {
         setPreview(uri);
       }
     } catch (e) {
-      setError(e);
+      const err = (e as Error).message;
+      setError(`${err}`);
     }
   }
 
   const onRemovePreview = () => {
     setPreview('');
-
   };
 
   const onPublishPost = () => {

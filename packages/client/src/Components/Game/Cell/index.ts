@@ -21,7 +21,7 @@ export default class Cell {
     this._value = value || Utils.generateValue();
     this._position = position;
     this.size = size;
-    this.id = Utils.generateRandom(0,9999999);
+    this.id = Utils.generateRandom(0, 9999999);
   }
 
   get value(): number {
@@ -36,7 +36,7 @@ export default class Cell {
     return this._position;
   }
 
-  private changeColor(value = this.value) : string {
+  private changeColor(value = this.value): string {
     switch (value) {
       case 2:
         return 'rgb(238, 228, 218)';
@@ -68,7 +68,6 @@ export default class Cell {
   }
 
   render(context: CanvasRenderingContext2D) {
-    console.log('render')
     context.fillStyle = this.changeColor();
     const { x, y } = this.position;
     context.fillRect(x * this.size, y * this.size, this.size, this.size);
@@ -76,21 +75,32 @@ export default class Cell {
     context.textBaseline = this.baselineText;
     context.fillStyle = this.textColor;
     context.textAlign = this.alignText;
-    context.fillText(String(this.value), x * this.size + (this.size / 2), y * this.size + (this.size / 2));
+    context.fillText(
+      String(this.value),
+      x * this.size + this.size / 2,
+      y * this.size + this.size / 2
+    );
   }
 
-  update(context: CanvasRenderingContext2D, x: number, y: number, value: number, direction: string, delta: number) {
+  update(
+    context: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    value: number,
+    direction: string,
+    delta: number
+  ) {
     switch (direction) {
-      case Direction.LEFT :
+      case Direction.LEFT:
         context.clearRect(x + delta, y, this.size, this.size);
         break;
-      case Direction.RIGHT :
+      case Direction.RIGHT:
         context.clearRect(x - delta, y, this.size, this.size);
         break;
-      case Direction.UP :
+      case Direction.UP:
         context.clearRect(x, y + delta, this.size, this.size);
         break;
-      case Direction.DOWN :
+      case Direction.DOWN:
         context.clearRect(x, y - delta, this.size, this.size);
         break;
     }
@@ -101,7 +111,6 @@ export default class Cell {
     context.textBaseline = this.baselineText;
     context.fillStyle = this.textColor;
     context.textAlign = this.alignText;
-    context.fillText(String(value), x + (this.size / 2), y + (this.size / 2));
+    context.fillText(String(value), x + this.size / 2, y + this.size / 2);
   }
-
 }

@@ -1,21 +1,44 @@
-import dotenv from 'dotenv';
-import cors from 'cors';
-dotenv.config();
-
 import express from 'express';
-import { createClientAndConnect } from './db';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
-const app = express();
-app.use(cors());
-const port = Number(process.env.SERVER_PORT) || 3001;
+import { createProxyMiddleware } from 'http-proxy-middleware';
+import path from 'node:path';
+import { distPath, initVite } from './services/init-vite';
+import { renderSSR } from './middlewares';
 
-createClientAndConnect();
+const isDev = process.env.NODE_ENV === 'development';
 
-app.get('/', (_, res) => {
-  res.json('👋 Howdy from the server :)');
-});
+async function startServer() {
+  const port = Number(process.env.SERVER_PORT) || 5000;
 
-app.listen(port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`  ➜ 🎸 Server is listening on port: ${port}`);
-});
+  const app = express().use(cookieParser()).use(cors());
+
+  const vite = await initVite(app);
+
+  if (!isDev && !!distPath) {
+    app.use('/assets', express.static(path.resolve(distPath, 'assets')));
+  }
+
+  app.use(
+    '/api/v2',
+    createProxyMiddleware({
+      changeOrigin: true,
+      cookieDomainRewrite: {
+        '*': '',
+      },
+      target: 'https://ya-praktikum.tech',
+    })
+  );
+
+  app.use(express.json());
+
+  app.use('*', async (req, res, next) => renderSSR(req, res, next, vite));
+
+  app.listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`  ➜ 🎸 Server is listening on port: ${port}`);
+  });
+}
+
+startServer();

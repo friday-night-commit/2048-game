@@ -1,36 +1,5 @@
 import { API_URL } from './consts';
 
-export interface SignupData {
-  first_name: string;
-  second_name: string;
-  login: string;
-  email: string;
-  password: string;
-  phone: string;
-}
-
-export interface SigninData {
-  login: string;
-  password: string;
-}
-
-export interface User {
-  id: number;
-  first_name: string;
-  second_name: string;
-  display_name: string;
-  login: string;
-  email: string;
-  phone: string;
-  avatar: string;
-  role?: string;
-}
-
-type OptionsType = {
-  headers: { 'Content-Type': string };
-  credentials: RequestCredentials | undefined;
-};
-
 const options: OptionsType = {
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
@@ -39,7 +8,7 @@ const options: OptionsType = {
 };
 
 export class AuthAPI {
-  private endpoint = `${API_URL}/auth`;
+  private endpoint = `${API_URL}/api/v2/auth`;
 
   async signup(data: SignupData) {
     const response = await fetch(`${this.endpoint}/signup`, {
