@@ -64,7 +64,7 @@ export default class Engine {
   protected readonly fontText = '20px Arial';
   protected readonly border = 'rgb(143, 122, 102)';
   protected readonly widthBorder = 3;
-  protected readonly background = 'rgb(187, 173, 160)';
+  protected readonly background = 'white';
 
   public _openSuccess: () => void;
   public _openFailure: () => void;
