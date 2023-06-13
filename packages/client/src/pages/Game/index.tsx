@@ -10,7 +10,6 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { closeModalFailure, closeModalSuccess } from '../../store/slices/Modal';
 
 export default function GamePage() {
-
   const modalSuccess = useAppSelector(store => store.modalSlice.isOpenSuccess);
   const modalFailure = useAppSelector(store => store.modalSlice.isOpenFailure);
   const dispatch = useAppDispatch();
@@ -46,13 +45,13 @@ export default function GamePage() {
         </div>
         <div className='game-page-container'>
           <Game />
-           <SuccessModal
+          <SuccessModal
             open={modalSuccess}
-            handleOpen={ handleCloseSuccessModal }
+            handleOpen={handleCloseSuccessModal}
           />
           <FailureModal
-            open={ modalFailure }
-            handleOpen={ handleCloseFailureModal }
+            open={modalFailure}
+            handleOpen={handleCloseFailureModal}
           />
         </div>
       </>

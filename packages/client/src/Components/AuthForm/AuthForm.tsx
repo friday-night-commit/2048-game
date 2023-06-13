@@ -7,8 +7,8 @@ import Input from '../Input';
 
 import routes from '../../routes';
 import useAuth from '../../hooks/useAuth';
-import { SigninData } from '../../api/AuthAPI';
 import { UserFields } from '../../pages/Profile/models/UserFields.enum';
+import { getAppId, getRedirectUri } from '../../Controllers/YandexController';
 
 const AuthForm = function () {
   const { login, loginError } = useAuth();
@@ -38,6 +38,14 @@ const AuthForm = function () {
     },
     [formInputsData]
   );
+
+  const authByYandex = useCallback(async () => {
+    const appId = await getAppId();
+    const redirectUri = getRedirectUri();
+    window.location.replace(
+      `https://oauth.yandex.ru/authorize?response_type=code&client_id=${appId}&redirect_uri=${redirectUri}`
+    );
+  }, []);
 
   return (
     <>
@@ -75,6 +83,7 @@ const AuthForm = function () {
           Регистрация
         </Link>
       </form>
+      <Button onClick={authByYandex}>Войти через Yandex OAuth</Button>
     </>
   );
 };

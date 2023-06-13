@@ -10,6 +10,7 @@
     "declarationMap": true,
     "removeComments": true,
     "strict": true,
+    "jsx": "react-jsx",
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitOverride": true,
@@ -24,6 +25,6 @@
     "paths": {
       "*": ["types/*"]
     },
-    "outDir": "dist"
+    "outDir": "dist",
   }
 }

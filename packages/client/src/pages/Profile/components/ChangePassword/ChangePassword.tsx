@@ -4,6 +4,7 @@ import { Button } from '@material-tailwind/react';
 import Input from '../../../../Components/Input';
 import Toast from '../../../../Components/Toast';
 import { UserFields } from '../../models/UserFields.enum';
+import ProfileController from '../../../../Controllers/ProfileController';
 
 type TChangePasswordProps = {
   open: boolean;
@@ -17,9 +18,14 @@ export const ChangePasswordModal: FC<TChangePasswordProps> = ({
   const [error, setError] = useState('');
 
   const handleSubmit = useCallback(
-    function (e: FormEvent<HTMLFormElement>) {
+    async function (e: FormEvent<HTMLFormElement>) {
       e.preventDefault();
       let error = '';
+      const oldPassword = (
+        e.currentTarget.elements.namedItem(
+          UserFields.old_password
+        ) as HTMLInputElement
+      ).value;
       const repeatPassword = (
         e.currentTarget.elements.namedItem(
           UserFields.repeat_password
@@ -35,6 +41,20 @@ export const ChangePasswordModal: FC<TChangePasswordProps> = ({
         error = 'Новый пароль отличается';
       }
       setError(error);
+
+      if (!error) {
+        const response = await ProfileController.changePassword({
+          newPassword,
+          oldPassword,
+        });
+
+        if (response !== true && typeof response === 'string') {
+          setError(response);
+          return;
+        }
+
+        handleOpen();
+      }
     },
     [error]
   );
@@ -51,21 +71,21 @@ export const ChangePasswordModal: FC<TChangePasswordProps> = ({
           <Input
             name={UserFields.old_password}
             type='password'
-            validationType='password'
+            validationType='default'
             label='Старый пароль'
             required
           />
           <Input
             name={UserFields.new_password}
             type='password'
-            validationType='password'
+            validationType='default'
             label='Новый пароль'
             required
           />
           <Input
             name={UserFields.repeat_password}
             type='password'
-            validationType='password'
+            validationType='default'
             label='Повторите пароль'
             required
           />

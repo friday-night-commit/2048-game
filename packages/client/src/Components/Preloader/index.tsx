@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 type preloaderProps = {
-  children?: JSX.Element;
+  children?: JSX.Element | JSX.Element[];
 };
 
 const Preloader: FC<preloaderProps> = ({ children }) => {

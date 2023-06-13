@@ -39,6 +39,7 @@ const LISTENERS: Record<number, Direction> = {
 export default class Engine {
   static FINAL_SCORE = 2048;
   static PIXELS_PER_FRAME = 25;
+  static MAX_STEP_BACK = 5;
 
   protected readonly context: CanvasRenderingContext2D;
   private _score = 0;
@@ -53,6 +54,7 @@ export default class Engine {
   private _isHistoryMove: boolean;
   private historyBack: () => void;
   private historyBtn: HTMLButtonElement;
+  private _wasMadeHistoryStep: number;
 
   private requestId: number;
   private deltaTime: DeltaTime;
@@ -69,6 +71,7 @@ export default class Engine {
   private _openModalSuccess: boolean;
   private _openModalFail: boolean;
   private _isContinuePlay: boolean;
+  private readonly _addUserToLeaderboard: (score: number) => void;
 
   private readonly audioPlayer: AudioPlayer;
 
@@ -81,6 +84,7 @@ export default class Engine {
     openModalSuccess: boolean,
     openModalFail: boolean,
     isContinuePlay: boolean,
+    addUserToLeaderboard: (score: number) => void
   ) {
 
     if (size < 2) {
@@ -94,6 +98,7 @@ export default class Engine {
     this._openModalFail = openModalFail;
     this._isContinuePlay = isContinuePlay;
 
+    this._addUserToLeaderboard = addUserToLeaderboard;
 
     this._matrix = Utils.generateMatrix(size);
     this._historyMatrix = [];
@@ -101,6 +106,7 @@ export default class Engine {
     this._isHistoryMove = false;
     this.historyBack = this.historyBackStep.bind(this);
     this.historyBtn = document.getElementById('btn-step-back') as HTMLButtonElement;
+    this._wasMadeHistoryStep = 0;
 
     this._size = size;
     this._canvasSize = canvasSize;
@@ -251,7 +257,9 @@ export default class Engine {
   }
 
   addHistory(): void {
+    localStorage.clear();
     this._historyMatrix.push({ stepIndex: this._stepsBack, historyMatrix: this.clonePrevMatrix(this._matrix) });
+    localStorage.setItem(`key${this._stepsBack}`, JSON.stringify(this._historyMatrix));
     this._stepsBack += 1;
     this._isHistoryMove = true;
   }
@@ -264,8 +272,9 @@ export default class Engine {
   historyBackStep(): void {
       this._historyMatrix.splice(this._stepsBack-1, 1);
       this._stepsBack -= 1;
+      this._wasMadeHistoryStep += 1;
 
-      if(this._historyMatrix.length === 1) {
+      if(this._historyMatrix.length === 1 || this._wasMadeHistoryStep >= Engine.MAX_STEP_BACK) {
         this._isHistoryMove = false;
         this.historyButtonClick();
       }
@@ -301,6 +310,7 @@ export default class Engine {
   addCellToMatrix(cell: Cell, newPosition?: Position): void {
     let x: number, y: number;
     this.requestId = 0;
+    this._wasMadeHistoryStep -= 1;
     if (newPosition) {
       requestAnimationFrame(this.animate);
       x = newPosition.x;
@@ -529,6 +539,7 @@ export default class Engine {
       }
 
       this.audioPlayer.getSoundByName(SoundNames.Victory).play();
+      this._addUserToLeaderboard(this.score);
     }
   }
 

@@ -8,7 +8,6 @@ import Toast from '../Toast';
 import { UserFields } from '../../pages/Profile/models/UserFields.enum';
 import routes from '../../routes';
 import useAuth from '../../hooks/useAuth';
-import { SignupData } from '../../api/AuthAPI';
 
 const RegisterForm = () => {
   const { signup, loginError } = useAuth();
