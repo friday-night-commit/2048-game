@@ -24,8 +24,16 @@ export class Utils {
   }
 
   static fullscreenOpen(idComponent: string): void {
-    const toggler = document.getElementById(idComponent) as HTMLButtonElement;
-    const targetElem = document.getElementById('canvas-game') as HTMLCanvasElement;
+    const toggler = document.getElementById(idComponent);
+    const targetElem = document.getElementById('canvas-game');
+
+    if(!toggler) {
+      return;
+    }
+
+    if(!targetElem) {
+      return;
+    }
 
     toggler.addEventListener('click', () => {
       if (!document.fullscreenElement) {
