@@ -2,7 +2,9 @@ import React, { useEffect, useCallback, useRef } from 'react';
 import Engine from '../Engine';
 import { openModalFailure, openModalSuccess, wasRenewedMatrix } from '../../../store/slices/Modal';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { Utils } from '../Utils';
 import LeaderboardController from '../../../Controllers/LeaderboardController';
+
 
 type CanvasProps = React.DetailedHTMLProps<
   React.CanvasHTMLAttributes<HTMLCanvasElement>,
@@ -45,6 +47,8 @@ const Canvas: React.FC<CanvasProps> = ({ ...props }) => {
     if (canvas) {
       const context = canvas.getContext('2d');
 
+      Utils.fullscreenOpen('btn-fullscreen-mode');
+
       if (context) {
         const engine = new Engine(
           context,
@@ -66,7 +70,7 @@ const Canvas: React.FC<CanvasProps> = ({ ...props }) => {
   },[isNewMatrix, isContinuePlay]);
 
   return (
-    <canvas ref={canvasRef} width={props.width} height={props.width}/>
+    <canvas ref={canvasRef} width={props.width} height={props.width} id='canvas-game'/>
   );
 };
 

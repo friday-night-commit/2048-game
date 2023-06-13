@@ -22,4 +22,35 @@ export class Utils {
       Array.from({ length }, () => undefined)
     );
   }
+
+  static fullscreenOpen(idComponent: string): void {
+    const toggler = document.getElementById(idComponent);
+    const targetElem = document.getElementById('canvas-game');
+
+    if(!toggler) {
+      return;
+    }
+
+    if(!targetElem) {
+      return;
+    }
+
+    toggler.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        activateFullscreen(targetElem);
+        targetElem.style.backgroundColor = 'rgb(187, 173, 160)';
+      } else {
+        deactivateFullscreen();
+      }
+    });
+
+    const activateFullscreen = (element: HTMLElement) => {
+      element.requestFullscreen();
+    };
+
+    const deactivateFullscreen = () => {
+      document.exitFullscreen();
+    };
+
+  }
 }
