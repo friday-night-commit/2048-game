@@ -11,6 +11,8 @@ import NoMatch from './pages/NoMatch';
 import ProtectedRoute from './Components/ProtectedRoute';
 import { loadMe } from './store/slices/User';
 import { AppDispatch } from './store';
+import ForumPage from './pages/Forum';
+import FullPost from './pages/FullPost';
 
 const commonLoader = (dispatch: AppDispatch) => {
   return dispatch(loadMe());
@@ -60,14 +62,14 @@ export const routesArr = [
     ),
     loader: commonLoader,
   },
-  // {
-  //   path: `/${routes.forumPage}`,
-  //   element: <ForumPage />
-  // },
-  // {
-  //   path: `/${routes.forumPage}${routes.postsPage}/:id`,
-  //   element: <FullPost />,
-  // },
+  {
+    path: `/${routes.forumPage}`,
+    element: <ForumPage />,
+  },
+  {
+    path: `/${routes.forumPage}${routes.postsPage}/:id`,
+    element: <FullPost />,
+  },
   { path: '*', element: <NoMatch /> },
 ];
 
