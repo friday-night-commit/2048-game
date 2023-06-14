@@ -1,4 +1,5 @@
 import { API_URL as REDIRECT_URI } from '../api/consts';
+
 const API_ROOT = `${REDIRECT_URI}/api/v2`;
 
 export async function getAppId() {
@@ -13,7 +14,7 @@ export function getRedirectUri() {
   return REDIRECT_URI;
 }
 
-export async function doLoginWithCode(code: string) {
+export async function doLoginWithCode(code: string): Promise<Response> {
   const response = await fetch(`${API_ROOT}/oauth/yandex`, {
     method: 'POST',
     body: JSON.stringify({
@@ -36,7 +37,7 @@ export function logoutUser() {
   });
 }
 
-export async function getMe() {
+export async function getMe(): Promise<Response> {
   const response = await fetch(`${API_ROOT}/auth/user`, {
     credentials: 'include',
   });

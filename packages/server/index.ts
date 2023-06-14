@@ -12,7 +12,10 @@ const isDev = process.env.NODE_ENV === 'development';
 async function startServer() {
   const port = Number(process.env.SERVER_PORT) || 5000;
 
-  const app = express().use(cookieParser()).use(cors());
+  const app = express()
+    .use(cookieParser())
+    .use(cors())
+    .use(express.json());
 
   const vite = await initVite(app);
 
@@ -30,8 +33,6 @@ async function startServer() {
       target: 'https://ya-praktikum.tech',
     })
   );
-
-  app.use(express.json());
 
   app.use('*', async (req, res, next) => renderSSR(req, res, next, vite));
 
