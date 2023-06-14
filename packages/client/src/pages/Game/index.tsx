@@ -36,7 +36,10 @@ export default function GamePage() {
                 Шаг назад
               </Button>
               {/* [just for tests] open modal on restart click */}
-              <RestartButton restart={handleCloseSuccessModal} />
+              <RestartButton />
+              <Button className='game-button small fullscreen mr-4' id='btn-fullscreen-mode'>
+                Включить полноэкранный режим
+              </Button>
             </div>
           </div>
         </div>

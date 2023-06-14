@@ -11,4 +11,6 @@ type userState = {
 type modalState = {
   isOpenSuccess: boolean;
   isOpenFailure: boolean;
+  isNewMatrix: boolean;
+  isContinuePlay: boolean;
 };

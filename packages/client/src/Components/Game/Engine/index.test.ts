@@ -10,6 +10,9 @@ const createEngine = (ctx: CanvasRenderingContext2D, size = 2): Engine =>
     size,
     () => {},
     () => {},
+    false,
+    false,
+    false,
     () => {}
   );
 
@@ -27,6 +30,7 @@ describe('Engine class', () => {
   beforeEach(() => {
     canvas = document.createElement('canvas');
     ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    document.body.innerHTML ='<button id="btn-step-back">Hello</button>';
   });
 
   // cannot test by snapshots because matrix generated with random initial state every time
@@ -47,7 +51,7 @@ describe('Engine class', () => {
     engine = createEngine(ctx, 6);
 
     expect(engine.size).toBe(6);
-    expect(Utils.generateMatrix).toBeCalledTimes(2);
+    expect(Utils.generateMatrix).toBeCalledTimes(1);
     expect(Utils.generateMatrix).toBeCalledWith(6);
 
     spy.mockClear();

@@ -1,11 +1,10 @@
 import React, { useEffect, useCallback, useRef } from 'react';
 import Engine from '../Engine';
-import {
-  openModalFailure,
-  openModalSuccess,
-} from '../../../store/slices/Modal';
+import { openModalFailure, openModalSuccess, wasRenewedMatrix } from '../../../store/slices/Modal';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { Utils } from '../Utils';
 import LeaderboardController from '../../../Controllers/LeaderboardController';
+
 
 type CanvasProps = React.DetailedHTMLProps<
   React.CanvasHTMLAttributes<HTMLCanvasElement>,
@@ -17,6 +16,10 @@ type CanvasProps = React.DetailedHTMLProps<
 const Canvas: React.FC<CanvasProps> = ({ ...props }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const dispatch = useAppDispatch();
+  const isNewMatrix = useAppSelector(store => store.modalSlice.isNewMatrix);
+  const isOpenModalSuccess = useAppSelector(store => store.modalSlice.isOpenFailure);
+  const isOpenModalFail = useAppSelector(store => store.modalSlice.isOpenSuccess);
+  const isContinuePlay = useAppSelector(store => store.modalSlice.isContinuePlay);
 
   const openSuccess = () => dispatch(openModalSuccess());
   const openFailure = () => dispatch(openModalFailure());
@@ -39,9 +42,12 @@ const Canvas: React.FC<CanvasProps> = ({ ...props }) => {
   );
 
   useEffect(() => {
+    dispatch(wasRenewedMatrix());
     const canvas = canvasRef.current;
     if (canvas) {
       const context = canvas.getContext('2d');
+
+      Utils.fullscreenOpen('btn-fullscreen-mode');
 
       if (context) {
         const engine = new Engine(
@@ -50,6 +56,9 @@ const Canvas: React.FC<CanvasProps> = ({ ...props }) => {
           4,
           openSuccess,
           openFailure,
+          isContinuePlay,
+          isOpenModalSuccess,
+          isOpenModalFail,
           addUserToLeaderboard
         );
 
@@ -58,9 +67,11 @@ const Canvas: React.FC<CanvasProps> = ({ ...props }) => {
         };
       }
     }
-  }, []);
+  },[isNewMatrix, isContinuePlay]);
 
-  return <canvas ref={canvasRef} width={props.width} height={props.width} />;
+  return (
+    <canvas ref={canvasRef} width={props.width} height={props.width} id='canvas-game'/>
+  );
 };
 
 export default Canvas;
