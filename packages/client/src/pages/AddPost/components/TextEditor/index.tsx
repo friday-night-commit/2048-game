@@ -1,19 +1,19 @@
-import './index.scss';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import './index.scss';
 import 'quill-emoji/dist/quill-emoji.css';
 // @ts-ignore // Без этого не работает
 import quillEmoji from 'react-quill-emoji';
 
-type TOwnProps = {
+import './index.scss';
+
+type TextEditorProps = {
   textAreaHeight: number;
 };
 
-export const TextEditor: FC<TOwnProps> = ({
+const TextEditor: FC<TextEditorProps> = ({
   textAreaHeight = 350,
-}: TOwnProps) => {
+}: TextEditorProps) => {
   Quill.register(
     {
       'modules/emoji-toolbar': quillEmoji.ToolbarEmoji,
@@ -80,3 +80,5 @@ export const TextEditor: FC<TOwnProps> = ({
     </div>
   );
 };
+
+export default TextEditor;
