@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import './index.scss';
 import { UserData } from '../../../Forum/stubs';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DATE_FORMATS } from '../../../../Utils/dateFormats';
 
 type TOwnProps = {
