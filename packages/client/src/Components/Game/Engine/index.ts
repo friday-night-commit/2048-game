@@ -3,6 +3,8 @@ import { Utils } from '../Utils';
 import { AudioPlayer, SoundNames } from '../../../WebAPI/AudioPlayer';
 
 export type MatrixArray = (Cell | undefined)[][];
+export type HistoryMatrixArray = { stepIndex: number, historyMatrix: MatrixArray }[];
+
 
 export enum Direction {
   UP = 'up',
@@ -37,15 +39,22 @@ const LISTENERS: Record<number, Direction> = {
 export default class Engine {
   static FINAL_SCORE = 2048;
   static PIXELS_PER_FRAME = 25;
+  static MAX_STEP_BACK = 5;
 
   protected readonly context: CanvasRenderingContext2D;
   private _score = 0;
   private _matrix: MatrixArray;
-  private _historyMatrix: MatrixArray;
   private readonly _size: number;
   private readonly _canvasSize: number;
   private readonly eventListeners: ((event: KeyboardEvent) => void)[];
   private readonly cellSize: number;
+
+  private _historyMatrix: HistoryMatrixArray;
+  private _stepsBack: number;
+  private _isHistoryMove: boolean;
+  private historyBack: () => void;
+  private historyBtn: HTMLButtonElement;
+  private _wasMadeHistoryStep: number;
 
   private requestId: number;
   private deltaTime: DeltaTime;
@@ -59,6 +68,9 @@ export default class Engine {
 
   public _openSuccess: () => void;
   public _openFailure: () => void;
+  private _openModalSuccess: boolean;
+  private _openModalFail: boolean;
+  private _isContinuePlay: boolean;
   private readonly _addUserToLeaderboard: (score: number) => void;
 
   private readonly audioPlayer: AudioPlayer;
@@ -69,8 +81,12 @@ export default class Engine {
     size: number,
     openSuccess: () => void,
     openFailure: () => void,
+    openModalSuccess: boolean,
+    openModalFail: boolean,
+    isContinuePlay: boolean,
     addUserToLeaderboard: (score: number) => void
   ) {
+
     if (size < 2) {
       throw Error('Invalid size for cell matrix');
     }
@@ -78,10 +94,19 @@ export default class Engine {
     this.context = context;
     this._openSuccess = openSuccess;
     this._openFailure = openFailure;
+    this._openModalSuccess = openModalSuccess;
+    this._openModalFail = openModalFail;
+    this._isContinuePlay = isContinuePlay;
+
     this._addUserToLeaderboard = addUserToLeaderboard;
 
     this._matrix = Utils.generateMatrix(size);
-    this._historyMatrix = Utils.generateMatrix(size);
+    this._historyMatrix = [];
+    this._stepsBack = 0;
+    this._isHistoryMove = false;
+    this.historyBack = this.historyBackStep.bind(this);
+    this.historyBtn = document.getElementById('btn-step-back') as HTMLButtonElement;
+    this._wasMadeHistoryStep = 0;
 
     this._size = size;
     this._canvasSize = canvasSize;
@@ -104,8 +129,10 @@ export default class Engine {
   }
 
   init() {
+    this.historyBtn.disabled = true;
     this.createListeners();
     this.render();
+    this.addHistory();
     this.audioPlayer.init().then();
   }
 
@@ -219,18 +246,41 @@ export default class Engine {
 
   createListeners(): void {
     const listener = (event: KeyboardEvent) => {
-      this.moveCells(LISTENERS[(event as KeyboardEvent).keyCode]);
+      if(!this._openModalSuccess && !this._openModalFail) {
+        this.moveCells(LISTENERS[(event as KeyboardEvent).keyCode]);
+        this.historyButtonClick();
+      }
     };
 
     this.eventListeners.push(listener);
-
-    const stepBackBtn = document.getElementById('btn-step-back');
-    const historyBack = () => {
-      this.render(true);
-    };
-
     document.addEventListener('keydown', listener);
-    if (stepBackBtn) stepBackBtn.addEventListener('click', historyBack);
+  }
+
+  addHistory(): void {
+    localStorage.clear();
+    this._historyMatrix.push({ stepIndex: this._stepsBack, historyMatrix: this.clonePrevMatrix(this._matrix) });
+    localStorage.setItem(`key${this._stepsBack}`, JSON.stringify(this._historyMatrix));
+    this._stepsBack += 1;
+    this._isHistoryMove = true;
+  }
+
+  historyButtonClick(): void {
+    this._isHistoryMove ? this.historyBtn.disabled = false : this.historyBtn.disabled = true;
+    this.historyBtn.addEventListener('click', this.historyBack);
+  }
+
+  historyBackStep(): void {
+      this._historyMatrix.splice(this._stepsBack-1, 1);
+      this._stepsBack -= 1;
+      this._wasMadeHistoryStep += 1;
+
+      if(this._historyMatrix.length === 1 || this._wasMadeHistoryStep >= Engine.MAX_STEP_BACK) {
+        this._isHistoryMove = false;
+        this.historyButtonClick();
+      }
+      
+      this._matrix = this.clonePrevMatrix(this._historyMatrix[this._stepsBack-1].historyMatrix);
+      this.render(true);
   }
 
   generateCell(): Position | undefined {
@@ -260,6 +310,7 @@ export default class Engine {
   addCellToMatrix(cell: Cell, newPosition?: Position): void {
     let x: number, y: number;
     this.requestId = 0;
+    this._wasMadeHistoryStep -= 1;
     if (newPosition) {
       requestAnimationFrame(this.animate);
       x = newPosition.x;
@@ -430,6 +481,12 @@ export default class Engine {
     ].filter(isCell);
   }
 
+  clonePrevMatrix(matrix: MatrixArray): MatrixArray{
+    // @ts-ignore
+    const clone = (items: MatrixArray) => items.map(item => Array.isArray(item) ? clone(item) : item);
+    return clone(matrix);
+  }
+
   moveCells(moveDirection: Direction): void {
     if (this.cellAnimate) {
       this.cellAnimate.length = 0;
@@ -472,7 +529,9 @@ export default class Engine {
 
     if (!this.isGameOver) {
       this.render();
+      this.addHistory();
     } else {
+
       if (this.score >= Engine.FINAL_SCORE) {
         this._openSuccess();
       } else {
@@ -492,7 +551,7 @@ export default class Engine {
 
   get isGameOver(): boolean {
     return (
-      this._score >= Engine.FINAL_SCORE || // 2048 reached OR
+      (this._score >= Engine.FINAL_SCORE && !this._isContinuePlay) || // 2048 reached and it is not game continue OR
       (!this.emptyCellExists && !this.hasCollisions) // no empty cell and possible moves
     );
   }
@@ -533,7 +592,7 @@ export default class Engine {
     this.clear();
     this.drawGrid();
     if (history) {
-      this.renderCells(this._historyMatrix);
+      this.historyRenderCells(this._historyMatrix[this._stepsBack-1].historyMatrix);
     } else {
       this.generateCell();
       this.renderCells(this._matrix);
@@ -551,13 +610,25 @@ export default class Engine {
     }
   }
 
+  historyRenderCells(matrix: MatrixArray) {
+    for (let i = 0; i<matrix.length; i++) {
+      for (let j = 0; j<matrix[i].length; j++){
+          if(matrix[i][j]) {
+            matrix[i][j]!.position = { x: j, y: i };
+            matrix[i][j]!.render(this.context);
+          }
+      }
+    }
+  }
+
   destroy() {
     this.removeListeners();
   }
 
-  removeListeners() {
+  removeListeners(): void {
     for (const listener of this.eventListeners) {
       document.removeEventListener('keydown', listener);
     }
+    this.historyBtn.removeEventListener('click', this.historyBack);
   }
 }

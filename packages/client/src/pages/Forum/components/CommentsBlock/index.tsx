@@ -3,7 +3,7 @@ import { SideBlock } from '../SideBlock';
 import { Avatar } from '@material-tailwind/react';
 import './index.scss';
 import { Comment } from '../../stubs';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DATE_FORMATS } from '../../../../Utils/dateFormats';
 
 type TOwnProps = {

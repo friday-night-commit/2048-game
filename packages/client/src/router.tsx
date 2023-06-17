@@ -6,13 +6,13 @@ import MainPage from './pages/Main';
 import GamePage from './pages/Game';
 import Leaderboard from './pages/Leaderboard';
 import ProfilePage from './pages/Profile';
+import ForumPage from './pages/Forum';
+import FullPost from './pages/FullPost';
 import NoMatch from './pages/NoMatch';
 
 import ProtectedRoute from './Components/ProtectedRoute';
 import { loadMe } from './store/slices/User';
 import { AppDispatch } from './store';
-import ForumPage from './pages/Forum';
-import FullPost from './pages/FullPost';
 
 const commonLoader = (dispatch: AppDispatch) => {
   return dispatch(loadMe());
@@ -64,13 +64,21 @@ export const routesArr = [
   },
   {
     path: `/${routes.forumPage}`,
-    element: <ForumPage />,
+    element: (
+      <ProtectedRoute>
+        <ForumPage />
+      </ProtectedRoute>
+    ),
+    loader: commonLoader,
   },
   {
-    path: `/${routes.forumPage}${routes.postsPage}/:id`,
-    element: <FullPost />,
+    path: `/${routes.forumPage}/${routes.postsPage}/:id`,
+    element: (
+      <ProtectedRoute>
+        <FullPost />
+      </ProtectedRoute>
+    ),
+    loader: commonLoader,
   },
   { path: '*', element: <NoMatch /> },
 ];
-
-// export default createBrowserRouter(routesArr);

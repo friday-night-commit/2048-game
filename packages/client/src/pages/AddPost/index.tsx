@@ -1,14 +1,18 @@
 import { Button } from '@material-tailwind/react';
-import React, { useRef, useState } from 'react';
-import Input from '../../Components/Input';
-import { TextEditor } from './components/TextEditor';
-import './index.scss';
+import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import Input from '../../Components/Input';
+// import TextEditor from './components/TextEditor';
 import DesktopNotification from '../../WebAPI/notification.service';
+
+const LazyTextEditorComponent = lazy(() => import('./components/TextEditor'));
+
+import './index.scss';
 
 export const AddPostPage = () => {
   // Как лучше использовать этот класс в компоненте реакта?
-  const desktopNotification = new DesktopNotification().init();
+  let desktopNotification: DesktopNotification;
 
   const inputFileRef = useRef<HTMLInputElement>(null);
 
@@ -39,8 +43,15 @@ export const AddPostPage = () => {
   };
 
   const onPublishPost = () => {
-    desktopNotification.showNotification('Новый пост', 'React + Angular + Vue');
+    desktopNotification && desktopNotification.showNotification(
+      'Новый пост',
+      'React + Angular + Vue'
+    );
   };
+
+  useEffect(() => {
+    desktopNotification = new DesktopNotification().init();
+  }, []);
 
   return (
     <div className='container mx-auto w-full  add-post'>
@@ -87,8 +98,11 @@ export const AddPostPage = () => {
         />
       </div>
 
+
       <div className='add-post__right'>
-        <TextEditor textAreaHeight={310} />
+        <Suspense fallback={<textarea />}>
+          <LazyTextEditorComponent textAreaHeight={310} />
+        </Suspense>
       </div>
 
       <div className='add-post__action'>

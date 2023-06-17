@@ -44,7 +44,7 @@ export default function Navbar() {
   const [maxScore, setMaxScore] = useState(4096); // TODO: get value from API
 
   return (
-    <MaterialNavbar className='navbar mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4'>
+    <MaterialNavbar className='navbar mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4' id='navbar-item-menu'>
       <div className='container mx-auto flex items-center justify-between'>
         <Typography
           as={Link}
