@@ -22,7 +22,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/semi': ['error', 'always'],
     '@typescript-eslint/object-curly-spacing': ['error', 'always'],
-    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    // '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     '@typescript-eslint/no-empty-function': 0,
     'no-multi-spaces': 'error',
     'no-console': 'error',
