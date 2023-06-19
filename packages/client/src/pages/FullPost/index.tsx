@@ -1,14 +1,16 @@
 import { useParams } from 'react-router-dom';
 import { Button } from '@material-tailwind/react';
-
+import React, { lazy, Suspense } from 'react';
 import PageContainer from '../../Components/PageContainer';
 import { Post } from './components/Post';
 import { CommentsBlock } from '../Forum/components/CommentsBlock';
 import { SideBlock } from '../Forum/components/SideBlock';
 import { lastComments, posts, userData } from '../Forum/stubs';
-// import TextEditor from '../AddPost/components/TextEditor';
+
+const LazyTextEditorComponent = lazy(() => import('../AddPost/components/TextEditor'));
 
 import './index.scss';
+
 
 export default function FullPost() {
   const { id } = useParams();
@@ -35,8 +37,9 @@ export default function FullPost() {
 
             <SideBlock title='Оставить комментарий'>
               <div className='full-post__editor'>
-                {/* <TextEditor textAreaHeight={100} /> */}
-                <textarea />
+                <Suspense fallback={<textarea />}>
+                  <LazyTextEditorComponent textAreaHeight={150} />
+                </Suspense>
                 <Button>Отправить</Button>
               </div>
             </SideBlock>
