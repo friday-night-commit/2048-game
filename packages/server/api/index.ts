@@ -1,10 +1,9 @@
 import { Router } from 'express';
 
-import topics from './topics';
+import TopicRouter from './topics';
 
 const router: Router = Router();
 
-router
-  .use(topics);
+router.use('/forum/topics', TopicRouter);
 
 export default router;

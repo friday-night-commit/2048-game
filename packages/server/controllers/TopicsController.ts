@@ -2,16 +2,21 @@ import type { Request, Response, NextFunction } from 'express';
 
 import dbTopicsController from '../db/controllers/topics';
 import { ApiError } from './error';
+import getYandexId from './getYandexIdUtil';
 
 class TopicsController {
   async getTopic(req: Request, res: Response, next: NextFunction) {
     const { topicId } = req.params;
+    const yandexId = getYandexId(res);
+
+    if (!yandexId) {
+      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
+    }
 
     try {
       const topic = await dbTopicsController.getTopicById(Number(topicId));
       if (topic) {
-        // @ts-ignore
-        res.status(200).json(topic.toJSON());
+        res.status(200).json(topic);
       } else {
         return next(ApiError.badRequest(`Пост с id ${topicId} не найден`));
       }
@@ -22,18 +27,15 @@ class TopicsController {
 
   async getAllTopics(_req: Request, res: Response) {
     const topics = await dbTopicsController.getAllTopics();
-    // @ts-ignore
-    res.status(200).json(topics.map(topic => topic.toJSON()));
+    res.status(200).json(topics);
   }
 
   async createTopic(req: Request, res: Response, next: NextFunction) {
     const { title, text } = req.body;
+    const yandexId = getYandexId(res);
 
-    let yandexId;
-    try {
-      yandexId = res.locals.user.yandexId;
-    } catch (e) {
-      return next(ApiError.badRequest('Авторизованный пользователь не найден'));
+    if (!yandexId) {
+      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
     }
 
     if (!title) {
@@ -51,8 +53,7 @@ class TopicsController {
         Number(yandexId)
       );
       if (topic) {
-        // @ts-ignore
-        res.status(201).json(topic.toJSON());
+        res.status(201).json(topic);
       } else {
         return next(ApiError.badRequest('Не получилось создать пост'));
       }
@@ -64,12 +65,10 @@ class TopicsController {
   async updateTopic(req: Request, res: Response, next: NextFunction) {
     const { title, text, userId } = req.body;
     const { topicId } = req.params;
+    const yandexId = getYandexId(res);
 
-    let yandexId;
-    try {
-      yandexId = res.locals.user.yandexId;
-    } catch (e) {
-      return next(ApiError.badRequest('Авторизованный пользователь не найден'));
+    if (!yandexId) {
+      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
     }
 
     if (!title) {
@@ -91,8 +90,7 @@ class TopicsController {
     try {
       const topic = await dbTopicsController.updateTopicById(req.body);
       if (topic) {
-        // @ts-ignore
-        res.status(200).json(topic.toJSON());
+        res.status(200).json(topic);
       } else {
         return next(ApiError.badRequest('Не получилось обновить пост'));
       }
@@ -103,6 +101,11 @@ class TopicsController {
 
   async deleteTopic(req: Request, res: Response, next: NextFunction) {
     const { topicId } = req.params;
+    const yandexId = getYandexId(res);
+
+    if (!yandexId) {
+      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
+    }
 
     if (!topicId) {
       return next(ApiError.notFound('Не задан topic id'));

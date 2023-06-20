@@ -14,21 +14,13 @@ export interface ITopic {
   id?: number;
   title: string;
   text: string;
-  userId?: number;
+  userId: number;
 }
 
 @Table({
   tableName: 'topics',
 })
 export default class Topic extends Model<ITopic> {
-  //   @Column({
-  //     type: INTEGER,
-  //     primaryKey: true,
-  //     autoIncrement: true,
-  //     comment: 'topic id',
-  //   })
-  //   id: number;
-
   @Column({
     type: STRING(1024),
     allowNull: false,
