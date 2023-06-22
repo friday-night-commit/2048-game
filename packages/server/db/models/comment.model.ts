@@ -15,8 +15,8 @@ export interface IComment {
   id?: number;
   text: string;
   userId: number;
-  topicId: number | null;
-  commentId: number | null;
+  topicId: number;
+  parentId: number | null;
 }
 
 @Table({
@@ -49,10 +49,10 @@ export default class Comment extends Model<IComment> {
   topicId: number;
 
   @Column({
-    field: 'comment_id',
+    field: 'parent_id',
     type: INTEGER,
     allowNull: true,
-    comment: 'associated comment id (for replies)',
+    comment: 'parent comment id (for replies)',
   })
-  commentId: number;
+  parentId: number;
 }

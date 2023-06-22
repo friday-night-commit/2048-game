@@ -43,7 +43,7 @@ class CommentsController {
 
   async createComment(req: Request, res: Response, next: NextFunction) {
     const { topicId } = req.params;
-    const { text, commentId } = req.body;
+    const { text, parentId } = req.body;
     const yandexId = getYandexId(res);
 
     if (!yandexId) {
@@ -58,8 +58,8 @@ class CommentsController {
       const comment = await dbCommentsController.createComment(
         text,
         Number(yandexId),
-        commentId ? null : Number(topicId),
-        commentId
+        Number(topicId),
+        parentId
       );
       if (comment) {
         res.status(201).json(comment);

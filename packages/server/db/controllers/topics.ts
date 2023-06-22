@@ -8,7 +8,7 @@ async function createTopic(
   return Topic.create({ title, text, userId });
 }
 
-async function updateTopicById(topic: ITopic) {
+async function updateTopicById(topic: ITopic): Promise<[affectedCount: number]> {
   return await Topic.update(topic, { where: { id: topic.id } });
 }
 
