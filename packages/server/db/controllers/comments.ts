@@ -3,10 +3,10 @@ import Comment from '../models/comment.model';
 async function createComment(
   text: string,
   userId: number,
-  topicId: number | null,
-  commentId?: number
+  topicId: number,
+  parentId?: number
 ): Promise<Comment | null> {
-  return await Comment.create({ text, userId, topicId, commentId });
+  return await Comment.create({ text, userId, topicId, parentId });
 }
 
 async function deleteCommentById(id: number): Promise<number> {
