@@ -1,5 +1,5 @@
 import { Button } from '@material-tailwind/react';
-import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import React, { lazy, Suspense, SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Input from '../../Components/Input';
@@ -18,6 +18,13 @@ export const AddPostPage = () => {
 
   const [preview, setPreview] = useState('');
   const [error, setError] = useState('');
+
+
+  const [formInputsData, setFormInputsData] = useState<SigninData>({
+    title: '',
+    text: '',
+  });
+
 
   const navigate = useNavigate();
 
@@ -42,12 +49,13 @@ export const AddPostPage = () => {
     setPreview('');
   };
 
-  const onPublishPost = () => {
-    desktopNotification && desktopNotification.showNotification(
-      'Новый пост',
-      'React + Angular + Vue'
-    );
-  };
+  const onSubmit = useCallback(
+    // desktopNotification.showNotification('Новый пост', 'React + Angular + Vue');
+    (e: React.FormEvent) => {
+      e.preventDefault();
+    },
+    [formInputsData]
+  );
 
   useEffect(() => {
     desktopNotification = new DesktopNotification().init();
@@ -98,7 +106,6 @@ export const AddPostPage = () => {
         />
       </div>
 
-
       <div className='add-post__right'>
         <Suspense fallback={<textarea />}>
           <LazyTextEditorComponent textAreaHeight={310} />
@@ -108,7 +115,7 @@ export const AddPostPage = () => {
       <div className='add-post__action'>
         <Button
           disabled={!!error}
-          onClick={onPublishPost}
+          onClick={onSubmit}
           className=' mb-2 px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800'>
           Опубликовать
         </Button>
