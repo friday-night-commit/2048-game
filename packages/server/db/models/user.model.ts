@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Model, Table, Column, DataType } from 'sequelize-typescript';
 
 const { STRING, INTEGER } = DataType;
