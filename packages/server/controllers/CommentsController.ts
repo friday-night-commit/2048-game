@@ -1,17 +1,12 @@
 import type { Request, Response, NextFunction } from 'express';
 
 import dbCommentsController from '../db/controllers/comments';
-import { ApiError } from './error';
-import getYandexId from './getYandexIdUtil';
+import ApiError from './ApiError';
+import { getYandexId } from '../middlewares/checkYandexUser';
 
 class CommentsController {
   async getComment(req: Request, res: Response, next: NextFunction) {
     const { commentId } = req.params;
-    const yandexId = getYandexId(res);
-
-    if (!yandexId) {
-      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
-    }
 
     try {
       const comment = await dbCommentsController.getCommentById(Number(commentId));
@@ -27,13 +22,8 @@ class CommentsController {
     }
   }
 
-  async getTopicComments(req: Request, res: Response, next: NextFunction) {
+  async getTopicComments(req: Request, res: Response, _next: NextFunction) {
     const { topicId } = req.params;
-    const yandexId = getYandexId(res);
-
-    if (!yandexId) {
-      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
-    }
 
     const comments = await dbCommentsController.getCommentsByTopicId(
       Number(topicId)
@@ -45,10 +35,6 @@ class CommentsController {
     const { topicId } = req.params;
     const { text, parentId } = req.body;
     const yandexId = getYandexId(res);
-
-    if (!yandexId) {
-      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
-    }
 
     if (!text) {
       return next(ApiError.badRequest('Не задан текст комментария'));
@@ -73,11 +59,6 @@ class CommentsController {
 
   async deleteComment(req: Request, res: Response, next: NextFunction) {
     const { commentId } = req.params;
-    const yandexId = getYandexId(res);
-
-    if (!yandexId) {
-      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
-    }
 
     if (!commentId) {
       return next(ApiError.notFound('Не задан comment id'));

@@ -1,17 +1,12 @@
 import type { Request, Response, NextFunction } from 'express';
 
 import dbTopicsController from '../db/controllers/topics';
-import { ApiError } from './error';
-import getYandexId from './getYandexIdUtil';
+import ApiError from './ApiError';
+import { getYandexId } from '../middlewares/checkYandexUser';
 
 class TopicsController {
   async getTopic(req: Request, res: Response, next: NextFunction) {
     const { topicId } = req.params;
-    const yandexId = getYandexId(res);
-
-    if (!yandexId) {
-      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
-    }
 
     try {
       const topic = await dbTopicsController.getTopicById(Number(topicId));
@@ -33,10 +28,6 @@ class TopicsController {
   async createTopic(req: Request, res: Response, next: NextFunction) {
     const { title, text } = req.body;
     const yandexId = getYandexId(res);
-
-    if (!yandexId) {
-      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
-    }
 
     if (!title) {
       return next(ApiError.badRequest('Не задан заголовок поста'));
@@ -66,10 +57,6 @@ class TopicsController {
     const { title, text, userId } = req.body;
     const { topicId } = req.params;
     const yandexId = getYandexId(res);
-
-    if (!yandexId) {
-      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
-    }
 
     if (!title) {
       return next(ApiError.badRequest('Не задан заголовок поста'));
@@ -101,11 +88,6 @@ class TopicsController {
 
   async deleteTopic(req: Request, res: Response, next: NextFunction) {
     const { topicId } = req.params;
-    const yandexId = getYandexId(res);
-
-    if (!yandexId) {
-      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
-    }
 
     if (!topicId) {
       return next(ApiError.notFound('Не задан topic id'));
