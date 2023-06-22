@@ -46,7 +46,6 @@ const getYandexUser: RequestHandler = async (req, res, next) => {
 
 
   try {
-    // @ts-ignore
     const { data: yandexUser } = await axios.get(
       'https://ya-praktikum.tech/api/v2/auth/user',
       {
@@ -66,8 +65,9 @@ const getYandexUser: RequestHandler = async (req, res, next) => {
     } else {
       userFromDb = await userFromDb.update({ ...rest, yandexId });
     }
-    // @ts-ignore
-    res.locals.user = serverToClientNaming(userFromDb!.toJSON());
+    if (userFromDb) {
+      res.locals.user = serverToClientNaming(userFromDb.toJSON());
+    }
   } catch (error) {
     // eslint-disable-next-line no-console
     res.locals.user = null;
