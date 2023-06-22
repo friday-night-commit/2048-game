@@ -113,7 +113,7 @@ class TopicsController {
 
     try {
       await dbTopicsController.deleteTopicById(Number(topicId));
-      res.status(204).end();
+      res.sendStatus(204);
     } catch (err) {
       return next(ApiError.badRequest('Не получилось удалить пост'));
     }

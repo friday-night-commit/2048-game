@@ -5,7 +5,7 @@ async function createTopic(
   text: string,
   userId: number
 ): Promise<Topic | null> {
-  return Topic.create({ title, text, userId });
+  return await Topic.create({ title, text, userId });
 }
 
 async function updateTopicById(topic: ITopic): Promise<[affectedCount: number]> {

@@ -85,7 +85,7 @@ class CommentsController {
 
     try {
       await dbCommentsController.deleteCommentById(Number(commentId));
-      res.status(204).end();
+      res.sendStatus(204);
     } catch (err) {
       return next(ApiError.badRequest('Не получилось удалить комментарий'));
     }
