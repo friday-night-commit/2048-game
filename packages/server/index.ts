@@ -1,6 +1,5 @@
-// import dotenv from 'dotenv';
-// dotenv.config({ path: __dirname + '../../.env' });
-import 'dotenv/config';
+import dotenv from 'dotenv';
+dotenv.config({ path: '../../.env' });
 
 import express from 'express';
 import cookieParser from 'cookie-parser';
