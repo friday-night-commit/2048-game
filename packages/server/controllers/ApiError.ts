@@ -14,8 +14,9 @@ class ApiError extends Error {
     return new ApiError(403, message);
   }
 
-  static badRequest(message: string) {
-    return new ApiError(400, message);
+  static badRequest(message: string, error?: Error) {
+    const resultMessage = error ? `${message}:\n${error.toString()}` : message;
+    return new ApiError(400, resultMessage);
   }
 
   static notFound(message: string) {

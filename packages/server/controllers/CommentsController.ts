@@ -9,26 +9,46 @@ class CommentsController {
     const { commentId } = req.params;
 
     try {
-      const comment = await dbCommentsController.getCommentById(Number(commentId));
+      const comment = await dbCommentsController.getCommentById(
+        Number(commentId)
+      );
       if (comment) {
         res.status(200).json(comment);
       } else {
-        return next(ApiError.badRequest(`Комментарий с id ${commentId} не найден`));
+        return next(
+          ApiError.badRequest(`Комментарий с id ${commentId} не найден`)
+        );
       }
     } catch (err) {
       return next(
-        ApiError.badRequest(`Комментарий с id ${commentId} не найден`)
+        ApiError.badRequest(
+          `Комментарий с id ${commentId} не найден`,
+          err as Error
+        )
       );
     }
   }
 
-  async getTopicComments(req: Request, res: Response, _next: NextFunction) {
+  async getTopicComments(req: Request, res: Response, next: NextFunction) {
     const { topicId } = req.params;
 
-    const comments = await dbCommentsController.getCommentsByTopicId(
-      Number(topicId)
-    );
-    res.status(200).json(comments);
+    if (!topicId) {
+      return next(ApiError.badRequest(`Пост с id ${topicId} не найден`));
+    }
+
+    try {
+      const comments = await dbCommentsController.getCommentsByTopicId(
+        Number(topicId)
+      );
+      res.status(200).json(comments);
+    } catch (err) {
+      return next(
+        ApiError.badRequest(
+          `Комментарий к посту с id ${topicId} не найдены`,
+          err as Error
+        )
+      );
+    }
   }
 
   async createComment(req: Request, res: Response, next: NextFunction) {
@@ -53,7 +73,9 @@ class CommentsController {
         return next(ApiError.badRequest('Не получилось создать комментарий'));
       }
     } catch (err) {
-      return next(ApiError.badRequest('Не получилось создать комментарий'));
+      return next(
+        ApiError.badRequest('Не получилось создать комментарий', err as Error)
+      );
     }
   }
 
@@ -68,7 +90,9 @@ class CommentsController {
       await dbCommentsController.deleteCommentById(Number(commentId));
       res.sendStatus(204);
     } catch (err) {
-      return next(ApiError.badRequest('Не получилось удалить комментарий'));
+      return next(
+        ApiError.badRequest('Не получилось удалить комментарий', err as Error)
+      );
     }
   }
 }

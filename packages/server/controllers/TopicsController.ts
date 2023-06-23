@@ -16,13 +16,19 @@ class TopicsController {
         return next(ApiError.badRequest(`Пост с id ${topicId} не найден`));
       }
     } catch (err) {
-      return next(ApiError.badRequest(`Пост с id ${topicId} не найден`));
+      return next(
+        ApiError.badRequest(`Пост с id ${topicId} не найден`, err as Error)
+      );
     }
   }
 
-  async getAllTopics(_req: Request, res: Response) {
-    const topics = await dbTopicsController.getAllTopics();
-    res.status(200).json(topics);
+  async getAllTopics(_req: Request, res: Response, next: NextFunction) {
+    try {
+      const topics = await dbTopicsController.getAllTopics();
+      res.status(200).json(topics);
+    } catch (err) {
+      return next(ApiError.badRequest('Посты не найдены', err as Error));
+    }
   }
 
   async createTopic(req: Request, res: Response, next: NextFunction) {
@@ -49,7 +55,9 @@ class TopicsController {
         return next(ApiError.badRequest('Не получилось создать пост'));
       }
     } catch (err) {
-      return next(ApiError.badRequest('Не получилось создать пост'));
+      return next(
+        ApiError.badRequest('Не получилось создать пост', err as Error)
+      );
     }
   }
 
@@ -82,7 +90,9 @@ class TopicsController {
         return next(ApiError.badRequest('Не получилось обновить пост'));
       }
     } catch (err) {
-      return next(ApiError.badRequest('Не получилось обновить пост'));
+      return next(
+        ApiError.badRequest('Не получилось обновить пост', err as Error)
+      );
     }
   }
 
@@ -97,7 +107,9 @@ class TopicsController {
       await dbTopicsController.deleteTopicById(Number(topicId));
       res.sendStatus(204);
     } catch (err) {
-      return next(ApiError.badRequest('Не получилось удалить пост'));
+      return next(
+        ApiError.badRequest('Не получилось удалить пост', err as Error)
+      );
     }
   }
 }
