@@ -10,7 +10,7 @@ class TopicsController {
     const yandexId = getYandexId(res);
 
     if (!yandexId) {
-      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
+      //  return next(ApiError.forbidden('Авторизованный пользователь не найден'));
     }
 
     try {
@@ -25,14 +25,31 @@ class TopicsController {
     }
   }
 
-  async getAllTopics(_req: Request, res: Response) {
-    const topics = await dbTopicsController.getAllTopics();
-    res.status(200).json(topics);
+  async getAllTopics(_req: Request, res: Response, next: NextFunction) {
+    try {
+      const topics = await dbTopicsController.getAllTopics();
+      res.status(200).json(topics);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log('err', e);
+      return next(ApiError.badRequest('Не получилось получить посты'));
+    }
+  }
+
+  async getAllTags(_req: Request, res: Response, next: NextFunction) {
+    try {
+      const tags = await dbTopicsController.getAllTags();
+      res.status(200).json(tags);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log('err', e);
+      return next(ApiError.badRequest('Не получилось получить теги'));
+    }
   }
 
   async createTopic(req: Request, res: Response, next: NextFunction) {
-    const { title, text } = req.body;
-    const yandexId = 666;// getYandexId(res);
+    const { title, text, tag, imageUrl } = req.body;
+    const yandexId = 666; // getYandexId(res);
 
     /*    if (!yandexId) {
           return next(ApiError.forbidden('Авторизованный пользователь не найден'));
@@ -46,20 +63,26 @@ class TopicsController {
       return next(ApiError.badRequest('Не задан текст поста'));
     }
 
-    try {
+    if (!tag) {
+      return next(ApiError.badRequest('Не задан тэг поста'));
+    }
 
+    try {
       const topic = await dbTopicsController.createTopic(
         title,
         text,
-        Number(yandexId)
+        Number(yandexId),
+        tag,
+        imageUrl
       );
-
       if (topic) {
         res.status(201).json(topic);
       } else {
         return next(ApiError.badRequest('Не получилось создать пост'));
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log('err', err);
       return next(ApiError.badRequest('Не получилось создать пост'));
     }
   }
@@ -106,7 +129,7 @@ class TopicsController {
     const yandexId = getYandexId(res);
 
     if (!yandexId) {
-      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
+      // return next(ApiError.forbidden('Авторизованный пользователь не найден'));
     }
 
     if (!topicId) {
@@ -115,7 +138,9 @@ class TopicsController {
 
     try {
       await dbTopicsController.deleteTopicById(Number(topicId));
-      res.status(204).end();
+      // eslint-disable-next-line no-console
+      console.log('deleteTopicById', topicId);
+      res.status(204).json(topicId);
     } catch (err) {
       return next(ApiError.badRequest('Не получилось удалить пост'));
     }

@@ -1,5 +1,13 @@
 import { Button } from '@material-tailwind/react';
-import React, { lazy, Suspense, SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  lazy,
+  Suspense,
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Input from '../../Components/Input';
@@ -9,6 +17,10 @@ import DesktopNotification from '../../WebAPI/notification.service';
 const LazyTextEditorComponent = lazy(() => import('./components/TextEditor'));
 
 import './index.scss';
+import { ForumPost } from '../Forum/stubs';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import ForumController from '../../Controllers/ForumController';
+import { clearContent } from '../../store/slices/Forum';
 
 export const AddPostPage = () => {
   // Как лучше использовать этот класс в компоненте реакта?
@@ -20,13 +32,10 @@ export const AddPostPage = () => {
   const [error, setError] = useState('');
 
 
-  const [formInputsData, setFormInputsData] = useState<SigninData>({
-    title: '',
-    text: '',
-  });
-
-
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const content =
+    useAppSelector(state => state.forumSlice.content) || 'заглушка Добавить пост';
 
   function handleUpload(e: React.FormEvent<HTMLInputElement>) {
     if (!e) {
@@ -51,10 +60,49 @@ export const AddPostPage = () => {
 
   const onSubmit = useCallback(
     // desktopNotification.showNotification('Новый пост', 'React + Angular + Vue');
-    (e: React.FormEvent) => {
+    async (e: React.FormEvent) => {
       e.preventDefault();
+      const target = e.target as HTMLFormElement;
+      const formData = new FormData(target);
+      const title = formData.get('title')?.toString();
+      const tag = formData.get('tag')?.toString();
+      const preview = formData.get('preview');
+      const imageUrl =
+        'https://www.itshop.ru/productimages/auto/pimg_2021101_182.png';
+
+      if (!title) {
+        return;
+      }
+
+      if (!content) {
+        // eslint-disable-next-line no-console
+        console.log('Add post content is not found!');
+        return;
+      }
+
+      if (!tag) {
+        return;
+      }
+
+      if (!imageUrl) {
+        return;
+      }
+
+      const newPost: ForumPost = {
+        title,
+        tag,
+        imageUrl,
+        text: content,
+      };
+
+      const addedPost = await ForumController.createPost(newPost);
+
+      if (addedPost) {
+        dispatch(clearContent());
+        window.location.reload();
+      }
     },
-    [formInputsData]
+    []
   );
 
   useEffect(() => {
@@ -62,7 +110,7 @@ export const AddPostPage = () => {
   }, []);
 
   return (
-    <div className='container mx-auto w-full  add-post'>
+    <form className='container mx-auto w-full  add-post' onSubmit={onSubmit}>
       <div className='add-post__left'>
         <div className='mb-4'>
           <Input
@@ -98,11 +146,11 @@ export const AddPostPage = () => {
         </>
 
         <Input
-          name='tags'
+          name='tag'
           type='text'
-          placeholder='Теги'
+          placeholder='Тег'
           required={true}
-          validationType='default'
+          validationType='tag'
         />
       </div>
 
@@ -115,7 +163,7 @@ export const AddPostPage = () => {
       <div className='add-post__action'>
         <Button
           disabled={!!error}
-          onClick={onSubmit}
+          type='submit'
           className=' mb-2 px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800'>
           Опубликовать
         </Button>
@@ -125,6 +173,6 @@ export const AddPostPage = () => {
           Отмена
         </Button>
       </div>
-    </div>
+    </form>
   );
 };

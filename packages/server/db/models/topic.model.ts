@@ -4,6 +4,7 @@ import {
   Column,
   DataType,
   ForeignKey,
+  Default,
 } from 'sequelize-typescript';
 
 import User from './user.model';
@@ -13,8 +14,11 @@ const { STRING, TEXT, INTEGER } = DataType;
 export interface ITopic {
   id?: number;
   title: string;
+  tag: string;
   text: string;
+  viewsCount?: number;
   userId: number;
+  imageUrl: string;
 }
 
 @Table({
@@ -34,6 +38,28 @@ export default class Topic extends Model<ITopic> {
     comment: 'topic content',
   })
   text: string;
+
+  @Column({
+    type: TEXT,
+    allowNull: false,
+    comment: 'topic tag',
+  })
+  tag: string;
+
+  @Column({
+    type: TEXT,
+    allowNull: false,
+    comment: 'topic preview',
+  })
+  imageUrl: string;
+
+  @Default(0)
+  @Column({
+    type: INTEGER,
+    allowNull: true,
+    comment: 'topic view count',
+  })
+  viewsCount: string;
 
   @ForeignKey(() => User)
   @Column({

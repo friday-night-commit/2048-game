@@ -16,6 +16,7 @@ export const TagsBlock: TProps = ({ items, isLoading }: TOwnProps) => {
   return (
     <SideBlock title='Тэги'>
       <ul>
+        {(!items.length && <p>Тэгов нет</p>)}
         {(isLoading ? [...Array(5)] : items).map(tag => (
           <a
             key={tag}

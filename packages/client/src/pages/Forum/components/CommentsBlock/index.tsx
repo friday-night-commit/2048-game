@@ -29,7 +29,7 @@ export const CommentsBlock: TProps = ({
                 {isLoading ? (
                   <span>...Skeleton</span>
                 ) : (
-                  <Avatar alt={obj.user.fullName} src={obj.user.avatarUrl} />
+                  <Avatar alt={obj?.user?.fullName} src={obj?.user?.avatarUrl} />
                 )}
               </div>
               {isLoading ? (
@@ -38,10 +38,10 @@ export const CommentsBlock: TProps = ({
                 </div>
               ) : (
                 <div className='message'>
-                  <span>{obj.user.fullName}</span>
-                  <span>{obj.text}</span>
+                  <span>{obj?.user?.fullName}</span>
+                  <span>{obj?.text}</span>
                   <span className='message__date'>
-                    {moment(obj.createdAt).format(
+                    {moment(obj?.createdAt).format(
                       DATE_FORMATS.COMPLEX_DATE_FORMAT
                     )}
                   </span>

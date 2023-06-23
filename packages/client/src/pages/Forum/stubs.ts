@@ -4,7 +4,7 @@ export const posts: Posts = {
       _id: '1',
       title: 'Angular + Typescript',
       text: 'My the first post about web',
-      tags: ['angular'],
+      tag: 'angular',
       viewsCount: 1,
       commentsCount: 5,
       isNew: true,
@@ -38,7 +38,7 @@ export const posts: Posts = {
         'Нам не нужно ничего знать про остальную часть вашего технологического стека, поэтому вы можете разрабатывать новую функциональность на React, не изменяя существующий код.\n' +
         '\n' +
         'React также может работать на сервере, используя Node.js и на мобильных платформах, используя React Native.',
-      tags: ['react', 'javascript'],
+      tag: 'react',
       viewsCount: 4,
       commentsCount: 12,
       isNew: true,
@@ -56,7 +56,7 @@ export const posts: Posts = {
       _id: '3',
       title: 'Vue + Typescript',
       text: 'My the third post about web',
-      tags: ['react', 'typescript'],
+      tag: 'typescript',
       viewsCount: 60,
       commentsCount: 112,
       isNew: false,
@@ -81,17 +81,17 @@ type Posts = {
 };
 
 export interface ForumPost {
-  _id: string;
+  id?: string;
   title: string;
   text: string;
-  tags: string[];
-  viewsCount: number;
-  commentsCount: number;
-  isNew: boolean;
-  user: UserData;
+  tag: string;
+  viewsCount?: number;
+  commentsCount?: number;
+  isNew?: boolean;
+  user?: UserData;
   imageUrl: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export const tags: Tags = {

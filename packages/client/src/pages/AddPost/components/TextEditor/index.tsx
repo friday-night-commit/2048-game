@@ -5,7 +5,10 @@ import 'quill-emoji/dist/quill-emoji.css';
 // @ts-ignore // Без этого не работает
 import quillEmoji from 'react-quill-emoji';
 
+
 import './index.scss';
+import { useAppDispatch } from '../../../../hooks/redux';
+import { updateContent } from '../../../../store/slices/Forum';
 
 type TextEditorProps = {
   textAreaHeight: number;
@@ -22,6 +25,9 @@ const TextEditor: FC<TextEditorProps> = ({
     },
     true
   );
+
+
+  const dispatch = useAppDispatch();
 
   const modules = {
     'emoji-textarea': true,
@@ -62,9 +68,10 @@ const TextEditor: FC<TextEditorProps> = ({
     'image',
     'video',
   ];
-  const handleChange = (html: unknown) => {
+  const handleChange = (html: string) => {
     // eslint-disable-next-line no-console
-    console.log('handleChange', html);
+    console.log('TextEditor html', html);
+    dispatch(updateContent(html));
   };
 
   return (
@@ -75,7 +82,7 @@ const TextEditor: FC<TextEditorProps> = ({
         onChange={handleChange}
         modules={modules}
         formats={formats}
-        placeholder='Hello'
+        placeholder='Write new text'
       />
     </div>
   );

@@ -22,5 +22,8 @@ router
   .route('/:topicId/comments/:commentId')
   .get(CommentsController.getComment)
   .delete(CommentsController.deleteComment);
+router
+  .route('/tags/all')
+  .get(TopicsController.getAllTags);
 
 export default router;
