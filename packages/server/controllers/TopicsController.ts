@@ -15,9 +15,9 @@ class TopicsController {
         return next(ApiError.badRequest(`Пост с id ${topicId} не найден`));
       }
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log('getTopic err', err);
-      return next(ApiError.badRequest(`Пост с id ${topicId} не найден`));
+      return next(
+        ApiError.badRequest(`Пост с id ${topicId} не найден`, err as Error)
+      );
     }
   }
 
@@ -25,10 +25,8 @@ class TopicsController {
     try {
       const topics = await dbTopicsController.getAllTopics();
       res.status(200).json(topics);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log('err', e);
-      return next(ApiError.badRequest('Не получилось получить посты'));
+    } catch (err) {
+      return next(ApiError.badRequest('Не получилось получить посты', err as Error));
     }
   }
 
@@ -36,19 +34,13 @@ class TopicsController {
     try {
       const tags = await dbTopicsController.getAllTags();
       res.status(200).json(tags);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log('err', e);
-      return next(ApiError.badRequest('Не получилось получить теги'));
+    } catch (err) {
+      return next(ApiError.badRequest('Не получилось получить теги', err as Error));
     }
   }
 
   async createTopic(req: Request, res: Response, next: NextFunction) {
     const { title, text, tag, imageUrl } = req.body;
-    const yandexId = getYandexId(res); // 1154066
-
-    // eslint-disable-next-line no-console
-    console.log('yandexId', yandexId);
 
     if (!title) {
       return next(ApiError.badRequest('Не задан заголовок поста'));
@@ -76,9 +68,9 @@ class TopicsController {
         return next(ApiError.badRequest('Не получилось создать пост'));
       }
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log('err', err);
-      return next(ApiError.badRequest('Не получилось создать пост'));
+      return next(
+        ApiError.badRequest('Не получилось создать пост', err as Error)
+      );
     }
   }
 
@@ -111,7 +103,9 @@ class TopicsController {
         return next(ApiError.badRequest('Не получилось обновить пост'));
       }
     } catch (err) {
-      return next(ApiError.badRequest('Не получилось обновить пост'));
+      return next(
+        ApiError.badRequest('Не получилось обновить пост', err as Error)
+      );
     }
   }
 
@@ -126,7 +120,9 @@ class TopicsController {
       await dbTopicsController.deleteTopicById(Number(topicId));
       res.status(204).json(topicId);
     } catch (err) {
-      return next(ApiError.badRequest('Не получилось удалить пост'));
+      return next(
+        ApiError.badRequest('Не получилось удалить пост', err as Error)
+      );
     }
   }
 }

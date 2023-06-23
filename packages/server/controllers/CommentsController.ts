@@ -21,7 +21,10 @@ class CommentsController {
       }
     } catch (err) {
       return next(
-        ApiError.badRequest(`Комментарий с id ${commentId} не найден`)
+        ApiError.badRequest(
+          `Комментарий с id ${commentId} не найден`,
+          err as Error
+        )
       );
     }
   }
@@ -35,7 +38,12 @@ class CommentsController {
       );
       res.status(200).json(comments);
     } catch (err) {
-      return next(ApiError.badRequest('Не получилось создать комментарий'));
+      return next(
+        ApiError.badRequest(
+          `Комментарий к посту с id ${topicId} не найдены`,
+          err as Error
+        )
+      );
     }
   }
 
@@ -62,9 +70,9 @@ class CommentsController {
         return next(ApiError.badRequest('Не получилось создать комментарий'));
       }
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log('ee', err);
-      return next(ApiError.badRequest('Не получилось создать комментарий'));
+      return next(
+        ApiError.badRequest('Не получилось создать комментарий', err as Error)
+      );
     }
   }
 
@@ -79,15 +87,11 @@ class CommentsController {
      const lastComments = await dbCommentsController.getLastComments(Number(limit));
       res.status(200).json(lastComments);
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log('ee', err);
-      return next(ApiError.badRequest('Не получилось получить последние комментарии'));
+      return next(ApiError.badRequest('Не получилось получить последние комментарии', err as Error));
     }
   }
 
   async deleteComment(req: Request, res: Response, next: NextFunction) {
-    // eslint-disable-next-line no-console
-    console.log('deleteComment');
     const { commentId } = req.params;
 
     if (!commentId) {
@@ -98,7 +102,9 @@ class CommentsController {
       await dbCommentsController.deleteCommentById(Number(commentId));
       res.sendStatus(204);
     } catch (err) {
-      return next(ApiError.badRequest('Не получилось удалить комментарий'));
+      return next(
+        ApiError.badRequest('Не получилось удалить комментарий', err as Error)
+      );
     }
   }
 }
