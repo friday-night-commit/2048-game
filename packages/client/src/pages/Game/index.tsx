@@ -1,9 +1,9 @@
 import { Button, Typography } from '@material-tailwind/react';
-import React from 'react';
 
 import PageContainer from '../../Components/PageContainer';
 import Game from '../../Components/Game';
 import RestartButton from './components/RestartButton';
+import FullscreenButton from './components/FullscreenButton';
 import SuccessModal from './components/SuccessModal';
 import FailureModal from './components/FailureModal';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -20,7 +20,7 @@ export default function GamePage() {
   return (
     <PageContainer>
       <>
-        <div className='game-page-container large'>
+        <div className='game-page-container'>
           <div className='flex justify-between'>
             <div>
               <Typography
@@ -35,11 +35,8 @@ export default function GamePage() {
               <Button className='game-button small mr-4' id='btn-step-back'>
                 Шаг назад
               </Button>
-              {/* [just for tests] open modal on restart click */}
               <RestartButton />
-              <Button className='game-button small fullscreen mr-4' id='btn-fullscreen-mode'>
-                Включить полноэкранный режим
-              </Button>
+              <FullscreenButton />
             </div>
           </div>
         </div>

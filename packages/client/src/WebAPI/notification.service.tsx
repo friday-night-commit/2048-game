@@ -28,7 +28,7 @@ class DesktopNotification {
   showNotification(title: string, content: string) {
     const options: NotificationOptions = {
       body: content,
-      icon: 'https://cdn-icons-png.flaticon.com/512/8297/8297354.png?    auto=compress&cs=tinysrgb&dpr=1&w=500',
+      icon: 'https://cdn-icons-png.flaticon.com/512/8297/8297354.png?auto=compress&cs=tinysrgb&dpr=1&w=500',
       dir: 'ltr',
       vibrate: 5,
     };
