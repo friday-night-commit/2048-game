@@ -9,6 +9,7 @@ import routes from '../../routes';
 import { setMaxScore } from '../../store/slices/User';
 
 import './index.scss';
+import ToggleTheme from '../ToggleTheme';
 
 type NavbarLinkProps = {
   url: string;
@@ -68,7 +69,7 @@ export default function Navbar() {
 
   return (
     <MaterialNavbar
-      className='navbar mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4'
+      className='navbar mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4 dark:bg-slate-900'
       id='navbar-item-menu'>
       <div className='container mx-auto flex items-center justify-between'>
         <Typography
@@ -85,6 +86,7 @@ export default function Navbar() {
             ))}
           </ul>
         </div>
+        <ToggleTheme/>
         <span className='score-container'>
           {`Ваш рекорд: ${maxScore}`}
         </span>

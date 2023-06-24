@@ -32,3 +32,10 @@
     border-radius: 3px;
   }
 }
+
+.toggle-button {
+  color: $font-color;
+  border: 2px solid $orange-tile;
+  border-radius: 10px;
+  padding: 10px;
+}
