@@ -1,30 +1,29 @@
-import { Client } from 'pg';
+import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 
-const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
-  process.env;
+const isDev = process.env.NODE_ENV === 'development';
 
-export const createClientAndConnect = async (): Promise<Client | null> => {
-  try {
-    const client = new Client({
-      user: POSTGRES_USER,
-      host: 'localhost',
-      database: POSTGRES_DB,
-      password: POSTGRES_PASSWORD,
-      port: Number(POSTGRES_PORT),
-    });
+const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } = process.env;
 
-    await client.connect();
-
-    const res = await client.query('SELECT NOW()');
-    // eslint-disable-next-line no-console
-    console.log('  ➜ 🎸 Connected to the database at:', res?.rows?.[0].now);
-    client.end();
-
-    return client;
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e);
-  }
-
-  return null;
+const sequelizeOptions: SequelizeOptions = {
+  host: 'localhost',
+  port: Number(POSTGRES_PORT),
+  username: POSTGRES_USER,
+  password: POSTGRES_PASSWORD,
+  database: POSTGRES_DB,
+  dialect: 'postgres', // 'mysql', 'sqlite', 'mariadb', 'mssql',
+  models: [__dirname + '/**/*.model.ts'],
 };
+
+export const sequelize = new Sequelize(sequelizeOptions);
+
+export async function dbConnect() {
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync(isDev ? { force: true } : {});
+    // eslint-disable-next-line no-console
+    console.log('Connection with database has been established successfully.');
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Unable to connect to the database:', error);
+  }
+}

@@ -1,11 +1,16 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: '../../.env' });
+
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import path from 'node:path';
+
 import { distPath, initVite } from './services/init-vite';
-import { renderSSR } from './middlewares';
+import { getYandexUser, checkYandexUser, renderSSR } from './middlewares';
+import { dbConnect } from './db';
+import apiRouter from './api';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -33,6 +38,12 @@ async function startServer() {
 
   app.use(express.json());
 
+  app.use('*', getYandexUser);
+
+  app.use('/api/forum/topics', checkYandexUser);
+
+  app.use('/api', apiRouter);
+
   app.use('*', async (req, res, next) => renderSSR(req, res, next, vite));
 
   app.listen(port, () => {
@@ -42,3 +53,5 @@ async function startServer() {
 }
 
 startServer();
+
+dbConnect();
