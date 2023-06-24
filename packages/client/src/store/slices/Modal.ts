@@ -37,7 +37,7 @@ export const modalSlice = createSlice({
       state.isNewMatrix = false;
     },
     continuePlay(state) {
-      state.isContinuePlay= true;
+      state.isContinuePlay = true;
       state.isOpenSuccess = false;
       state.isOpenFailure = false;
 

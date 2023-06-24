@@ -6,6 +6,7 @@ type StoreState = {
 type userState = {
   user: User | undefined;
   isLoaded: boolean;
+  maxScore: number;
 };
 
 type modalState = {
