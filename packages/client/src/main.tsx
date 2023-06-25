@@ -10,7 +10,7 @@ import { YandexAPIRepository } from './repository/YandexAPIRepository';
 import { UserService } from './api/UserService';
 
 import './index.scss';
-import { ThemeContext } from './Utils/ThemeContext';
+import { ThemeProvider } from './Utils/ThemeProvider';
 
 let initialState = {};
 try {
@@ -28,13 +28,13 @@ delete window.__REDUX_INITIAL_STATE__;
 hydrateRoot(
   document.getElementById('root') as HTMLElement,
   <React.StrictMode>
-    <ThemeContext.Provider value='light'>
+    <ThemeProvider>
     <BrowserRouter>
       <Provider store={store}>
           <App />
       </Provider>
     </BrowserRouter>
-    </ThemeContext.Provider>
+    </ThemeProvider>
   </React.StrictMode>
 );
 
