@@ -9,7 +9,7 @@ import routes from '../../routes';
 import { setMaxScore } from '../../store/slices/User';
 
 import './index.scss';
-import ToggleTheme from '../ToggleTheme';
+import ThemeToggler from '../ThemeToggler';
 
 type NavbarLinkProps = {
   url: string;
@@ -86,7 +86,10 @@ export default function Navbar() {
             ))}
           </ul>
         </div>
-        <ToggleTheme/>
+        { typeof window !== 'undefined' ?
+          <ThemeToggler/>
+          : null
+        }
         <span className='score-container'>
           {`Ваш рекорд: ${maxScore}`}
         </span>
