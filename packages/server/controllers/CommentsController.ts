@@ -2,7 +2,24 @@ import type { Request, Response, NextFunction } from 'express';
 
 import dbCommentsController from '../db/controllers/comments';
 import ApiError from './ApiError';
-import { getYandexId } from '../middlewares/checkYandexUser';
+import checkTextLength from './checkTextLength';
+
+const textParamSchema = {
+  name: 'text',
+  type: 'string',
+  required: true,
+  validator_functions: [checkTextLength(400)],
+};
+
+const parentIdParamSchema = {
+  name: 'parentId',
+  type: 'number',
+  required: true,
+};
+
+export const paramsSchemas = {
+  post: [textParamSchema, parentIdParamSchema],
+};
 
 class CommentsController {
   async getComment(req: Request, res: Response, next: NextFunction) {
@@ -51,10 +68,6 @@ class CommentsController {
     const { topicId } = req.params;
     const { text, parentId } = req.body;
 
-    if (!text) {
-      return next(ApiError.badRequest('Не задан текст комментария'));
-    }
-
     try {
       const comment = await dbCommentsController.createComment(
         text,
@@ -78,11 +91,7 @@ class CommentsController {
 
   async getLastComments(req: Request, res: Response, next: NextFunction) {
     const limit = req.query.limit || 3;
-    const yandexId = getYandexId(res);
 
-    if (!yandexId) {
-       return next(ApiError.forbidden('Авторизованный пользователь не найден'));
-    }
     try {
      const lastComments = await dbCommentsController.getLastComments(Number(limit));
       res.status(200).json(lastComments);
@@ -93,10 +102,6 @@ class CommentsController {
 
   async deleteComment(req: Request, res: Response, next: NextFunction) {
     const { commentId } = req.params;
-
-    if (!commentId) {
-      return next(ApiError.notFound('Не задан comment id'));
-    }
 
     try {
       await dbCommentsController.deleteCommentById(Number(commentId));
