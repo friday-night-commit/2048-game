@@ -8,24 +8,18 @@ import {
 } from 'sequelize-typescript';
 
 
-const { INTEGER, STRING } = DataType;
+const { STRING } = DataType;
 
 export interface ITheme {
-  id: number;
+  id?: number;
   name: string;
 }
 
 @Table({
   tableName: 'themes',
-  timestamps: false,
 })
+
 export default class Theme extends Model<ITheme> {
-  @Column({
-    type: INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  })
-  id: number;
   @Column({
     type: STRING(1024),
     allowNull: false,
