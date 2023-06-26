@@ -2,29 +2,47 @@ import type { Request, Response, NextFunction } from 'express';
 
 import dbThemeController from '../db/controllers/theme';
 import ApiError from './ApiError';
-import { getYandexId } from '../middlewares/checkYandexUser';
 
 enum ErrorMsg {
   NOT_CREATED = 'Не получилось добавить тему!',
   NOT_UPDATE = 'Не получилось обновить тему',
   NOT_DELETED = 'Не получилось удалить тему',
-  NO_PARAMS = 'Нет нужного параметра: ',
+  NO_THEMES = 'Темы не найдены',
   NOT_FOUND = 'Тема не найдена. Параметр поиска: '
 }
 
-enum ParamsDB {
+enum ParamsName {
   THEME_ID = 'theme id',
   THEME_NAME = 'theme name',
-  YANDEX_ID = 'yandex id'
+  USER_ID = 'user id'
 }
+
+const themeIdParamSchema = {
+  name: 'themeId',
+  type: 'number',
+  required: true,
+};
+
+const themeNameParamSchema = {
+  name: 'name',
+  type: 'string',
+  required: true,
+};
+
+const userIdParamSchema = {
+  name: 'userId',
+  type: 'number',
+  required: true,
+};
+
+export const paramsSchemas = {
+  post: [themeIdParamSchema, themeNameParamSchema],
+  put: [themeIdParamSchema, themeNameParamSchema, userIdParamSchema]
+};
 
 class ThemeController {
   async createTheme(req: Request, res: Response, next: NextFunction) {
     const { name } = req.body;
-
-    if (!name) {
-      return next(ApiError.badRequest(ErrorMsg.NO_PARAMS + ParamsDB.THEME_NAME));
-    }
 
     try {
       const theme = await dbThemeController.createTheme(name);
@@ -41,19 +59,10 @@ class ThemeController {
   }
 
   async createThemeUser(req: Request, res: Response, next: NextFunction) {
-    const { themeId } = req.body;
-    const yandexId = getYandexId(res);
-
-    if (!themeId) {
-      return next(ApiError.badRequest(ErrorMsg.NO_PARAMS + ParamsDB.THEME_ID));
-    }
-
-    if (!yandexId) {
-      return next(ApiError.badRequest(ErrorMsg.NO_PARAMS + ParamsDB.YANDEX_ID));
-    }
+    const { themeId, userId } = req.body;
 
     try {
-      const theme = await dbThemeController.createThemeUserLink(themeId, yandexId);
+      const theme = await dbThemeController.createThemeUserLink(themeId, userId);
       if (theme) {
         res.status(201).json(theme);
       } else {
@@ -66,12 +75,17 @@ class ThemeController {
     }
   }
 
+  async getAllThemes(_req: Request, res: Response, next: NextFunction) {
+    try {
+      const topics = await dbThemeController.getAllThemes();
+      res.status(200).json(topics);
+    } catch (err) {
+      return next(ApiError.badRequest(ErrorMsg.NO_THEMES, err as Error));
+    }
+  }
+
   async getThemeById(req: Request, res: Response, next: NextFunction) {
     const { themeId } = req.params;
-
-    if (!themeId) {
-      return next(ApiError.badRequest(ErrorMsg.NO_PARAMS + ParamsDB.THEME_ID));
-    }
 
     try {
       const theme = await dbThemeController.getThemeById(
@@ -81,13 +95,13 @@ class ThemeController {
         res.status(200).json(theme);
       } else {
         return next(
-          ApiError.badRequest(ErrorMsg.NOT_FOUND + ParamsDB.THEME_ID + themeId)
+          ApiError.badRequest(ErrorMsg.NOT_FOUND + ParamsName.THEME_ID + themeId)
         );
       }
     } catch (err) {
       return next(
         ApiError.badRequest(
-          ErrorMsg.NOT_FOUND + ParamsDB.THEME_ID + themeId,
+          ErrorMsg.NOT_FOUND + ParamsName.THEME_ID + themeId,
           err as Error
         )
       );
@@ -97,10 +111,6 @@ class ThemeController {
   async getThemeByName(req: Request, res: Response, next: NextFunction) {
     const { themeName } = req.params;
 
-    if (!themeName) {
-      return next(ApiError.badRequest(ErrorMsg.NO_PARAMS + ParamsDB.THEME_NAME));
-    }
-
     try {
       const theme = await dbThemeController.getThemeByName(
         themeName
@@ -109,41 +119,37 @@ class ThemeController {
         res.status(200).json(theme);
       } else {
         return next(
-          ApiError.badRequest(ErrorMsg.NOT_FOUND + ParamsDB.THEME_NAME + themeName)
+          ApiError.badRequest(ErrorMsg.NOT_FOUND + ParamsName.THEME_NAME + themeName)
         );
       }
     } catch (err) {
       return next(
         ApiError.badRequest(
-          ErrorMsg.NOT_FOUND + ParamsDB.THEME_NAME + themeName,
+          ErrorMsg.NOT_FOUND + ParamsName.THEME_NAME + themeName,
           err as Error
         )
       );
     }
   }
 
-  async getThemeByUser(res: Response, next: NextFunction) {
-    const yandexId = getYandexId(res);
-
-    if (!yandexId) {
-      return next(ApiError.badRequest(ErrorMsg.NO_PARAMS + ParamsDB.YANDEX_ID));
-    }
+  async getThemeByUser(req: Request, res: Response, next: NextFunction) {
+    const { userId } = req.params;
 
     try {
       const theme = await dbThemeController.getThemeByUser(
-        Number(yandexId)
+        Number(userId)
       );
       if (theme) {
         res.status(200).json(theme);
       } else {
         return next(
-          ApiError.badRequest(ErrorMsg.NOT_FOUND + ParamsDB.YANDEX_ID + yandexId)
+          ApiError.badRequest(ErrorMsg.NOT_FOUND + ParamsName.USER_ID + userId)
         );
       }
     } catch (err) {
       return next(
         ApiError.badRequest(
-          ErrorMsg.NOT_FOUND + ParamsDB.YANDEX_ID + yandexId,
+          ErrorMsg.NOT_FOUND + ParamsName.USER_ID + userId,
           err as Error
         )
       );
@@ -152,14 +158,6 @@ class ThemeController {
 
   async updateTheme(req: Request, res: Response, next: NextFunction) {
     const { themeId, themeName } = req.params;
-
-    if (!themeId) {
-      return next(ApiError.badRequest(ErrorMsg.NO_PARAMS + ParamsDB.THEME_ID));
-    }
-
-    if (!themeName) {
-      return next(ApiError.badRequest(ErrorMsg.NO_PARAMS + ParamsDB.THEME_NAME));
-    }
 
     try {
       const theme = await dbThemeController.updateThemeById(
@@ -184,33 +182,24 @@ class ThemeController {
   }
 
   async updateThemeForUser(req: Request, res: Response, next: NextFunction) {
-    const { themeId } = req.params;
-    const yandexId = getYandexId(res);
-
-    if (!themeId) {
-      return next(ApiError.badRequest(ErrorMsg.NO_PARAMS + ParamsDB.THEME_ID));
-    }
-
-    if (!yandexId) {
-      return next(ApiError.badRequest(ErrorMsg.NO_PARAMS + ParamsDB.YANDEX_ID));
-    }
+    const { themeId, userId } = req.body;
 
     try {
       const theme = await dbThemeController.updateThemeForUser(
         Number(themeId),
-        yandexId
+        Number(userId),
       );
       if (theme) {
         res.status(200).json(theme);
       } else {
         return next(
-          ApiError.badRequest(ErrorMsg.NOT_FOUND + ParamsDB.THEME_ID + themeId)
+          ApiError.badRequest(ErrorMsg.NOT_FOUND + ParamsName.THEME_ID + themeId)
         );
       }
     } catch (err) {
       return next(
         ApiError.badRequest(
-          ErrorMsg.NOT_FOUND + ParamsDB.THEME_ID + themeId,
+          ErrorMsg.NOT_FOUND + ParamsName.THEME_ID + themeId,
           err as Error
         )
       );
@@ -219,10 +208,6 @@ class ThemeController {
 
   async deleteThemeForUser(req: Request, res: Response, next: NextFunction) {
     const { themeId } = req.params;
-
-    if (!themeId) {
-      return next(ApiError.notFound(ErrorMsg.NO_PARAMS + ParamsDB.THEME_ID));
-    }
 
     try {
       await dbThemeController.deleteThemeUserByThemeId(Number(themeId));
@@ -236,10 +221,6 @@ class ThemeController {
 
   async deleteTheme(req: Request, res: Response, next: NextFunction) {
     const { themeId } = req.params;
-
-    if (!themeId) {
-      return next(ApiError.notFound(ErrorMsg.NO_PARAMS + ParamsDB.THEME_ID));
-    }
 
     try {
       await dbThemeController.deleteThemeUserByThemeId(Number(themeId))
