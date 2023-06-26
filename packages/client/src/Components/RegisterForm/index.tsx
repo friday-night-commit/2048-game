@@ -27,7 +27,7 @@ const RegisterForm = () => {
     (e: FormEvent<HTMLFormElement>) => {
       const repeatPassword = (
         e.currentTarget.elements.namedItem(
-          UserFields.repeat_password
+          UserFields.REPEAT_PASSWORD
         ) as HTMLInputElement
       ).value;
 
@@ -73,7 +73,7 @@ const RegisterForm = () => {
       <form className='w-full' onSubmit={onSubmit}>
         <div className='mb-4 flex flex-col gap-6'>
           <Input
-            name={UserFields.first_name}
+            name={UserFields.FIRST_NAME}
             type='text'
             label='Имя'
             validationType='name'
@@ -81,7 +81,7 @@ const RegisterForm = () => {
             required
           />
           <Input
-            name={UserFields.second_name}
+            name={UserFields.SECOND_NAME}
             type='text'
             label='Фамилия'
             validationType='name'
@@ -89,7 +89,7 @@ const RegisterForm = () => {
             required
           />
           <Input
-            name={UserFields.email}
+            name={UserFields.EMAIL}
             type='email'
             label='Email'
             validationType='email'
@@ -97,7 +97,7 @@ const RegisterForm = () => {
             required
           />
           <Input
-            name={UserFields.phone}
+            name={UserFields.PHONE}
             type='tel'
             label='Телефон'
             validationType='phone'
@@ -105,7 +105,7 @@ const RegisterForm = () => {
             required
           />
           <Input
-            name={UserFields.login}
+            name={UserFields.LOGIN}
             type='text'
             label='Логин'
             validationType='login'
@@ -113,7 +113,7 @@ const RegisterForm = () => {
             required
           />
           <Input
-            name={UserFields.password}
+            name={UserFields.PASSWORD}
             type='password'
             label='Пароль'
             validationType='password'
@@ -121,7 +121,7 @@ const RegisterForm = () => {
             required
           />
           <Input
-            name={UserFields.repeat_password}
+            name={UserFields.REPEAT_PASSWORD}
             type='password'
             label='Повторите пароль'
             validationType='password'

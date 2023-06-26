@@ -8,18 +8,23 @@ import TopicsController, {
 import CommentsController, {
   paramsSchemas as commentsParamsSchemas,
 } from '../controllers/CommentsController';
+import { checkYandexUser } from '../middlewares';
 
 const router: Router = Router();
+
+router.use(checkYandexUser);
 
 router
   .route('')
   .post(validateParams(topicsParamsSchemas.post), TopicsController.createTopic)
   .get(TopicsController.getAllTopics);
+
 router
   .route('/:topicId([0-9]+)')
   .get(TopicsController.getTopic)
   .put(validateParams(topicsParamsSchemas.put), TopicsController.updateTopic)
   .delete(TopicsController.deleteTopic);
+
 router
   .route('/:topicId([0-9]+)/comments')
   .post(
@@ -27,6 +32,7 @@ router
     CommentsController.createComment
   )
   .get(CommentsController.getTopicComments);
+
 router
   .route('/:topicId([0-9]+)/comments/:commentId([0-9]+)')
   .get(CommentsController.getComment)

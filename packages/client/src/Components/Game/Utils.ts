@@ -25,9 +25,9 @@ export class Utils {
 
   static initFullScreen(
     targetElementId: string,
-    togglerElementId = 'btn-fullscreen-mode'
+    toggleElementId = 'btn-fullscreen-mode'
   ): void {
-    const toggler = document.getElementById(togglerElementId);
+    const toggler = document.getElementById(toggleElementId);
     const targetElem = document.getElementById(targetElementId);
 
     if (!toggler || !targetElem) return;

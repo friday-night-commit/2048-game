@@ -8,7 +8,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import path from 'node:path';
 
 import { distPath, initVite } from './services/init-vite';
-import { getYandexUser, checkYandexUser, renderSSR } from './middlewares';
+import { getYandexUser, renderSSR } from './middlewares';
 import { dbConnect } from './db';
 import apiRouter from './api';
 
@@ -39,8 +39,6 @@ async function startServer() {
   app.use(express.json());
 
   app.use('*', getYandexUser);
-
-  app.use('/api/forum/topics', checkYandexUser);
 
   app.use('/api', apiRouter);
 

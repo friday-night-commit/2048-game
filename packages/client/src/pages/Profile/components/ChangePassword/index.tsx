@@ -23,17 +23,17 @@ export const ChangePasswordModal: FC<TChangePasswordProps> = ({
       let error = '';
       const oldPassword = (
         e.currentTarget.elements.namedItem(
-          UserFields.old_password
+          UserFields.OLD_PASSWORD
         ) as HTMLInputElement
       ).value;
       const repeatPassword = (
         e.currentTarget.elements.namedItem(
-          UserFields.repeat_password
+          UserFields.REPEAT_PASSWORD
         ) as HTMLInputElement
       ).value;
       const newPassword = (
         e.currentTarget.elements.namedItem(
-          UserFields.new_password
+          UserFields.NEW_PASSWORD
         ) as HTMLInputElement
       ).value;
 
@@ -69,21 +69,21 @@ export const ChangePasswordModal: FC<TChangePasswordProps> = ({
         {error && <Toast text={error} />}
         <form onSubmit={handleSubmit}>
           <Input
-            name={UserFields.old_password}
+            name={UserFields.OLD_PASSWORD}
             type='password'
             validationType='default'
             label='Старый пароль'
             required
           />
           <Input
-            name={UserFields.new_password}
+            name={UserFields.NEW_PASSWORD}
             type='password'
             validationType='default'
             label='Новый пароль'
             required
           />
           <Input
-            name={UserFields.repeat_password}
+            name={UserFields.REPEAT_PASSWORD}
             type='password'
             validationType='default'
             label='Повторите пароль'

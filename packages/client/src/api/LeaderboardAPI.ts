@@ -1,4 +1,4 @@
-import { API_URL } from './consts';
+import { API_URL } from '../Utils/consts';
 
 type leaderboardAPIData = Promise<Array<Record<'data', leaderboardUser>>>;
 
@@ -10,9 +10,9 @@ const options: OptionsType = {
 };
 
 class LeaderboardAPI {
-  private endpoint = `${API_URL}/api/v2/leaderboard`;
-  private teamName = 'fridaynightcommit';
-  private ratingSortField = 'score';
+  private readonly endpoint = `${API_URL}/api/v2/leaderboard`;
+  private readonly teamName = 'fridaynightcommit';
+  private readonly ratingSortField = 'score';
 
   async addUser(leaderboardUserData: leaderboardUser) {
     const data = {
@@ -31,6 +31,7 @@ class LeaderboardAPI {
       throw new Error(responseData.reason);
     }
 
+    // TODO лучше возвращть id нового элемента
     return true;
   }
 
@@ -51,4 +52,4 @@ class LeaderboardAPI {
   }
 }
 
-export default new LeaderboardAPI();
+export const leaderboard = new LeaderboardAPI();

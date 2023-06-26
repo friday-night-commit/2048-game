@@ -3,7 +3,7 @@ import type { Request, Response, NextFunction } from 'express';
 import dbCommentsController from '../db/controllers/comments';
 import ApiError from './ApiError';
 import { getYandexId } from '../middlewares/checkYandexUser';
-import checkTextLength from './checkTextLength';
+import { checkTextLength } from './utils';
 
 const textParamSchema = {
   name: 'text',

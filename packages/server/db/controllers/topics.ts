@@ -1,5 +1,7 @@
 import Topic, { ITopic } from '../models/topic.model';
 
+// TODO Почему тут не класс?
+
 async function createTopic(
   title: string,
   text: string,

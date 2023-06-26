@@ -23,13 +23,13 @@ const App = () => {
   }, [isAuthed]);
 
   useEffect(() => {
-    const sp = new URLSearchParams(search);
-    const code = sp.get('code');
+    const code = (new URLSearchParams(search)).get('code');
 
     if (code) {
-      dispatch(authByCode(code))
-        .unwrap()
-        .then(() => navigate(`/${routes.mainPage}`));
+      (async () => {
+        await dispatch(authByCode(code));
+        navigate(`/${routes.mainPage}`);
+      })();
     }
   }, []);
 

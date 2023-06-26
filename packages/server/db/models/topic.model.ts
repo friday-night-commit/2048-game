@@ -24,7 +24,7 @@ export interface ITopic {
 })
 export default class Topic extends Model<ITopic> {
   @Column({
-    type: STRING(1024),
+    type: STRING(1024),  // TODO тут лушче обычный VARCHAR
     allowNull: false,
     comment: 'topic title',
   })

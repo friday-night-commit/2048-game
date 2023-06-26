@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import AuthAPI from '../api/AuthAPI';
+import { auth } from '../api/AuthAPI';
 import { useAppSelector, useAppDispatch } from './redux';
 import { setUser, clearUser } from '../store/slices/User';
 import routes from '../routes';
@@ -16,7 +16,7 @@ export const useAuth = () => {
 
   const getUserData = async (): Promise<User | undefined> => {
     try {
-      const user = await AuthAPI.fetchUser();
+      const user = await auth.fetchUser();
       dispatch(setUser(user));
       return user;
     } catch (_e: unknown) {
@@ -27,7 +27,7 @@ export const useAuth = () => {
   const login = async (data: SigninData) => {
     setLoginError('');
     try {
-      await AuthAPI.login(data);
+      await auth.login(data);
       const user = await getUserData();
       if (user) navigate(`/${routes.mainPage}`);
     } catch (e: unknown) {
@@ -37,7 +37,7 @@ export const useAuth = () => {
 
   const logout = async () => {
     try {
-      await AuthAPI.logout();
+      await auth.logout();
       // eslint-disable-next-line no-empty
     } catch (ignore) {}
     dispatch(clearUser());
@@ -47,7 +47,7 @@ export const useAuth = () => {
   const signup = async (data: SignupData) => {
     setLoginError('');
     try {
-      await AuthAPI.signup(data);
+      await auth.signup(data);
       const user = await getUserData();
       if (user) navigate(`/${routes.mainPage}`);
     } catch (e: unknown) {

@@ -55,7 +55,7 @@ const AuthForm = function () {
       <form className='w-full' onSubmit={onSubmit} data-testid='auth-form'>
         <div className='mb-4 flex flex-col gap-6'>
           <Input
-            name={UserFields.login}
+            name={UserFields.LOGIN}
             type='text'
             label='Логин'
             validationType='login'
@@ -64,7 +64,7 @@ const AuthForm = function () {
             data-testid='login-input'
           />
           <Input
-            name={UserFields.password}
+            name={UserFields.PASSWORD}
             type='password'
             label='Пароль'
             validationType='password'
