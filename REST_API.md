@@ -28,7 +28,7 @@ This is a REST API specification for a 2048 game forum.
 
 ### Request
 
-`GET /forum/topics`
+`GET api/forum/topics`
 
 ### Responses
 
@@ -40,7 +40,7 @@ This is a REST API specification for a 2048 game forum.
 
 ### Request
 
-`POST /forum/topics`
+`POST api/forum/topics`
 
 ### Payload
 
@@ -48,7 +48,7 @@ This is a REST API specification for a 2048 game forum.
 
 ### Responses
 
-    - 200 OK
+    - 201 Created
 
       Example value: {"id":1423}
 
@@ -56,7 +56,7 @@ This is a REST API specification for a 2048 game forum.
 
 ### Request
 
-`GET /forum/topics/:id`
+`GET api/forum/topics/:id`
 
 ### Responses
 
@@ -72,7 +72,7 @@ This is a REST API specification for a 2048 game forum.
 
 ### Request
 
-`PUT /forum/topics/:id`
+`PUT api/forum/topics/:id`
 
 ### Payload
 
@@ -96,7 +96,7 @@ This is a REST API specification for a 2048 game forum.
 
 ### Request
 
-`DELETE /forum/topics/:id`
+`DELETE api/forum/topics/:id`
 
 ### Responses
 
@@ -116,7 +116,7 @@ This is a REST API specification for a 2048 game forum.
 
 ### Request
 
-`GET /forum/topics/:id/comments`
+`GET api/forum/topics/:id/comments`
 
 ### Responses
 
@@ -133,7 +133,7 @@ This is a REST API specification for a 2048 game forum.
 
 ### Request
 
-`POST /forum/topics/:id/comments`
+`POST api/forum/topics/:id/comments`
 
 ### Payload
 
@@ -145,7 +145,7 @@ This is a REST API specification for a 2048 game forum.
 
 ### Responses
 
-    - 200 OK
+    - 201 Created
 
       Example value: {"id":1423}
 
@@ -157,7 +157,7 @@ This is a REST API specification for a 2048 game forum.
 
 ### Request
 
-`DELETE /forum/topics/:id/comments/:id`
+`DELETE api/forum/topics/:id/comments/:id`
 
 ### Responses
 
@@ -175,7 +175,7 @@ This is a REST API specification for a 2048 game forum.
 
 ### Request
 
-`POST /forum/topics/:id/comments/:id/reactions`
+`POST api/forum/topics/:id/comments/:id/reactions`
 
 ### Payload
 
@@ -183,7 +183,7 @@ This is a REST API specification for a 2048 game forum.
 
 ### Responses
 
-    - 200 OK
+    - 201 Created
 
       Example value: {"id":1423}
 
