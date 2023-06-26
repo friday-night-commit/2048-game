@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react';
 
 const getInitialTheme = (): string => {
   if (typeof window !== 'undefined' && window.localStorage) {
