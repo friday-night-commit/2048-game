@@ -3,6 +3,32 @@ import type { Request, Response, NextFunction } from 'express';
 import dbTopicsController from '../db/controllers/topics';
 import ApiError from './ApiError';
 import { getYandexId } from '../middlewares/checkYandexUser';
+import checkTextLength from './checkTextLength';
+
+const titleParamSchema = {
+  name: 'title',
+  type: 'string',
+  required: true,
+  validator_functions: [checkTextLength(200)],
+};
+
+const textParamSchema = {
+  name: 'text',
+  type: 'string',
+  required: true,
+  validator_functions: [checkTextLength(600)],
+};
+
+const userIdParamSchema = {
+  name: 'userId',
+  type: 'number',
+  required: true,
+};
+
+export const paramsSchemas = {
+  post: [titleParamSchema, textParamSchema],
+  put: [titleParamSchema, textParamSchema, userIdParamSchema]
+};
 
 class TopicsController {
   async getTopic(req: Request, res: Response, next: NextFunction) {
@@ -35,14 +61,6 @@ class TopicsController {
     const { title, text } = req.body;
     const yandexId = getYandexId(res);
 
-    if (!title) {
-      return next(ApiError.badRequest('Не задан заголовок поста'));
-    }
-
-    if (!text) {
-      return next(ApiError.badRequest('Не задан текст поста'));
-    }
-
     try {
       const topic = await dbTopicsController.createTopic(
         title,
@@ -62,23 +80,8 @@ class TopicsController {
   }
 
   async updateTopic(req: Request, res: Response, next: NextFunction) {
-    const { title, text, userId } = req.body;
-    const { topicId } = req.params;
     const yandexId = getYandexId(res);
-
-    if (!title) {
-      return next(ApiError.badRequest('Не задан заголовок поста'));
-    }
-
-    if (!text) {
-      return next(ApiError.badRequest('Не задан текст поста'));
-    }
-
-    if (!topicId) {
-      return next(ApiError.notFound('Не задан topic id'));
-    }
-
-    if (yandexId != userId) {
+    if (yandexId != req.body.userId) {
       return next(ApiError.forbidden('Нет прав редактировать пост'));
     }
 
@@ -98,10 +101,6 @@ class TopicsController {
 
   async deleteTopic(req: Request, res: Response, next: NextFunction) {
     const { topicId } = req.params;
-
-    if (!topicId) {
-      return next(ApiError.notFound('Не задан topic id'));
-    }
 
     try {
       await dbTopicsController.deleteTopicById(Number(topicId));

@@ -3,6 +3,24 @@ import type { Request, Response, NextFunction } from 'express';
 import dbCommentsController from '../db/controllers/comments';
 import ApiError from './ApiError';
 import { getYandexId } from '../middlewares/checkYandexUser';
+import checkTextLength from './checkTextLength';
+
+const textParamSchema = {
+  name: 'text',
+  type: 'string',
+  required: true,
+  validator_functions: [checkTextLength(400)],
+};
+
+const parentIdParamSchema = {
+  name: 'parentId',
+  type: 'number',
+  required: true,
+};
+
+export const paramsSchemas = {
+  post: [textParamSchema, parentIdParamSchema],
+};
 
 class CommentsController {
   async getComment(req: Request, res: Response, next: NextFunction) {
@@ -32,10 +50,6 @@ class CommentsController {
   async getTopicComments(req: Request, res: Response, next: NextFunction) {
     const { topicId } = req.params;
 
-    if (!topicId) {
-      return next(ApiError.badRequest(`Пост с id ${topicId} не найден`));
-    }
-
     try {
       const comments = await dbCommentsController.getCommentsByTopicId(
         Number(topicId)
@@ -55,10 +69,6 @@ class CommentsController {
     const { topicId } = req.params;
     const { text, parentId } = req.body;
     const yandexId = getYandexId(res);
-
-    if (!text) {
-      return next(ApiError.badRequest('Не задан текст комментария'));
-    }
 
     try {
       const comment = await dbCommentsController.createComment(
@@ -81,10 +91,6 @@ class CommentsController {
 
   async deleteComment(req: Request, res: Response, next: NextFunction) {
     const { commentId } = req.params;
-
-    if (!commentId) {
-      return next(ApiError.notFound('Не задан comment id'));
-    }
 
     try {
       await dbCommentsController.deleteCommentById(Number(commentId));
