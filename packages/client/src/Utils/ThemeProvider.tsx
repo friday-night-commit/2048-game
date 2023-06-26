@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react'
 
 const getInitialTheme = (): string => {
   if (typeof window !== 'undefined' && window.localStorage) {
@@ -14,6 +14,7 @@ const getInitialTheme = (): string => {
 
 type TOwnProps = {
   theme: string;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   setTheme: React.Dispatch<React.SetStateAction<string>> | (() => {});
 };
 
@@ -45,7 +46,9 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
     localStorage.setItem('color-theme', theme);
   };
 
-  rawSetTheme(theme);
+  useEffect(() => {
+    rawSetTheme(theme);
+  },[theme]);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
