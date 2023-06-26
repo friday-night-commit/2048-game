@@ -13,42 +13,36 @@ const LazyTextEditorComponent = lazy(
 
 import './index.scss';
 import useAuth from '../../hooks/useAuth';
-import ForumController from '../../Controllers/ForumController';
-import { useAppSelector } from '../../hooks/redux';
-import { logout } from '../../store/slices/User';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { getAllTags, getPostById, STATE_STATUS } from '../../store/slices/Forum';
 
 export default function FullPost() {
   const { id } = useParams();
-  const [post, setPosts] = useState<ForumPost>();
+  const [post, setPost] = useState<ForumPost>();
   const [user, setUser] = useState<User>();
+  const dispatch = useAppDispatch();
+
   const content =
     useAppSelector(state => state.forumSlice.content) ||
     'заглушка Добавить пост';
 
-  const [isLoading, setIsLoading] = useState(true);
   const { getUserData } = useAuth();
 
-  const onSubmit = useCallback(async (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     // e.preventDefault();
     // eslint-disable-next-line no-console
-    console.log('343333');
-  }, []);
-
-  const getPost = useCallback(async () => {
-    const post = await ForumController.getPostById(Number(id));
-    const user = await getUserData();
-    setUser(user);
-    setIsLoading(false);
-    return post;
-  }, [post]);
+    console.log('comment add');
+  };
 
   useEffect(() => {
-    getPost().then(data => {
-      // eslint-disable-next-line no-console
-      console.log('getPost data', data);
-      setPosts(data);
+    dispatch(getPostById(Number(id))).then(data => {
+      setPost(data.payload);
     });
   }, []);
+
+  const currentPostStatus = useAppSelector(
+    store => store.forumSlice.currentPostStatus
+  );
 
   if (!post) {
     return <h1>Нет данного поста</h1>;
@@ -57,7 +51,9 @@ export default function FullPost() {
 
   return (
     <PageContainer>
+
       <div className='full-post'>
+        {currentPostStatus === STATE_STATUS.LOADING && <p>Загрузка текущего поста</p>}
         <div className='full-post__left'>
           <Post
             {...post}
@@ -68,7 +64,7 @@ export default function FullPost() {
 
         {isAuthorized && (
           <div className='full-post__right'>
-            <CommentsBlock items={lastComments} isLoading={isLoading} />
+            <CommentsBlock items={lastComments} status={currentPostStatus} />
             <SideBlock title='Оставить комментарий'>
               <div className='full-post__editor'>
                 <Suspense fallback={<textarea />}>

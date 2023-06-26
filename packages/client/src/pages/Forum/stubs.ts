@@ -1,7 +1,7 @@
 export const posts: Posts = {
   items: [
     {
-      _id: '1',
+      id: '1',
       title: 'Angular + Typescript',
       text: 'My the first post about web',
       tag: 'angular',
@@ -21,7 +21,7 @@ export const posts: Posts = {
       updatedAt: new Date('2023-05-04T09:24:51.489Z'),
     },
     {
-      _id: '2',
+      id: '2',
       title: 'React + Typescript',
       text:
         'My the second post about web. Декларативный\n' +
@@ -53,7 +53,7 @@ export const posts: Posts = {
       updatedAt: new Date('2023-05-04T06:24:51.489Z'),
     },
     {
-      _id: '3',
+      id: '3',
       title: 'Vue + Typescript',
       text: 'My the third post about web',
       tag: 'typescript',

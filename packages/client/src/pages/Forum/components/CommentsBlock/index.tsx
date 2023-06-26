@@ -5,11 +5,12 @@ import './index.scss';
 import { Comment } from '../../stubs';
 import moment from 'moment';
 import { DATE_FORMATS } from '../../../../Utils/dateFormats';
+import { STATE_STATUS } from '../../../../store/slices/Forum';
 
 type TOwnProps = {
   items: Comment[];
   children?: JSX.Element | JSX.Element[];
-  isLoading: boolean;
+  status: STATE_STATUS;
 };
 
 type TProps = FC<TOwnProps>;
@@ -17,26 +18,23 @@ type TProps = FC<TOwnProps>;
 export const CommentsBlock: TProps = ({
   items,
   children,
-  isLoading = true,
+  status,
 }: TOwnProps) => {
+
   return (
     <SideBlock title='Последние комментарии'>
       <ul>
-        {(isLoading ? [...Array(5)] : items).map((obj: Comment, index) => (
+        {items.map((obj: Comment, index) => (
           <Fragment key={index}>
             <div className='flex-start user-block'>
               <div>
-                {isLoading ? (
+                {status === STATE_STATUS.LOADING ? (
                   <span>...Skeleton</span>
                 ) : (
                   <Avatar alt={obj?.user?.fullName} src={obj?.user?.avatarUrl} />
                 )}
               </div>
-              {isLoading ? (
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <p>...Skeleton</p>
-                </div>
-              ) : (
+              {status === STATE_STATUS.LOADED &&
                 <div className='message'>
                   <span>{obj?.user?.fullName}</span>
                   <span>{obj?.text}</span>
@@ -46,7 +44,8 @@ export const CommentsBlock: TProps = ({
                     )}
                   </span>
                 </div>
-              )}
+              }
+
             </div>
             <hr className='solid' />
           </Fragment>

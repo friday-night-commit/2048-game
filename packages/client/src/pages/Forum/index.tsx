@@ -9,48 +9,40 @@ import {
   TabsHeader,
   Typography,
 } from '@material-tailwind/react';
-import { ForumPost, lastComments, userData } from './stubs';
-import React, { useCallback, useEffect, useState } from 'react';
+import { ForumPost, lastComments } from './stubs';
+import React, { useEffect, useState } from 'react';
 import PageContainer from '../../Components/PageContainer';
 import { TagsBlock } from './components/TagsBlock';
 import { Post } from '../FullPost/components/Post';
 import { AddPostPage } from '../AddPost';
-import ForumController from '../../Controllers/ForumController';
-import { useAppSelector } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import {
+  getAllPosts,
+  getAllTags,
+  STATE_STATUS,
+} from '../../store/slices/Forum';
 
 export default function ForumPage() {
-  const [posts, setPosts] = useState<ForumPost[]>([]);
   const [tags, setTags] = useState<string[]>([]);
-  const [isPostsLoading, setIsPostsLoading] = useState(true);
-  const [isTagsLoading, setIsTagsLoading] = useState(true);
+  const [posts, setPosts] = useState<ForumPost[]>([]);
+  const dispatch = useAppDispatch();
 
   const user = useAppSelector(store => store.userSlice.user);
-  // eslint-disable-next-line no-console
-  console.log('user', user);
-
-  const getPosts = useCallback(async () => {
-    const posts = await ForumController.getAllPosts();
-    setIsPostsLoading(false);
-    return posts;
-  }, []);
-
-  const getTags = useCallback(async () => {
-    const tags = await ForumController.getAllTags();
-    setIsTagsLoading(false);
-    return tags;
-  }, []);
 
   useEffect(() => {
-    getPosts().then(data => {
-      setPosts(data);
+    dispatch(getAllPosts()).then(data => {
+      setPosts(data.payload); //TS2345: Argument of type 'unknown' is not assignable to parameter of type 'SetStateAction '
     });
   }, []);
 
   useEffect(() => {
-    getTags().then(data => {
-      setTags(data);
+    dispatch(getAllTags()).then(data => {
+      setTags(data.payload);
     });
   }, []);
+
+  const forumStatus = useAppSelector(store => store.forumSlice.postsStatus);
+  const tagsStatus = useAppSelector(store => store.forumSlice.tagsStatus);
 
   const tabsData = [
     {
@@ -58,20 +50,22 @@ export default function ForumPage() {
       value: 'posts',
       content: (
         <div className='forum'>
-          {!posts.length && <p>Нет постов. Создайте новый пост</p>}
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full'>
-            {(isPostsLoading ? [...Array(5)] : posts).map(obj =>
-              isPostsLoading ? (
-                <p key={obj?.user?._id}>Skeleton ...</p>
-              ) : (
-                <Post key={obj?.user?._id} {...obj} isEditable={true} />
-              )
-            )}
-          </div>
+          {forumStatus === STATE_STATUS.Error && <p>Ошибка загрузки постов</p>}
+          {!posts?.length && forumStatus === STATE_STATUS.LOADED && (
+            <p>Нет постов. Создайте новый пост</p>
+          )}
+          {forumStatus === STATE_STATUS.LOADING && <p>Загрузка постов</p>}
 
+          {posts?.length && (
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full'>
+              {posts.map(obj => (
+                <Post key={obj?.user?._id} {...obj} isEditable={true} />
+              ))}
+            </div>
+          )}
           <div className='forum__right'>
-            <TagsBlock items={tags} isLoading={isTagsLoading} />
-            <CommentsBlock items={lastComments} isLoading={false} />
+            <TagsBlock items={tags} status={tagsStatus} />
+            <CommentsBlock items={lastComments} status={tagsStatus} />
           </div>
         </div>
       ),
