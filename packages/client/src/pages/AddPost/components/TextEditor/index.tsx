@@ -5,9 +5,8 @@ import 'quill-emoji/dist/quill-emoji.css';
 // @ts-ignore // Без этого не работает
 import quillEmoji from 'react-quill-emoji';
 
-
 import './index.scss';
-import { useAppDispatch } from '../../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { updateContent } from '../../../../store/slices/Forum';
 
 type TextEditorProps = {
@@ -26,6 +25,7 @@ const TextEditor: FC<TextEditorProps> = ({
     true
   );
 
+  const content = useAppSelector(state => state.forumSlice.postContent);
 
   const dispatch = useAppDispatch();
 
@@ -69,8 +69,6 @@ const TextEditor: FC<TextEditorProps> = ({
     'video',
   ];
   const handleChange = (html: string) => {
-    // eslint-disable-next-line no-console
-    console.log('TextEditor html', html);
     dispatch(updateContent(html));
   };
 
@@ -83,6 +81,7 @@ const TextEditor: FC<TextEditorProps> = ({
         modules={modules}
         formats={formats}
         placeholder='Write new text'
+        value={content}
       />
     </div>
   );

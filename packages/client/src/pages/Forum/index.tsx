@@ -59,7 +59,8 @@ export default function ForumPage() {
           {posts?.length && (
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full'>
               {posts.map(obj => (
-                <Post key={obj?.user?._id} {...obj} isEditable={true} />
+                <Post key={obj.id} {...obj} isEditable={true} />
+
               ))}
             </div>
           )}

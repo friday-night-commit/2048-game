@@ -3,13 +3,11 @@ import ForumController from '../../Controllers/ForumController';
 import { ForumPost } from '../../pages/Forum/stubs';
 
 interface IState {
-  content: string | undefined;
+  postContent: string | undefined;
   posts: ForumPost[] | [];
   tags: string[];
-  currentPost: ForumPost | undefined;
   postsStatus: STATE_STATUS;
   tagsStatus: STATE_STATUS;
-  currentPostStatus: STATE_STATUS;
 }
 
 export enum STATE_STATUS {
@@ -19,13 +17,11 @@ export enum STATE_STATUS {
 }
 
 const initialState: IState = {
-  content: undefined,
+  postContent: undefined,
   tags: [],
   posts: [],
-  currentPost: undefined,
   postsStatus: STATE_STATUS.LOADING,
   tagsStatus: STATE_STATUS.LOADING,
-  currentPostStatus: STATE_STATUS.LOADING,
 };
 
 export const getAllPosts = createAsyncThunk('getAllPosts', async () => {
@@ -40,16 +36,19 @@ export const getPostById = createAsyncThunk('getPostById', async (id: number) =>
   return await ForumController.getPostById(id);
 });
 
+export const createPost = createAsyncThunk('createPost', async (post: ForumPost) => {
+  return await ForumController.createPost(post);
+});
 
 const forumSlice = createSlice({
   name: 'forum',
   initialState,
   reducers: {
     updateContent(state, action: PayloadAction<string>) {
-      state.content = action.payload;
+      state.postContent = action.payload;
     },
     clearContent(state) {
-      state.content = '';
+      state.postContent = '';
     },
   },
   extraReducers: build => {
@@ -77,17 +76,18 @@ const forumSlice = createSlice({
       state.tagsStatus = STATE_STATUS.Error;
       state.posts =[];
     });
-    // CurrentPost
-    build.addCase(getPostById.pending, (state, action) => {
-      state.currentPostStatus = STATE_STATUS.LOADING;
+    // Create Post
+    build.addCase(createPost.pending, (state, action) => {
+      state.postsStatus = STATE_STATUS.LOADING;
     });
-    build.addCase(getPostById.fulfilled, (state, action) => {
-      state.currentPostStatus = STATE_STATUS.LOADED;
-      state.currentPost = action.payload;
+    build.addCase(createPost.fulfilled, (state, action) => {
+      state.postsStatus = STATE_STATUS.LOADED;
+      if(action.payload){
+        state.posts = [ ...state.posts, action.payload ];
+      }
     });
-    build.addCase(getPostById.rejected, (state) => {
-      state.currentPostStatus = STATE_STATUS.Error;
-      state.currentPost = undefined;
+    build.addCase(createPost.rejected, (state) => {
+      state.postsStatus = STATE_STATUS.Error;
     });
   },
 });

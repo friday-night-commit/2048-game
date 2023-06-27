@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { SideBlock } from '../SideBlock';
 import './index.scss';
 import { STATE_STATUS } from '../../../../store/slices/Forum';
@@ -14,6 +14,11 @@ export const TagsBlock: TProps = ({ items, status }: TOwnProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedTag, setSelectedTag] = useState('');
 
+  const changeTag = (tag: string) => {
+    // eslint-disable-next-line no-console
+    console.log('To do filter by tag', tag);
+  };
+
   return (
     <SideBlock title='Тэги'>
       <ul>
@@ -24,7 +29,7 @@ export const TagsBlock: TProps = ({ items, status }: TOwnProps) => {
             <a
               key={tag}
               style={{ textDecoration: 'none', color: 'black' }}
-              onClick={() => setSelectedTag(tag)}>
+              onClick={() => changeTag(tag)}>
               <span className='tag tag-lg'>{'#' + tag}</span>
             </a>
           ))}

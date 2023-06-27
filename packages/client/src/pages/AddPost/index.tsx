@@ -2,7 +2,6 @@ import { Button } from '@material-tailwind/react';
 import React, {
   lazy,
   Suspense,
-  SyntheticEvent,
   useCallback,
   useEffect,
   useRef,
@@ -11,7 +10,6 @@ import React, {
 import { useNavigate } from 'react-router-dom';
 
 import Input from '../../Components/Input';
-// import TextEditor from './components/TextEditor';
 import DesktopNotification from '../../WebAPI/notification.service';
 
 const LazyTextEditorComponent = lazy(() => import('./components/TextEditor'));
@@ -19,23 +17,21 @@ const LazyTextEditorComponent = lazy(() => import('./components/TextEditor'));
 import './index.scss';
 import { ForumPost } from '../Forum/stubs';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import ForumController from '../../Controllers/ForumController';
-import { clearContent } from '../../store/slices/Forum';
+import { clearContent, createPost } from '../../store/slices/Forum';
 
 export const AddPostPage = () => {
-  // Как лучше использовать этот класс в компоненте реакта?
   let desktopNotification: DesktopNotification;
 
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const [preview, setPreview] = useState('');
   const [error, setError] = useState('');
-
-
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const content =
-    useAppSelector(state => state.forumSlice.content) || 'заглушка Добавить пост';
+  const content = useAppSelector(state => state.forumSlice.postContent);
+
+  // eslint-disable-next-line no-console
+  console.log('AddPostPage content', content);
 
   function handleUpload(e: React.FormEvent<HTMLInputElement>) {
     if (!e) {
@@ -59,7 +55,6 @@ export const AddPostPage = () => {
   };
 
   const onSubmit = useCallback(
-    // desktopNotification.showNotification('Новый пост', 'React + Angular + Vue');
     async (e: React.FormEvent) => {
       e.preventDefault();
       const target = e.target as HTMLFormElement;
@@ -73,6 +68,8 @@ export const AddPostPage = () => {
       if (!title) {
         return;
       }
+      // eslint-disable-next-line no-console
+      console.log('onSubmit content', content);
 
       if (!content) {
         // eslint-disable-next-line no-console
@@ -95,12 +92,18 @@ export const AddPostPage = () => {
         text: content,
       };
 
-      const addedPost = await ForumController.createPost(newPost);
-
-      if (addedPost) {
-        dispatch(clearContent());
-        window.location.reload();
-      }
+      dispatch(createPost(newPost)).then(data => {
+        if(data){
+          // eslint-disable-next-line no-console
+          console.log('dispatch(createPost(newPost))', data);
+          dispatch(clearContent());
+          // window.location.reload();
+          const newPost: ForumPost = data.payload as ForumPost;
+          if(newPost){
+            desktopNotification.showNotification('Новый пост', newPost.title);
+          }
+        }
+      });
     },
     []
   );
