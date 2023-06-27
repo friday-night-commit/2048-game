@@ -12,6 +12,9 @@ import { getYandexUser, checkYandexUser, renderSSR } from './middlewares';
 import { dbConnect } from './db';
 import apiRouter from './api';
 
+// import dbUsersController from './db/controllers/users';
+// import dbTopicsController from './db/controllers/topics';
+
 const isDev = process.env.NODE_ENV === 'development';
 
 async function startServer() {
@@ -55,3 +58,17 @@ async function startServer() {
 startServer();
 
 dbConnect();
+  // .then(() =>
+  //   dbUsersController.createUserFromYandexData({
+  //     id: 1069910,
+  //     yandexId: 1069910,
+  //     firstName: '\u042E\u043B\u0438\u044F',
+  //     secondName: '\u0410\u0440\u0430\u043D\u043E\u0432\u0438\u0447',
+  //     displayName: 'julia.aranovich',
+  //     login: 'julia.aranovich',
+  //     avatar: '',
+  //     email: 'julia.aranovich@yandex.ru',
+  //     phone: '',
+  //   })
+  // )
+  // .then(() => dbTopicsController.createTopic('title', 'text', 1069910));

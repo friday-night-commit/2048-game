@@ -6,6 +6,7 @@
   Column,
   DataType,
   ForeignKey,
+  BelongsTo
 } from 'sequelize-typescript';
 
 import User from './user.model';
@@ -46,4 +47,7 @@ export default class Topic extends Model<ITopic> {
     onDelete: 'CASCADE',
   })
   declare userId: number;
+
+  @BelongsTo(() => User, 'user_id')
+  declare user: User;
 }
