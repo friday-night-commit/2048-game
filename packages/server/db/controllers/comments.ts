@@ -1,4 +1,5 @@
 import Comment from '../models/comment.model';
+import User from '../models/user.model';
 
 async function createComment(
   text: string,
@@ -30,7 +31,7 @@ async function getLastComments(
   return await Comment.findAll({
      order: [['updatedAt', 'DESC']],
      limit: limit,
-      // include: { model: User, where: { yandexId }, as: 'user' },
+      include: { model: User, where: { yandexId }, as: 'user' },
   });
 }
 

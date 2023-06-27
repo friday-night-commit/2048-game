@@ -33,6 +33,7 @@ export default function FullPost() {
   const content = useAppSelector(state => state.commentSlice.commentContent);
   const user = useAppSelector(store => store.userSlice.user);
 
+  // TODO два раза срабатывает dispatch
   useEffect(() => {
     dispatch(getCommentsByPostId(Number(id))).then(data => {
       setComments(data.payload);
@@ -40,6 +41,7 @@ export default function FullPost() {
 
   }, [id]);
 
+  // TODO два раза срабатывает dispatch
   useEffect(() => {
     dispatch(getPostById(Number(id))).then(data => {
       setPost(data.payload);

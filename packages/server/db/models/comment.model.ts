@@ -3,7 +3,7 @@ import {
   Table,
   Column,
   DataType,
-  ForeignKey
+  ForeignKey, BelongsTo
 } from 'sequelize-typescript';
 
 import User from './user.model';
@@ -30,15 +30,18 @@ export default class Comment extends Model<IComment> {
   })
   text: string;
 
-  // @BelongsTo(() => User, {foreignKey: 'userId', as: 'user'})
   @ForeignKey(() => User)
   @Column({
     field: 'user_id',
     type: INTEGER,
     allowNull: false,
     comment: 'comment author id',
+    onDelete: 'CASCADE'
   })
-  userId: number;
+  declare userId: number;
+
+  @BelongsTo(() => User, 'user_id')
+  declare user: User;
 
   @ForeignKey(() => Topic)
   @Column({
