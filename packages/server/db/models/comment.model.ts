@@ -30,7 +30,7 @@ export default class Comment extends Model<IComment> {
     allowNull: false,
     comment: 'comment content',
   })
-  text: string;
+  declare text: string;
 
   @ForeignKey(() => User)
   @Column({
@@ -38,8 +38,9 @@ export default class Comment extends Model<IComment> {
     type: INTEGER,
     allowNull: false,
     comment: 'comment author id',
+    onDelete: 'CASCADE',
   })
-  userId: number;
+  declare userId: number;
 
   @ForeignKey(() => Topic)
   @Column({
@@ -47,8 +48,9 @@ export default class Comment extends Model<IComment> {
     type: INTEGER,
     allowNull: true,
     comment: 'associated topic id',
+    onDelete: 'CASCADE',
   })
-  topicId: number;
+  declare topicId: number;
 
   @Column({
     field: 'parent_id',
@@ -56,5 +58,5 @@ export default class Comment extends Model<IComment> {
     allowNull: true,
     comment: 'parent comment id (for replies)',
   })
-  parentId: number;
+  declare parentId: number;
 }

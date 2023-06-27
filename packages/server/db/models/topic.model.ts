@@ -28,14 +28,14 @@ export default class Topic extends Model<ITopic> {
     allowNull: false,
     comment: 'topic title',
   })
-  title: string;
+  declare title: string;
 
   @Column({
     type: TEXT,
     allowNull: false,
     comment: 'topic content',
   })
-  text: string;
+  declare text: string;
 
   @ForeignKey(() => User)
   @Column({
@@ -43,6 +43,7 @@ export default class Topic extends Model<ITopic> {
     type: INTEGER,
     allowNull: false,
     comment: 'topic author id',
+    onDelete: 'CASCADE',
   })
-  userId: number;
+  declare userId: number;
 }
