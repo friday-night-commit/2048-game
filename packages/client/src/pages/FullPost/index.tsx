@@ -22,7 +22,6 @@ import {
 
 export default function FullPost() {
   const { id } = useParams();
-  // const [post, setPost] = useState<ForumPost>();
   const [comments, setComments] = useState<Comment[]>();
   const [post, setPost] = useState<ForumPost>();
   const dispatch = useAppDispatch();
@@ -38,8 +37,16 @@ export default function FullPost() {
     dispatch(getCommentsByPostId(Number(id))).then(data => {
       setComments(data.payload);
     });
-    dispatch(getPostById(Number(id)));
-  }, []);
+
+  }, [id]);
+
+  useEffect(() => {
+    dispatch(getPostById(Number(id))).then(data => {
+      setPost(data.payload);
+    });
+
+  }, [id]);
+
 
   const onSendComment = useCallback(
     async (e: React.FormEvent) => {
@@ -63,12 +70,6 @@ export default function FullPost() {
     },
     [content]
   );
-
-  useEffect(() => {
-    dispatch(getPostById(Number(id))).then(data => {
-      setPost(data.payload);
-    });
-  }, []);
 
   const currentPostStatus = useAppSelector(
     store => store.forumSlice.postsStatus

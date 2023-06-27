@@ -59,7 +59,7 @@ export default class Topic extends Model<ITopic> {
     allowNull: true,
     comment: 'topic view count',
   })
-  viewsCount: string;
+  viewsCount: number;
 
   @ForeignKey(() => User)
   @Column({

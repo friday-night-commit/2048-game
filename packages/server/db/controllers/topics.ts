@@ -21,8 +21,14 @@ async function deleteTopicById(id: number): Promise<number> {
 }
 
 async function getTopicById(id: number): Promise<Topic | null> {
-  return await Topic.findOne({ where: { id } });
+  return await Topic.findOne({ where: { id } }).then(model => {
+    if (!model) {
+      return null;
+    }
+    return model.increment(['viewsCount'], { by: 1 });
+  });
 }
+
 
 async function getAllTopics(): Promise<Topic[]> {
   return await Topic.findAll();

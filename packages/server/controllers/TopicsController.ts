@@ -10,7 +10,7 @@ class TopicsController {
     const yandexId = getYandexId(res);
 
     if (!yandexId) {
-      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
+    //   return next(ApiError.forbidden('Авторизованный пользователь не найден'));
     }
 
     try {
@@ -21,6 +21,8 @@ class TopicsController {
         return next(ApiError.badRequest(`Пост с id ${topicId} не найден`));
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log('getTopic err', err);
       return next(ApiError.badRequest(`Пост с id ${topicId} не найден`));
     }
   }

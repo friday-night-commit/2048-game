@@ -27,7 +27,7 @@ export interface ForumPost {
 
 export interface Comment {
   id?: number;
-  user: User;
+  user?: User;
   parentId: number | undefined;
   text: string;
   createdAt?: Date;
