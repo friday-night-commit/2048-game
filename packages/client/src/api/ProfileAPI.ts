@@ -1,4 +1,4 @@
-import { API_URL } from './consts';
+import { API_URL } from '../Utils/consts';
 
 const options: OptionsType = {
   headers: {
@@ -8,7 +8,7 @@ const options: OptionsType = {
 };
 
 class UserAPI {
-  private endpoint = `${API_URL}/api/v2/user`;
+  private readonly endpoint = `${API_URL}/api/v2/user`;
 
   async changeUser(data: Partial<User>): Promise<User | never> {
     const response = await fetch(`${this.endpoint}/profile`, {
@@ -56,4 +56,4 @@ class UserAPI {
   }
 }
 
-export default new UserAPI();
+export const user = new UserAPI();

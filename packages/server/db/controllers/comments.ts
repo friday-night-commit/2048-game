@@ -1,5 +1,7 @@
 import Comment from '../models/comment.model';
 
+// TODO Почему тут не класс?
+
 async function createComment(
   text: string,
   userId: number,

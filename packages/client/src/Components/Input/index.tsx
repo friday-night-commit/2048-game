@@ -36,21 +36,21 @@ const Input: FC<InputProps> = ({
     }
   }, [value]);
 
-  const handleChange = useCallback(function (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) {
-    if (!e) {
-      return;
-    }
-    setInputValue(e.currentTarget.value);
-    const target = e.target as HTMLInputElement;
-    const validator = new InputValidator(target, validationType);
-    validator.check();
-    const error = validator.getError();
-    setError(error);
-    if (onChange) onChange(e);
-  },
-  []);
+  const handleChange = useCallback(
+  ( e: React.ChangeEvent<HTMLInputElement> ) => {
+        if (!e) {
+          return;
+        }
+        setInputValue(e.currentTarget.value);
+        const target = e.target as HTMLInputElement;
+        const validator = new InputValidator(target, validationType);
+        validator.check();
+        const error = validator.getError();
+        setError(error);
+        if (onChange) onChange(e);
+      },
+  []
+  );
 
   return (
     <div className='default-input'>

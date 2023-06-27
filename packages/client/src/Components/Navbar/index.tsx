@@ -57,12 +57,7 @@ export default function Navbar() {
   useEffect(() => {
     if (user && !maxScore) {
       getLeaderboard().then(data => {
-        dispatch(
-          setMaxScore(
-            data.filter(({ userId }) => userId === user.id)[0]
-              ?.score || 0
-          )
-        );
+        dispatch(setMaxScore(data.filter(({ userId }) => userId === user.id)[0]?.score || 0));
       });
     }
   }, []);

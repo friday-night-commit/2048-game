@@ -5,7 +5,6 @@ import { AudioPlayer, SoundNames } from '../../../WebAPI/AudioPlayer';
 export type MatrixArray = (Cell | undefined)[][];
 export type HistoryMatrixArray = { stepIndex: number, historyMatrix: MatrixArray }[];
 
-
 export enum Direction {
   UP = 'up',
   DOWN = 'down',
@@ -49,10 +48,10 @@ export default class Engine {
   private readonly eventListeners: ((event: KeyboardEvent) => void)[];
   private readonly cellSize: number;
 
-  private _historyMatrix: HistoryMatrixArray;
+  private readonly _historyMatrix: HistoryMatrixArray;
   private _stepsBack: number;
   private _isHistoryMove: boolean;
-  private historyBack: () => void;
+  private readonly historyBack: () => void;
   private historyBtn: HTMLButtonElement;
   private _wasMadeHistoryStep: number;
 
@@ -68,9 +67,9 @@ export default class Engine {
 
   public _openSuccess: () => void;
   public _openFailure: () => void;
-  private _openModalSuccess: boolean;
-  private _openModalFail: boolean;
-  private _isContinuePlay: boolean;
+  private readonly _openModalSuccess: boolean;
+  private readonly _openModalFail: boolean;
+  private readonly _isContinuePlay: boolean;
   private readonly _addUserToLeaderboard: (score: number) => void;
 
   private readonly audioPlayer: AudioPlayer;

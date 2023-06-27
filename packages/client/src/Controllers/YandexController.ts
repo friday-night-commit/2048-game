@@ -1,4 +1,5 @@
-import { API_URL as REDIRECT_URI } from '../api/consts';
+import { API_URL as REDIRECT_URI } from '../Utils/consts';
+
 const API_ROOT = `${REDIRECT_URI}/api/v2`;
 
 export async function getAppId() {
@@ -14,7 +15,8 @@ export function getRedirectUri() {
 }
 
 export async function doLoginWithCode(code: string) {
-  const response = await fetch(`${API_ROOT}/oauth/yandex`, {
+  // TODO check "already logged in error"
+  return await fetch(`${API_ROOT}/oauth/yandex`, {
     method: 'POST',
     body: JSON.stringify({
       code,
@@ -26,8 +28,6 @@ export async function doLoginWithCode(code: string) {
       'Content-type': 'application/json',
     },
   });
-  // TODO check "already logged in error"
-  return response;
 }
 
 export function logoutUser() {
@@ -40,6 +40,5 @@ export async function getMe() {
   const response = await fetch(`${API_ROOT}/auth/user`, {
     credentials: 'include',
   });
-  const data = await response.json();
-  return data;
+  return await response.json();
 }

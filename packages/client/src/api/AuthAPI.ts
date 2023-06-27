@@ -1,4 +1,4 @@
-import { API_URL } from './consts';
+import { API_URL } from '../Utils/consts';
 
 const options: OptionsType = {
   headers: {
@@ -8,14 +8,18 @@ const options: OptionsType = {
 };
 
 export class AuthAPI {
-  private endpoint = `${API_URL}/api/v2/auth`;
+  private readonly endpoint = `${API_URL}/api/v2/auth`;
 
   async signup(data: SignupData) {
+
     const response = await fetch(`${this.endpoint}/signup`, {
       ...options,
       method: 'POST',
       body: JSON.stringify(data),
     });
+
+    // TODO return не нужен?
+
     if (!response.ok) {
       const json = await response.json();
       throw new Error(json.reason);
@@ -28,6 +32,9 @@ export class AuthAPI {
       method: 'POST',
       body: JSON.stringify(data),
     });
+
+    // TODO return не нужен?
+
     if (!response.ok) {
       const json = await response.json();
       throw new Error(json.reason);
@@ -39,6 +46,9 @@ export class AuthAPI {
       ...options,
       method: 'POST',
     });
+
+    // TODO return не нужен?
+
     if (!response.ok) {
       const json = await response.json();
       throw new Error(json.reason);
@@ -59,4 +69,4 @@ export class AuthAPI {
   }
 }
 
-export default new AuthAPI();
+export const auth = new AuthAPI();

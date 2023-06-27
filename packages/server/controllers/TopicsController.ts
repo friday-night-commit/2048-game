@@ -3,7 +3,7 @@ import type { Request, Response, NextFunction } from 'express';
 import dbTopicsController from '../db/controllers/topics';
 import ApiError from './ApiError';
 import { getYandexId } from '../middlewares/checkYandexUser';
-import checkTextLength from './checkTextLength';
+import { checkTextLength } from './utils';
 
 const titleParamSchema = {
   name: 'title',

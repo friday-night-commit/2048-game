@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'quill-emoji/dist/quill-emoji.css';
@@ -14,14 +14,17 @@ type TextEditorProps = {
 const TextEditor: FC<TextEditorProps> = ({
   textAreaHeight = 350,
 }: TextEditorProps) => {
-  Quill.register(
-    {
-      'modules/emoji-toolbar': quillEmoji.ToolbarEmoji,
-      'modules/emoji-textarea': quillEmoji.TextAreaEmoji,
-      'modules/emoji-shortname': quillEmoji.ShortNameEmoji,
-    },
-    true
-  );
+
+  useEffect(() => {
+    Quill.register(
+        {
+          'modules/emoji-toolbar': quillEmoji.ToolbarEmoji,
+          'modules/emoji-textarea': quillEmoji.TextAreaEmoji,
+          'modules/emoji-shortname': quillEmoji.ShortNameEmoji,
+        },
+        true
+    );
+  }, []);
 
   const modules = {
     'emoji-textarea': true,

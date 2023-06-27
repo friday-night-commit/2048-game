@@ -30,7 +30,7 @@ export default class User extends Model<IUser> {
 
   @Column({
     field: 'first_name',
-    type: STRING(1024),
+    type: STRING(1024), // TODO тут лушче обычный VARCHAR
     allowNull: true,
     comment: 'user first name',
   })
@@ -38,7 +38,7 @@ export default class User extends Model<IUser> {
 
   @Column({
     field: 'second_name',
-    type: STRING(1024),
+    type: STRING(1024), // TODO тут лушче обычный VARCHAR
     allowNull: true,
     comment: 'user second name',
   })
@@ -46,35 +46,35 @@ export default class User extends Model<IUser> {
 
   @Column({
     field: 'display_name',
-    type: STRING(1024),
+    type: STRING(1024), // TODO тут лушче обычный VARCHAR
     allowNull: true,
     comment: 'user display name',
   })
   displayName: string;
 
   @Column({
-    type: STRING(1024),
+    type: STRING(1024), // TODO тут лушче обычный VARCHAR
     allowNull: false,
     comment: 'user email',
   })
   email: string;
 
   @Column({
-    type: STRING(1024),
+    type: STRING(1024), // TODO тут лушче обычный VARCHAR
     allowNull: true,
     comment: 'user phone',
   })
   phone: string;
 
   @Column({
-    type: STRING(1024),
+    type: STRING(1024), // TODO тут лушче TEXT
     allowNull: true,
     comment: 'path to user avatar',
   })
   avatar: string;
 
   @Column({
-    type: STRING(1024),
+    type: STRING(1024), // TODO тут лушче обычный VARCHAR
     allowNull: false,
     comment: 'user login',
   })

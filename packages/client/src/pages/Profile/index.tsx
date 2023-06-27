@@ -3,7 +3,7 @@ import { Typography } from '@material-tailwind/react';
 
 import Avatar from '../../Components/Avatar';
 import CardContainer from '../../Components/CardContainer';
-import { ChangePasswordModal } from './components/ChangePassword/ChangePassword';
+import { ChangePasswordModal } from './components/ChangePassword';
 import ProfileForm from '../../Components/ProfileForm';
 import { useAppSelector } from '../../hooks/redux';
 

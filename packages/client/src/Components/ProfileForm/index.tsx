@@ -51,7 +51,7 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
   return (
     <form className='w-full' onSubmit={handleSubmit}>
       <Input
-        name={UserFields.display_name}
+        name={UserFields.DISPLAY_NAME}
         type='text'
         label='Никнейм'
         validationType='default'
@@ -59,7 +59,7 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
         required
       />
       <Input
-        name={UserFields.first_name}
+        name={UserFields.FIRST_NAME}
         type='text'
         label='Имя'
         validationType='name'
@@ -67,7 +67,7 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
         required
       />
       <Input
-        name={UserFields.second_name}
+        name={UserFields.SECOND_NAME}
         type='text'
         label='Фамилия'
         validationType='name'
@@ -75,7 +75,7 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
         required
       />
       <Input
-        name={UserFields.login}
+        name={UserFields.LOGIN}
         type='text'
         label='Логин'
         validationType='login'
@@ -83,7 +83,7 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
         required
       />
       <Input
-        name={UserFields.email}
+        name={UserFields.EMAIL}
         type='email'
         label='Почта'
         validationType='email'
@@ -91,7 +91,7 @@ const ProfileForm: TProps = ({ openChangePasswordModal }: FormProps) => {
         required
       />
       <Input
-        name={UserFields.phone}
+        name={UserFields.PHONE}
         type='tel'
         label='Телефон'
         validationType='phone'
