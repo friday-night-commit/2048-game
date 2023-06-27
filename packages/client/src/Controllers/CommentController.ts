@@ -1,4 +1,4 @@
-import { Comment } from '../pages/Forum/stubs';
+import { Comment, LastComment } from '../pages/Forum/stubs';
 import CommentAPI from '../api/CommentAPI';
 
 class CommentController {
@@ -7,9 +7,10 @@ class CommentController {
     comment: Comment
   ): Promise<Comment | undefined> {
     try {
-      const data = await CommentAPI.createCommentById(postId, comment);
-      return data;
+      return await CommentAPI.createCommentById(postId, comment);
     } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log('err', err);
       return undefined;
     }
   }
@@ -17,6 +18,14 @@ class CommentController {
   async getCommentsByPostId(postId: number): Promise<Comment[] | []> {
     try {
       return await CommentAPI.getCommentsById(postId);
+    } catch (err) {
+      return [];
+    }
+  }
+
+  async getLastComments(limit: number): Promise<LastComment[] | []> {
+    try {
+      return await CommentAPI.getLastComments(limit);
     } catch (err) {
       return [];
     }

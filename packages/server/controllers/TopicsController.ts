@@ -10,7 +10,7 @@ class TopicsController {
     const yandexId = getYandexId(res);
 
     if (!yandexId) {
-      //  return next(ApiError.forbidden('Авторизованный пользователь не найден'));
+      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
     }
 
     try {
@@ -49,11 +49,11 @@ class TopicsController {
 
   async createTopic(req: Request, res: Response, next: NextFunction) {
     const { title, text, tag, imageUrl } = req.body;
-    const yandexId = 666; // getYandexId(res);
+    const yandexId = getYandexId(res);
 
-    /*    if (!yandexId) {
-          return next(ApiError.forbidden('Авторизованный пользователь не найден'));
-        }*/
+    if (!yandexId) {
+      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
+    }
 
     if (!title) {
       return next(ApiError.badRequest('Не задан заголовок поста'));
@@ -129,7 +129,7 @@ class TopicsController {
     const yandexId = getYandexId(res);
 
     if (!yandexId) {
-      // return next(ApiError.forbidden('Авторизованный пользователь не найден'));
+      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
     }
 
     if (!topicId) {
@@ -138,8 +138,6 @@ class TopicsController {
 
     try {
       await dbTopicsController.deleteTopicById(Number(topicId));
-      // eslint-disable-next-line no-console
-      console.log('deleteTopicById', topicId);
       res.status(204).json(topicId);
     } catch (err) {
       return next(ApiError.badRequest('Не получилось удалить пост'));

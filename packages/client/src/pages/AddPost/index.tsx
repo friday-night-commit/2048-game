@@ -1,12 +1,5 @@
 import { Button } from '@material-tailwind/react';
-import React, {
-  lazy,
-  Suspense,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { lazy, Suspense, useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Input from '../../Components/Input';
@@ -15,23 +8,17 @@ import DesktopNotification from '../../WebAPI/notification.service';
 const LazyTextEditorComponent = lazy(() => import('./components/TextEditor'));
 
 import './index.scss';
-import { ForumPost } from '../Forum/stubs';
+import { CONTENT_TYPE, ForumPost } from '../Forum/stubs';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { clearContent, createPost } from '../../store/slices/Forum';
+import { clearPostContent, createPost } from '../../store/slices/Forum';
 
 export const AddPostPage = () => {
-  let desktopNotification: DesktopNotification;
-
   const inputFileRef = useRef<HTMLInputElement>(null);
-
   const [preview, setPreview] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const content = useAppSelector(state => state.forumSlice.postContent);
-
-  // eslint-disable-next-line no-console
-  console.log('AddPostPage content', content);
 
   function handleUpload(e: React.FormEvent<HTMLInputElement>) {
     if (!e) {
@@ -68,23 +55,18 @@ export const AddPostPage = () => {
       if (!title) {
         return;
       }
-      // eslint-disable-next-line no-console
-      console.log('onSubmit content', content);
 
       if (!content) {
         // eslint-disable-next-line no-console
         console.log('Add post content is not found!');
         return;
       }
-
       if (!tag) {
         return;
       }
-
       if (!imageUrl) {
         return;
       }
-
       const newPost: ForumPost = {
         title,
         tag,
@@ -93,24 +75,25 @@ export const AddPostPage = () => {
       };
 
       dispatch(createPost(newPost)).then(data => {
-        if(data){
-          // eslint-disable-next-line no-console
-          console.log('dispatch(createPost(newPost))', data);
-          dispatch(clearContent());
-          // window.location.reload();
+        if (data) {
+          window.location.reload();
           const newPost: ForumPost = data.payload as ForumPost;
-          if(newPost){
-            desktopNotification.showNotification('Новый пост', newPost.title);
+          // eslint-disable-next-line no-console
+          console.log('dispatch(createPost(newPost))', newPost);
+          if (newPost) {
+            const desktopNotification = new DesktopNotification().init();
+            desktopNotification.showNotification(
+              'Новый пост',
+              newPost.title,
+              newPost.imageUrl
+            );
+            dispatch(clearPostContent());
           }
         }
       });
     },
-    []
+    [content]
   );
-
-  useEffect(() => {
-    desktopNotification = new DesktopNotification().init();
-  }, []);
 
   return (
     <form className='container mx-auto w-full  add-post' onSubmit={onSubmit}>
@@ -159,7 +142,10 @@ export const AddPostPage = () => {
 
       <div className='add-post__right'>
         <Suspense fallback={<textarea />}>
-          <LazyTextEditorComponent textAreaHeight={310} />
+          <LazyTextEditorComponent
+            textAreaHeight={310}
+            contentType={CONTENT_TYPE.POST}
+          />
         </Suspense>
       </div>
 

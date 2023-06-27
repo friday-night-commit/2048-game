@@ -9,7 +9,7 @@ import {
   TabsHeader,
   Typography,
 } from '@material-tailwind/react';
-import { ForumPost, lastComments } from './stubs';
+import { ForumPost, LastComment } from './stubs';
 import React, { useEffect, useState } from 'react';
 import PageContainer from '../../Components/PageContainer';
 import { TagsBlock } from './components/TagsBlock';
@@ -21,10 +21,12 @@ import {
   getAllTags,
   STATE_STATUS,
 } from '../../store/slices/Forum';
+import { getLastComments } from '../../store/slices/Comment';
 
 export default function ForumPage() {
   const [tags, setTags] = useState<string[]>([]);
   const [posts, setPosts] = useState<ForumPost[]>([]);
+  const [lastComments, setLastComments] = useState<LastComment[]>([]);
   const dispatch = useAppDispatch();
 
   const user = useAppSelector(store => store.userSlice.user);
@@ -33,13 +35,17 @@ export default function ForumPage() {
     dispatch(getAllPosts()).then(data => {
       setPosts(data.payload); //TS2345: Argument of type 'unknown' is not assignable to parameter of type 'SetStateAction '
     });
-  }, []);
-
-  useEffect(() => {
     dispatch(getAllTags()).then(data => {
       setTags(data.payload);
     });
+
+    dispatch(getLastComments(5)).then(data => {
+      setLastComments(data.payload);
+    });
+
   }, []);
+
+
 
   const forumStatus = useAppSelector(store => store.forumSlice.postsStatus);
   const tagsStatus = useAppSelector(store => store.forumSlice.tagsStatus);
@@ -66,7 +72,7 @@ export default function ForumPage() {
           )}
           <div className='forum__right'>
             <TagsBlock items={tags} status={tagsStatus} />
-            <CommentsBlock items={lastComments} status={tagsStatus} />
+            <CommentsBlock title='Последние комментарии' items={lastComments} status={tagsStatus} />
           </div>
         </div>
       ),

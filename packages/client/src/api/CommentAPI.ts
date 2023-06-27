@@ -1,5 +1,5 @@
 import { API_URL } from './consts';
-import { Comment } from '../pages/Forum/stubs';
+import { Comment, LastComment } from '../pages/Forum/stubs';
 
 const options: OptionsType = {
   headers: {
@@ -10,6 +10,9 @@ const options: OptionsType = {
 
 export class CommentAPI {
   private endpoint = `${API_URL}/api/forum/topics`;
+  private lastCommentsEndpoint = `${API_URL}/api/forum/comments`;
+
+
 
   async createCommentById(
     id: number,
@@ -30,6 +33,18 @@ export class CommentAPI {
 
   async getCommentsById(id: number) : Promise<Comment[]>{
     const response = await fetch(`${this.endpoint}/${id}/comments`, {
+      ...options,
+      method: 'GET',
+    });
+    const json = await response.json();
+    if (!response.ok) {
+      throw new Error(json?.reason);
+    }
+    return json;
+  }
+
+  async getLastComments(limit = 5) : Promise<LastComment[]>{
+    const response = await fetch(`${this.lastCommentsEndpoint}/lastcomments?limit=${limit}`, {
       ...options,
       method: 'GET',
     });

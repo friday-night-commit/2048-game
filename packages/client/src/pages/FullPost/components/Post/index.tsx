@@ -1,18 +1,20 @@
-import { FC } from 'react';
+import React, { FC, lazy, Suspense } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import './index.scss';
-import { UserData } from '../../../Forum/stubs';
 import moment from 'moment';
 import { DATE_FORMATS } from '../../../../Utils/dateFormats';
-import { useAppDispatch } from '../../../../hooks/redux';
 import ForumController from '../../../../Controllers/ForumController';
+
+const LazyQuillContentComponent = lazy(
+  () => import('../../../AddPost/components/QuillContent/index')
+);
 
 type TOwnProps = {
   id: string;
   title: string;
   createdAt: Date;
   imageUrl: string;
-  user: UserData;
+  user: User;
   viewsCount?: number;
   commentsCount?: number;
   isNew: boolean;
@@ -116,7 +118,16 @@ export const Post: any = ({
         </Link>
         <div className=' gap-4 mt-8'>
           <p className='inline-flex flex-col xl:flex-row xl:items-center text-gray-800'>
-            {isFullPost && <span className='mt-2 xl:mt-0'>{text}</span>}
+            {isFullPost && (
+              <span className='mt-2 xl:mt-0'>
+                <Suspense fallback={<textarea />}>
+                  <LazyQuillContentComponent
+                    content={text}
+                    textAreaHeight={350}
+                  />
+                </Suspense>
+              </span>
+            )}
           </p>
           <span className='content-icon'></span>
         </div>
@@ -132,7 +143,7 @@ export const Post: any = ({
               )}
               <span className='absolute top-0 right-0 inline-block w-3 h-3 bg-primary-red rounded-full'></span>
             </div>
-            <p className='ml-2 text-gray-800 '>{user?.fullName}</p>
+            <p className='ml-2 text-gray-800 '>{user?.first_name}</p>
           </div>
 
           <div className='flex justify-end'>

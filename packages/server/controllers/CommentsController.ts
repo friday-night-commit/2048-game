@@ -33,10 +33,10 @@ class CommentsController {
 
   async getTopicComments(req: Request, res: Response, next: NextFunction) {
     const { topicId } = req.params;
-    const yandexId = 666; // getYandexId(res);
+    const yandexId = getYandexId(res);
 
     if (!yandexId) {
-      // return next(ApiError.forbidden('Авторизованный пользователь не найден'));
+      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
     }
 
     try {
@@ -52,11 +52,10 @@ class CommentsController {
   async createComment(req: Request, res: Response, next: NextFunction) {
     const { topicId } = req.params;
     const { text, parentId } = req.body;
-    let yandexId = getYandexId(res);
+    const yandexId = getYandexId(res);
 
     if (!yandexId) {
-      yandexId = 666;
-      //  return next(ApiError.forbidden('Авторизованный пользователь не найден'));
+         return next(ApiError.forbidden('Авторизованный пользователь не найден'));
     }
 
     if (!text) {
@@ -77,11 +76,32 @@ class CommentsController {
         return next(ApiError.badRequest('Не получилось создать комментарий'));
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log('ee', err);
       return next(ApiError.badRequest('Не получилось создать комментарий'));
     }
   }
 
+  async getLastComments(req: Request, res: Response, next: NextFunction) {
+    const limit = req.query.limit || 3;
+    const yandexId = getYandexId(res);
+
+    if (!yandexId) {
+       return next(ApiError.forbidden('Авторизованный пользователь не найден'));
+    }
+    try {
+     const lastComments = await dbCommentsController.getLastComments(yandexId,Number(limit));
+      res.status(200).json(lastComments);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log('ee', err);
+      return next(ApiError.badRequest('Не получилось получить последние комментарии'));
+    }
+  }
+
   async deleteComment(req: Request, res: Response, next: NextFunction) {
+    // eslint-disable-next-line no-console
+    console.log('deleteComment');
     const { commentId } = req.params;
     const yandexId = getYandexId(res);
 

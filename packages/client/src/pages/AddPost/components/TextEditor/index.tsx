@@ -7,14 +7,18 @@ import quillEmoji from 'react-quill-emoji';
 
 import './index.scss';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
-import { updateContent } from '../../../../store/slices/Forum';
+import { updatePostContent } from '../../../../store/slices/Forum';
+import { updateCommentContent } from '../../../../store/slices/Comment';
+import { CONTENT_TYPE } from '../../../Forum/stubs';
 
 type TextEditorProps = {
   textAreaHeight: number;
+  contentType: CONTENT_TYPE;
 };
 
 const TextEditor: FC<TextEditorProps> = ({
   textAreaHeight = 350,
+  contentType,
 }: TextEditorProps) => {
   Quill.register(
     {
@@ -25,7 +29,8 @@ const TextEditor: FC<TextEditorProps> = ({
     true
   );
 
-  const content = useAppSelector(state => state.forumSlice.postContent);
+  const postContent = useAppSelector(state => state.forumSlice.postContent);
+  const commentContent = useAppSelector(state => state.commentSlice.commentContent);
 
   const dispatch = useAppDispatch();
 
@@ -69,7 +74,11 @@ const TextEditor: FC<TextEditorProps> = ({
     'video',
   ];
   const handleChange = (html: string) => {
-    dispatch(updateContent(html));
+    if (contentType === CONTENT_TYPE.POST) {
+      dispatch(updatePostContent(html));
+    } else if (contentType === CONTENT_TYPE.COMMENT) {
+      dispatch(updateCommentContent(html));
+    }
   };
 
   return (
@@ -81,7 +90,7 @@ const TextEditor: FC<TextEditorProps> = ({
         modules={modules}
         formats={formats}
         placeholder='Write new text'
-        value={content}
+        value={contentType === CONTENT_TYPE.POST ? postContent : commentContent}
       />
     </div>
   );

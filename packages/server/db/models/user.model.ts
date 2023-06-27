@@ -20,11 +20,12 @@ export interface IUser {
 })
 export default class User extends Model<IUser> {
   @Column({
+    field: 'user_id',
     type: INTEGER,
     allowNull: false,
     comment: 'user yandex ID',
   })
-  yandexId: string;
+  yandexId: number;
 
   @Column({
     field: 'first_name',

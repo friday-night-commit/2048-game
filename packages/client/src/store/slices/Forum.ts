@@ -44,10 +44,10 @@ const forumSlice = createSlice({
   name: 'forum',
   initialState,
   reducers: {
-    updateContent(state, action: PayloadAction<string>) {
+    updatePostContent(state, action: PayloadAction<string>) {
       state.postContent = action.payload;
     },
-    clearContent(state) {
+    clearPostContent(state) {
       state.postContent = '';
     },
   },
@@ -92,6 +92,6 @@ const forumSlice = createSlice({
   },
 });
 
-export const { updateContent, clearContent } = forumSlice.actions;
+export const { updatePostContent, clearPostContent } = forumSlice.actions;
 
 export default forumSlice.reducer;

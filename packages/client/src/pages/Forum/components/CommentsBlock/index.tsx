@@ -12,6 +12,7 @@ const LazyQuillContentComponent = lazy(
 );
 
 type TOwnProps = {
+  title: string;
   items: Comment[] | undefined;
   children?: JSX.Element | JSX.Element[];
   status: STATE_STATUS;
@@ -23,9 +24,10 @@ export const CommentsBlock: TProps = ({
   items,
   children,
   status,
+  title,
 }: TOwnProps) => {
   return (
-    <SideBlock title='Последние комментарии'>
+    <SideBlock title={title}>
       <ul>
         {!items?.length && <p>Нет комментариев</p>}
         {items &&
@@ -43,11 +45,16 @@ export const CommentsBlock: TProps = ({
                   )}
                 </div>
                 {status === STATE_STATUS.LOADED && (
-                  <div className='message'>
+                  <div>
                     <span>{obj?.user?.first_name || default_author_name}</span>
-                    <Suspense fallback={<textarea />}>
-                    <LazyQuillContentComponent content={obj.text} />
-                    </Suspense>
+                    <div className='message'>
+                      <Suspense fallback={<textarea />}>
+                        <LazyQuillContentComponent
+                          content={obj.text}
+                          textAreaHeight={90}
+                        />
+                      </Suspense>
+                    </div>
                     <span className='message__date'>
                       {moment(obj?.createdAt).format(
                         DATE_FORMATS.COMPLEX_DATE_FORMAT

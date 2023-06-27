@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { Button } from '@material-tailwind/react';
-import React, { lazy, Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import PageContainer from '../../Components/PageContainer';
 import { Post } from './components/Post';
 import { CommentsBlock } from '../Forum/components/CommentsBlock';
 import { SideBlock } from '../Forum/components/SideBlock';
-import { Comment, ForumPost } from '../Forum/stubs';
+import { Comment, CONTENT_TYPE, ForumPost } from '../Forum/stubs';
 
 const LazyTextEditorComponent = React.lazy(
   () => import('../AddPost/components/TextEditor')
@@ -15,6 +15,7 @@ import './index.scss';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { getPostById, STATE_STATUS } from '../../store/slices/Forum';
 import {
+  clearCommentContent,
   createCommentByPostId,
   getCommentsByPostId,
 } from '../../store/slices/Comment';
@@ -30,8 +31,7 @@ export default function FullPost() {
     throw new Error('Post id for comment is not found');
   }
 
-  const text = useAppSelector(state => state.commentSlice.commentContent);
-
+  const content = useAppSelector(state => state.commentSlice.commentContent);
   const user = useAppSelector(store => store.userSlice.user);
 
   useEffect(() => {
@@ -41,31 +41,28 @@ export default function FullPost() {
     dispatch(getPostById(Number(id)));
   }, []);
 
-  // console.log('comments', comments);
+  const onSendComment = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!content) {
+        return;
+      }
 
-  const onSendComment = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // eslint-disable-next-line no-console
-    console.log('comment add', text);
+      const newComment: Comment = {
+        user,
+        text: content,
+        parentId: undefined,
+      };
 
-    if (!text) {
-      // eslint-disable-next-line no-console
-      console.log('Add comment`s text to post  is not found!');
-      return;
-    }
-
-    const newComment: Comment = {
-      user,
-      text,
-      parentId: undefined,
-    };
-
-    dispatch(
-      createCommentByPostId({ id: Number(id), comment: newComment })
-    ).then(data => {
-      setComments([...comments, data.payload]);
-    });
-  };
+      dispatch(
+        createCommentByPostId({ id: Number(id), comment: newComment })
+      ).then(data => {
+        setComments([...comments, data.payload]);
+        dispatch(clearCommentContent());
+      });
+    },
+    [content]
+  );
 
   useEffect(() => {
     dispatch(getPostById(Number(id))).then(data => {
@@ -95,11 +92,14 @@ export default function FullPost() {
 
         {isAuthorized && (
           <div className='full-post__right'>
-            <CommentsBlock items={comments} status={currentPostStatus} />
+            <CommentsBlock title='Комментарии поста' items={comments} status={currentPostStatus} />
             <SideBlock title='Оставить комментарий'>
               <div className='full-post__editor'>
                 <Suspense fallback={<textarea />}>
-                  <LazyTextEditorComponent textAreaHeight={150} />
+                  <LazyTextEditorComponent
+                    textAreaHeight={150}
+                    contentType={CONTENT_TYPE.COMMENT}
+                  />
                 </Suspense>
               </div>
             </SideBlock>
