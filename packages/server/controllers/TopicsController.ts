@@ -77,7 +77,7 @@ class TopicsController {
       const topic = await dbTopicsController.createTopic(
         title,
         text,
-        Number(yandexId),
+        Number(res.locals.user.id),
         tag,
         imageUrl
       );
