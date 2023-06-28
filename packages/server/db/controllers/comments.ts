@@ -1,5 +1,6 @@
 import Comment from '../models/comment.model';
 import User from '../models/user.model';
+import Topic from '../models/topic.model';
 
 async function createComment(
   text: string,
@@ -7,7 +8,9 @@ async function createComment(
   topicId: number,
   parentId?: number
 ): Promise<Comment | null> {
-  return await Comment.create({ text, userId, topicId, parentId });
+  return await Comment.create(
+    { text, userId, topicId, parentId },
+  );
 }
 
 async function deleteCommentById(id: number): Promise<number> {
@@ -15,23 +18,33 @@ async function deleteCommentById(id: number): Promise<number> {
 }
 
 async function getCommentById(id: number): Promise<Comment | null> {
-  return await Comment.findOne({ where: { id } });
+  return await Comment.findOne({
+    where: { id },
+    include: [
+      { model: User, required: true },
+      { model: Topic, required: true },
+    ],
+  });
 }
 
 async function getCommentsByTopicId(topicId: number): Promise<Comment[]> {
-  return await Comment.findAll({ where: { topicId } });
+  return await Comment.findAll({
+    where: { topicId },
+    include: [
+      { model: User, required: true },
+      { model: Topic, required: true },
+    ],
+  });
 }
 
-async function getLastComments(
-  yandexId: number,
-  limit: number
-): Promise<Comment[]> {
-  // eslint-disable-next-line no-console
-  console.log('yandexId', yandexId);
+async function getLastComments(limit: number): Promise<Comment[]> {
   return await Comment.findAll({
-     order: [['updatedAt', 'DESC']],
-     limit: limit,
-      include: { model: User, where: { yandexId }, as: 'user' },
+    order: [['updatedAt', 'DESC']],
+    limit: limit,
+    include: [
+      { model: User, required: true },
+      { model: Topic, required: true },
+    ],
   });
 }
 

@@ -56,9 +56,6 @@ const getYandexUser: RequestHandler = async (req, res, next) => {
         },
       }
     );
-    // eslint-disable-next-line no-console
-    console.log('yandexUser 111', yandexUser);
-
     const { id: yandexId, ...rest } = yandexUser;
     let userFromDb = await dbUserController.getByYandexId(yandexId);
     if (!userFromDb) {

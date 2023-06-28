@@ -1,10 +1,18 @@
 import ForumAPI from '../api/ForumAPI';
-import { ForumPost } from '../pages/Forum/stubs';
+import { ForumPost, ImgResponse } from '../pages/Forum/forum.interfaces';
 
 class ForumController {
   async createPost(post: ForumPost): Promise<ForumPost | undefined> {
     try {
       return await ForumAPI.createPost(post);
+    } catch (err) {
+      alert(err);
+    }
+  }
+
+  async loadPostPreview(formData: FormData): Promise<ImgResponse | undefined> {
+    try {
+      return await ForumAPI.loadPostPreview(formData);
     } catch (err) {
       alert(err);
     }

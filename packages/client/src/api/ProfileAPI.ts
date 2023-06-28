@@ -36,7 +36,6 @@ class UserAPI {
     if (!response.ok) {
       throw new Error(json?.reason);
     }
-
     return json;
   }
 

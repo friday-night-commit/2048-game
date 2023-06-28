@@ -8,9 +8,17 @@ import DesktopNotification from '../../WebAPI/notification.service';
 const LazyTextEditorComponent = lazy(() => import('./components/TextEditor'));
 
 import './index.scss';
-import { CONTENT_TYPE, ForumPost } from '../Forum/stubs';
+import {
+  CONTENT_TYPE,
+  ForumPost,
+  ImgResponse,
+} from '../Forum/forum.interfaces';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { clearPostContent, createPost } from '../../store/slices/Forum';
+import {
+  clearPostContent,
+  createPost,
+  loadPostPreview,
+} from '../../store/slices/Forum';
 
 export const AddPostPage = () => {
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -25,11 +33,17 @@ export const AddPostPage = () => {
       return;
     }
     const target = e.target as HTMLInputElement;
-
     try {
       if (target.files && target.files.length) {
-        const uri = URL.createObjectURL(target.files[0]);
-        setPreview(uri);
+        const file = target.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+        dispatch(loadPostPreview(formData)).then(data => {
+          const imgRes = data.payload as ImgResponse;
+          if (imgRes) {
+            setPreview(imgRes.url);
+          }
+        });
       }
     } catch (e) {
       const err = (e as Error).message;
@@ -48,23 +62,18 @@ export const AddPostPage = () => {
       const formData = new FormData(target);
       const title = formData.get('title')?.toString();
       const tag = formData.get('tag')?.toString();
-      const preview = formData.get('preview');
-      const imageUrl =
-        'https://www.itshop.ru/productimages/auto/pimg_2021101_182.png';
+
+      const imageUrl = preview
+        ? preview
+        : 'https://www.itshop.ru/productimages/auto/pimg_2021101_182.png';
 
       if (!title) {
         return;
       }
-
       if (!content) {
-        // eslint-disable-next-line no-console
-        console.log('Add post content is not found!');
         return;
       }
       if (!tag) {
-        return;
-      }
-      if (!imageUrl) {
         return;
       }
       const newPost: ForumPost = {
@@ -76,10 +85,10 @@ export const AddPostPage = () => {
 
       dispatch(createPost(newPost)).then(data => {
         if (data) {
-          window.location.reload();
+           window.location.reload();
+          // navigate(`/${routes.forumPage}`);
           const newPost: ForumPost = data.payload as ForumPost;
           // eslint-disable-next-line no-console
-          console.log('dispatch(createPost(newPost))', newPost);
           if (newPost) {
             const desktopNotification = new DesktopNotification().init();
             desktopNotification.showNotification(

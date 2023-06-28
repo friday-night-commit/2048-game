@@ -2,7 +2,7 @@ import React, { FC, Fragment, lazy, Suspense } from 'react';
 import { SideBlock } from '../SideBlock';
 import { Avatar } from '@material-tailwind/react';
 import './index.scss';
-import { Comment, default_author_name, default_avatar } from '../../stubs';
+import { Comment, default_author_name, default_avatar, default_comment_avatar } from '../../forum.interfaces';
 import moment from 'moment';
 import { DATE_FORMATS } from '../../../../Utils/dateFormats';
 import { STATE_STATUS } from '../../../../store/slices/Forum';
@@ -40,13 +40,13 @@ export const CommentsBlock: TProps = ({
                   ) : (
                     <Avatar
                       alt={obj?.user?.first_name}
-                      src={obj?.user?.avatar || default_avatar}
+                      src={obj?.user?.avatar || default_comment_avatar}
                     />
                   )}
                 </div>
                 {status === STATE_STATUS.LOADED && (
                   <div>
-                    <span>{obj?.user?.first_name || default_author_name}</span>
+                    <span>{obj?.user?.login || default_author_name}</span>
                     <div className='message'>
                       <Suspense fallback={<textarea />}>
                         <LazyQuillContentComponent

@@ -5,7 +5,7 @@ import PageContainer from '../../Components/PageContainer';
 import { Post } from './components/Post';
 import { CommentsBlock } from '../Forum/components/CommentsBlock';
 import { SideBlock } from '../Forum/components/SideBlock';
-import { Comment, CONTENT_TYPE, ForumPost } from '../Forum/stubs';
+import { Comment, CONTENT_TYPE, ForumPost } from '../Forum/forum.interfaces';
 
 const LazyTextEditorComponent = React.lazy(
   () => import('../AddPost/components/TextEditor')
@@ -33,7 +33,6 @@ export default function FullPost() {
   const content = useAppSelector(state => state.commentSlice.commentContent);
   const user = useAppSelector(store => store.userSlice.user);
 
-  // TODO два раза срабатывает dispatch
   useEffect(() => {
     dispatch(getCommentsByPostId(Number(id))).then(data => {
       const comments = data.payload as Comment[];
@@ -44,7 +43,6 @@ export default function FullPost() {
 
   }, [id]);
 
-  // TODO два раза срабатывает dispatch
   useEffect(() => {
     dispatch(getPostById(Number(id))).then(data => {
       const post = data.payload as ForumPost;
@@ -62,7 +60,6 @@ export default function FullPost() {
       if (!content) {
         return;
       }
-
       const newComment: Comment = {
         user,
         text: content,
@@ -91,6 +88,7 @@ export default function FullPost() {
   }
   const isAuthorized = !!user;
   const isEditable = user?.id === post.user?.id;
+  post.commentsCount = comments.length;
 
   return (
     <PageContainer>

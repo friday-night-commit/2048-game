@@ -65,13 +65,14 @@ class CommentsController {
     try {
       const comment = await dbCommentsController.createComment(
         text,
-        Number(yandexId),
+        Number(res.locals.user.id),
         Number(topicId),
         parentId
       );
 
       if (comment) {
-        res.status(201).json(comment);
+        const updatedComment = await dbCommentsController.getCommentById(comment.id);
+        res.status(201).json(updatedComment);
       } else {
         return next(ApiError.badRequest('Не получилось создать комментарий'));
       }
@@ -90,7 +91,7 @@ class CommentsController {
        return next(ApiError.forbidden('Авторизованный пользователь не найден'));
     }
     try {
-     const lastComments = await dbCommentsController.getLastComments(yandexId,Number(limit));
+     const lastComments = await dbCommentsController.getLastComments(Number(limit));
       res.status(200).json(lastComments);
     } catch (err) {
       // eslint-disable-next-line no-console

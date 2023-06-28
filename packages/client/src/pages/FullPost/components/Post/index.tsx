@@ -4,6 +4,7 @@ import './index.scss';
 import moment from 'moment';
 import { DATE_FORMATS } from '../../../../Utils/dateFormats';
 import ForumController from '../../../../Controllers/ForumController';
+import { default_avatar } from '../../../Forum/forum.interfaces';
 
 const LazyQuillContentComponent = lazy(
   () => import('../../../AddPost/components/QuillContent/index')
@@ -135,15 +136,15 @@ export const Post: any = ({
         <div className='grid grid-cols-2 mt-8'>
           <div className='flex items-center'>
             <div className='relative'>
-              {user?.avatar && (
+              {user && (
                 <img
                   alt='avatar'
-                  src={user?.avatar}
+                  src={user?.avatar || default_avatar}
                   className='rounded-full w-6 h-6 md:w-8 md:h-8 bg-gray-200'></img>
               )}
               <span className='absolute top-0 right-0 inline-block w-3 h-3 bg-primary-red rounded-full'></span>
             </div>
-            <p className='ml-2 text-gray-800 '>{user?.first_name}</p>
+            <p className='ml-2 text-gray-800 '>{user?.login}</p>
           </div>
 
           <div className='flex justify-end'>

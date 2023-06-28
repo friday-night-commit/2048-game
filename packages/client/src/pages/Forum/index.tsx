@@ -9,7 +9,7 @@ import {
   TabsHeader,
   Typography,
 } from '@material-tailwind/react';
-import { ForumPost, LastComment } from './stubs';
+import { ForumPost, LastComment } from './forum.interfaces';
 import React, { useEffect, useState } from 'react';
 import PageContainer from '../../Components/PageContainer';
 import { TagsBlock } from './components/TagsBlock';
@@ -22,6 +22,7 @@ import {
   STATE_STATUS,
 } from '../../store/slices/Forum';
 import { getLastComments } from '../../store/slices/Comment';
+import PostEmpty from '../../Components/PostEmpty';
 
 export default function ForumPage() {
   const [tags, setTags] = useState<string[]>([]);
@@ -30,7 +31,6 @@ export default function ForumPage() {
   const dispatch = useAppDispatch();
 
   const user = useAppSelector(store => store.userSlice.user);
-
   useEffect(() => {
     dispatch(getAllPosts()).then(data => {
       const posts = data.payload as ForumPost[];
@@ -60,18 +60,14 @@ export default function ForumPage() {
     {
       label: 'Посты',
       value: 'posts',
-      content: (
+      content: (!posts.length &&forumStatus === STATE_STATUS.LOADED ) ? (<PostEmpty title='Создайте новый пост!'/>) : (
         <div className='forum'>
           {forumStatus === STATE_STATUS.Error && <p>Ошибка загрузки постов</p>}
-          {!posts?.length && forumStatus === STATE_STATUS.LOADED && (
-            <p>Нет постов. Создайте новый пост</p>
-          )}
           {forumStatus === STATE_STATUS.LOADING && <p>Загрузка постов</p>}
-
           {posts?.length && (
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full'>
               {posts.map(obj => (
-                <Post key={obj.id} {...obj} isEditable={true} />
+                <Post key={obj.id} {...obj} isEditable={user?.email === obj.user?.email} />
               ))}
             </div>
           )}

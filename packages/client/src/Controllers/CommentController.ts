@@ -1,4 +1,4 @@
-import { Comment, LastComment } from '../pages/Forum/stubs';
+import { Comment, LastComment } from '../pages/Forum/forum.interfaces';
 import CommentAPI from '../api/CommentAPI';
 
 class CommentController {

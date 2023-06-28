@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { STATE_STATUS } from './Forum';
 import CommentController from '../../Controllers/CommentController';
-import { Comment, LastComment } from '../../pages/Forum/stubs';
+import { Comment, LastComment } from '../../pages/Forum/forum.interfaces';
 
 interface IState {
   commentContent: string | undefined;

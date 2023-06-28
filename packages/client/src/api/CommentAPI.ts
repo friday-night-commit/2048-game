@@ -1,5 +1,5 @@
 import { API_URL } from './consts';
-import { Comment, LastComment } from '../pages/Forum/stubs';
+import { Comment, LastComment } from '../pages/Forum/forum.interfaces';
 
 const options: OptionsType = {
   headers: {

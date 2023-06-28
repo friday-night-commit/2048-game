@@ -27,7 +27,6 @@ delete window.__REDUX_INITIAL_STATE__;
 
 hydrateRoot(
   document.getElementById('root') as HTMLElement,
-  <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
         <ThemeProvider>
@@ -35,7 +34,6 @@ hydrateRoot(
         </ThemeProvider>
       </Provider>
     </BrowserRouter>
-  </React.StrictMode>
 );
 
 initServiceWorker();

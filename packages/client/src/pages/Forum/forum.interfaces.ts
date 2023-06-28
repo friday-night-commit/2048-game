@@ -1,15 +1,14 @@
 export const default_avatar = 'https://thumbnail.imgbin.com/10/8/9/imgbin-elon-musk-tesla-motors-tesla-model-3-spacex-tesla-dJ5CpnLwMCeHCuT7A11U0JV38_t.jpg';
+export const default_comment_avatar = 'https://big-i.ru/upload/iblock/471/8xe3vim9p8f8ori1o3ert3tgts25ira9.jpg';
 export const default_author_name = 'ELon Mask';
 
-type Posts = {
-  items: ForumPost[];
-  status: string;
-};
 
 export enum CONTENT_TYPE {
   POST = 'post',
   COMMENT = 'comment',
 }
+
+export type ImgResponse = { url: string };
 
 export interface ForumPost {
   id?: number;
@@ -30,6 +29,7 @@ export interface Comment {
   user?: User;
   parentId: number | undefined;
   text: string;
+  topic?: ForumPost;
   createdAt?: Date;
 }
 

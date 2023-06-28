@@ -9,7 +9,7 @@ import './index.scss';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { updatePostContent } from '../../../../store/slices/Forum';
 import { updateCommentContent } from '../../../../store/slices/Comment';
-import { CONTENT_TYPE } from '../../../Forum/stubs';
+import { CONTENT_TYPE } from '../../../Forum/forum.interfaces';
 
 type TextEditorProps = {
   textAreaHeight: number;

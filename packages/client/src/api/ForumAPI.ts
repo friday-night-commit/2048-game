@@ -1,5 +1,5 @@
 import { API_URL } from './consts';
-import { ForumPost } from '../pages/Forum/stubs';
+import { ForumPost, ImgResponse } from '../pages/Forum/forum.interfaces';
 
 const options: OptionsType = {
   headers: {
@@ -16,6 +16,19 @@ export class ForumAPI {
       ...options,
       method: 'POST',
       body: JSON.stringify(data),
+    });
+    const json = await response.json();
+    if (!response.ok) {
+      throw new Error(json?.reason);
+    }
+    return json;
+  }
+
+  async loadPostPreview(formData: FormData) : Promise<ImgResponse | never>{
+    const response = await fetch(`${API_URL}/upload`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include',
     });
     const json = await response.json();
     if (!response.ok) {

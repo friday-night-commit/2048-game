@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import ForumController from '../../Controllers/ForumController';
-import { ForumPost } from '../../pages/Forum/stubs';
+import { ForumPost } from '../../pages/Forum/forum.interfaces';
 
 interface IState {
   postContent: string | undefined;
@@ -38,6 +38,10 @@ export const getPostById = createAsyncThunk('getPostById', async (id: number) =>
 
 export const createPost = createAsyncThunk('createPost', async (post: ForumPost) => {
   return await ForumController.createPost(post);
+});
+
+export const loadPostPreview = createAsyncThunk('loadPostPreview', async (formData: FormData) => {
+  return await ForumController.loadPostPreview(formData);
 });
 
 const forumSlice = createSlice({
