@@ -43,6 +43,8 @@ const getYandexUser: RequestHandler = async (req, res, next) => {
   const cookie = Object.entries(req.cookies)
     .map(([key, value]) => `${key}=${value}`)
     .join('; ');
+
+
   try {
     // @ts-ignore
     const { data: yandexUser } = await axios.get(
@@ -54,6 +56,9 @@ const getYandexUser: RequestHandler = async (req, res, next) => {
         },
       }
     );
+    // eslint-disable-next-line no-console
+    console.log('yandexUser 111', yandexUser);
+
     const { id: yandexId, ...rest } = yandexUser;
     let userFromDb = await dbUserController.getByYandexId(yandexId);
     if (!userFromDb) {
@@ -67,6 +72,7 @@ const getYandexUser: RequestHandler = async (req, res, next) => {
     // @ts-ignore
     res.locals.user = serverToClientNaming(userFromDb!.toJSON());
   } catch (error) {
+    // eslint-disable-next-line no-console
     res.locals.user = null;
   } finally {
     next();

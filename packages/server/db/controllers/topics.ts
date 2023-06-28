@@ -1,5 +1,4 @@
 import Topic, { ITopic } from '../models/topic.model';
-import User from '../models/user.model';
 
 async function createTopic(
   title: string,
@@ -33,7 +32,7 @@ async function getTopicById(id: number): Promise<Topic | null> {
 
 async function getAllTopics(): Promise<Topic[]> {
   return await Topic.findAll({
-    include: { model: User, required: true }
+   // include: { model: User, required: true }
   });
 }
 

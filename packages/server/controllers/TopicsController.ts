@@ -50,7 +50,7 @@ class TopicsController {
 
   async createTopic(req: Request, res: Response, next: NextFunction) {
     const { title, text, tag, imageUrl } = req.body;
-    const yandexId = getYandexId(res);
+    const yandexId = getYandexId(res); // 1154066
 
     // eslint-disable-next-line no-console
     console.log('yandexId', yandexId);

@@ -4,7 +4,7 @@ import {
   Column,
   DataType,
   ForeignKey,
-  Default, BelongsTo
+  Default, // BelongsTo
 } from 'sequelize-typescript';
 
 import User from './user.model';
@@ -71,6 +71,6 @@ export default class Topic extends Model<ITopic> {
   })
   declare userId: number;
 
- @BelongsTo(() => User, 'user_id')
+ // @BelongsTo(() => User, 'user_id')
   declare user: User;
 }

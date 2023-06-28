@@ -22,7 +22,7 @@ import {
 
 export default function FullPost() {
   const { id } = useParams();
-  const [comments, setComments] = useState<Comment[]>();
+  const [comments, setComments] = useState<Comment[]>([]);
   const [post, setPost] = useState<ForumPost>();
   const dispatch = useAppDispatch();
 
@@ -36,7 +36,10 @@ export default function FullPost() {
   // TODO два раза срабатывает dispatch
   useEffect(() => {
     dispatch(getCommentsByPostId(Number(id))).then(data => {
-      setComments(data.payload);
+      const comments = data.payload as Comment[];
+      if(comments.length) {
+        setComments(comments);
+      }
     });
 
   }, [id]);
@@ -44,7 +47,10 @@ export default function FullPost() {
   // TODO два раза срабатывает dispatch
   useEffect(() => {
     dispatch(getPostById(Number(id))).then(data => {
-      setPost(data.payload);
+      const post = data.payload as ForumPost;
+      if(post){
+        setPost(post);
+      }
     });
 
   }, [id]);
@@ -66,7 +72,10 @@ export default function FullPost() {
       dispatch(
         createCommentByPostId({ id: Number(id), comment: newComment })
       ).then(data => {
-        setComments([...comments, data.payload]);
+        const newComment = data.payload as Comment;
+        if(newComment){
+          setComments([...comments, newComment]);
+        }
         dispatch(clearCommentContent());
       });
     },

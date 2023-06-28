@@ -33,19 +33,25 @@ export default function ForumPage() {
 
   useEffect(() => {
     dispatch(getAllPosts()).then(data => {
-      setPosts(data.payload); //TS2345: Argument of type 'unknown' is not assignable to parameter of type 'SetStateAction '
+      const posts = data.payload as ForumPost[];
+      if (posts.length) {
+        setPosts(posts);
+      }
     });
     dispatch(getAllTags()).then(data => {
-      setTags(data.payload);
+      const tags = data.payload as string[];
+      if (tags.length) {
+        setTags(tags);
+      }
     });
 
     dispatch(getLastComments(5)).then(data => {
-      setLastComments(data.payload);
+      const lastComments = data.payload as LastComment[];
+      if (lastComments.length) {
+        setLastComments(lastComments);
+      }
     });
-
   }, []);
-
-
 
   const forumStatus = useAppSelector(store => store.forumSlice.postsStatus);
   const tagsStatus = useAppSelector(store => store.forumSlice.tagsStatus);
@@ -66,13 +72,16 @@ export default function ForumPage() {
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full'>
               {posts.map(obj => (
                 <Post key={obj.id} {...obj} isEditable={true} />
-
               ))}
             </div>
           )}
           <div className='forum__right'>
             <TagsBlock items={tags} status={tagsStatus} />
-            <CommentsBlock title='Последние комментарии' items={lastComments} status={tagsStatus} />
+            <CommentsBlock
+              title='Последние комментарии'
+              items={lastComments}
+              status={tagsStatus}
+            />
           </div>
         </div>
       ),
