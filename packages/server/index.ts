@@ -12,7 +12,9 @@ import { distPath, initVite } from './services/init-vite';
 import { getYandexUser, renderSSR } from './middlewares';
 
 import { dbConnect } from './db';
-// import dbTopicsController from './db/controllers/topics';
+
+import dbUsersController from './db/controllers/users';
+import dbTopicsController from './db/controllers/topics';
 
 import apiRouter from './api';
 
@@ -56,5 +58,18 @@ async function startServer() {
 
 startServer();
 
-dbConnect();
-  // .then(() => dbTopicsController.createTopic('the new topic', 'some text', 1)); // test
+dbConnect()
+  .then(() =>
+    dbUsersController.createUserFromYandexData({
+      id: 1069910,
+      yandexId: 1069910,
+      firstName: '\u042E\u043B\u0438\u044F',
+      secondName: '\u0410\u0440\u0430\u043D\u043E\u0432\u0438\u0447',
+      displayName: 'julia.aranovich',
+      login: 'julia.aranovich',
+      avatar: '',
+      email: 'julia.aranovich@yandex.ru',
+      phone: '',
+    })
+  )
+  .then(() => dbTopicsController.createTopic('title', 'text', 1069910, '', ''));
