@@ -1,5 +1,4 @@
 import type { Request, Response, NextFunction } from 'express';
-
 import dbTopicsController from '../db/controllers/topics';
 import { ApiError } from './error';
 import getYandexId from './getYandexIdUtil';
@@ -53,6 +52,9 @@ class TopicsController {
     const { title, text, tag, imageUrl } = req.body;
     const yandexId = getYandexId(res);
 
+    // eslint-disable-next-line no-console
+    console.log('yandexId', yandexId);
+
     if (!yandexId) {
       return next(ApiError.forbidden('Авторизованный пользователь не найден'));
     }
@@ -70,6 +72,8 @@ class TopicsController {
     }
 
     try {
+
+
       const topic = await dbTopicsController.createTopic(
         title,
         text,

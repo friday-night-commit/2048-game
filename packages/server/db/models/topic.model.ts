@@ -30,28 +30,28 @@ export default class Topic extends Model<ITopic> {
     allowNull: false,
     comment: 'topic title',
   })
-  title: string;
+  declare title: string;
 
   @Column({
     type: TEXT,
     allowNull: false,
     comment: 'topic content',
   })
-  text: string;
+  declare text: string;
 
   @Column({
     type: TEXT,
     allowNull: false,
     comment: 'topic tag',
   })
-  tag: string;
+  declare tag: string;
 
   @Column({
     type: TEXT,
     allowNull: false,
     comment: 'topic preview',
   })
-  imageUrl: string;
+  declare imageUrl: string;
 
   @Default(0)
   @Column({
@@ -59,7 +59,7 @@ export default class Topic extends Model<ITopic> {
     allowNull: true,
     comment: 'topic view count',
   })
-  viewsCount: number;
+  declare viewsCount: number;
 
   @ForeignKey(() => User)
   @Column({
@@ -67,10 +67,10 @@ export default class Topic extends Model<ITopic> {
     type: INTEGER,
     allowNull: false,
     comment: 'topic author id',
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   })
   declare userId: number;
 
-  @BelongsTo(() => User, 'user_id')
+ @BelongsTo(() => User, 'user_id')
   declare user: User;
 }
