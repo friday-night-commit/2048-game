@@ -1,5 +1,6 @@
 import Theme from '../models/theme.model';
 import ThemeUser from '../models/themeuser.model';
+import User from '../models/user.model';
 
 async function createTheme(
   name: string,
@@ -9,6 +10,13 @@ async function createTheme(
 
 async function updateThemeById(themeName: string, themeId: number): Promise<[affectedCount: number]> {
   return await Theme.update({ name: themeName }, { where: { id: themeId } });
+}
+
+async function fillTable() {
+  return await Theme.bulkCreate([
+    { name: 'light' },
+    { name: 'dark' },
+  ]);
 }
 
 async function deleteThemeById(id: number): Promise<number> {
@@ -35,7 +43,8 @@ async function createThemeUserLink(
 }
 
 async function getThemeByUser(userId: number): Promise<ThemeUser | null> {
-  return await ThemeUser.findOne({ where: { userId: userId } });
+  return await ThemeUser.findOne({
+    include: { model: User, where: { id: userId } } });
 }
 
 async function updateThemeForUser(themeId: number, userId: number): Promise<[affectedCount: number]> {
@@ -48,6 +57,7 @@ async function deleteThemeUserByThemeId(themeId: number): Promise<number> {
 
 export default {
   createTheme,
+  fillTable,
   updateThemeById,
   deleteThemeById,
   getThemeById,

@@ -4,8 +4,8 @@ import {
   Model,
   Table,
   Column,
-  DataType,
-} from 'sequelize-typescript';
+  DataType, Index
+} from 'sequelize-typescript'
 
 
 const { STRING } = DataType;
@@ -20,10 +20,11 @@ export interface ITheme {
 })
 
 export default class Theme extends Model<ITheme> {
+  @Index
   @Column({
     type: STRING(1024),
     allowNull: false,
     comment: 'theme name',
   })
-  name: string;
+  declare name: string;
 }

@@ -5,8 +5,8 @@ import {
   Table,
   Column,
   DataType,
-  ForeignKey,
-} from 'sequelize-typescript';
+  ForeignKey, BelongsTo
+} from 'sequelize-typescript'
 
 import User from './user.model';
 import Theme from './theme.model'
@@ -30,8 +30,11 @@ export default class ThemeUser extends Model<IThemeUser> {
     type: INTEGER,
     allowNull: false,
     comment: 'theme id',
+    onDelete: 'CASCADE',
   })
-  themeId: number;
+  declare themeId: number;
+  @BelongsTo(() => Theme, 'theme_id')
+  declare theme: Theme;
 
   @ForeignKey(() => User)
   @Column({
@@ -39,6 +42,9 @@ export default class ThemeUser extends Model<IThemeUser> {
     type: INTEGER,
     allowNull: false,
     comment: 'user using theme id',
+    onDelete: 'CASCADE',
   })
-  userId: number;
+  declare userId: number;
+  @BelongsTo(() => User, 'user_id')
+  declare user: User;
 }

@@ -41,11 +41,9 @@ export const paramsSchemas = {
 };
 
 class ThemeController {
-  async createTheme(req: Request, res: Response, next: NextFunction) {
-    const { name } = req.body;
-
+  async createTheme(_req: Request, res: Response, next: NextFunction) {
     try {
-      const theme = await dbThemeController.createTheme(name);
+      const theme = await dbThemeController.fillTable();
       if (theme) {
         res.status(201).json(theme);
       } else {
@@ -109,23 +107,23 @@ class ThemeController {
   }
 
   async getThemeByName(req: Request, res: Response, next: NextFunction) {
-    const { themeName } = req.params;
+    const { name } = req.params;
 
     try {
       const theme = await dbThemeController.getThemeByName(
-        themeName
+        name
       );
       if (theme) {
         res.status(200).json(theme);
       } else {
         return next(
-          ApiError.badRequest(ErrorMsg.NOT_FOUND + ParamsName.THEME_NAME + themeName)
+          ApiError.badRequest(ErrorMsg.NOT_FOUND + ParamsName.THEME_NAME + name)
         );
       }
     } catch (err) {
       return next(
         ApiError.badRequest(
-          ErrorMsg.NOT_FOUND + ParamsName.THEME_NAME + themeName,
+          ErrorMsg.NOT_FOUND + ParamsName.THEME_NAME + name,
           err as Error
         )
       );
@@ -157,12 +155,12 @@ class ThemeController {
   }
 
   async updateTheme(req: Request, res: Response, next: NextFunction) {
-    const { themeId, themeName } = req.params;
+    const { id, name } = req.params;
 
     try {
       const theme = await dbThemeController.updateThemeById(
-        themeName,
-        Number(themeId)
+        name,
+        Number(id)
       );
       if (theme) {
         res.status(200).json(theme);
@@ -182,24 +180,24 @@ class ThemeController {
   }
 
   async updateThemeForUser(req: Request, res: Response, next: NextFunction) {
-    const { themeId, userId } = req.body;
+    const { id, userId } = req.body;
 
     try {
       const theme = await dbThemeController.updateThemeForUser(
-        Number(themeId),
+        Number(id),
         Number(userId),
       );
       if (theme) {
         res.status(200).json(theme);
       } else {
         return next(
-          ApiError.badRequest(ErrorMsg.NOT_FOUND + ParamsName.THEME_ID + themeId)
+          ApiError.badRequest(ErrorMsg.NOT_FOUND + ParamsName.THEME_ID + id)
         );
       }
     } catch (err) {
       return next(
         ApiError.badRequest(
-          ErrorMsg.NOT_FOUND + ParamsName.THEME_ID + themeId,
+          ErrorMsg.NOT_FOUND + ParamsName.THEME_ID + id,
           err as Error
         )
       );
@@ -207,10 +205,10 @@ class ThemeController {
   }
 
   async deleteThemeForUser(req: Request, res: Response, next: NextFunction) {
-    const { themeId } = req.params;
+    const { id } = req.params;
 
     try {
-      await dbThemeController.deleteThemeUserByThemeId(Number(themeId));
+      await dbThemeController.deleteThemeUserByThemeId(Number(id));
       res.sendStatus(204);
     } catch (err) {
       return next(
@@ -220,11 +218,10 @@ class ThemeController {
   }
 
   async deleteTheme(req: Request, res: Response, next: NextFunction) {
-    const { themeId } = req.params;
+    const { id } = req.params;
 
     try {
-      await dbThemeController.deleteThemeUserByThemeId(Number(themeId))
-        .then( () => dbThemeController.deleteThemeById(Number(themeId)));
+      await dbThemeController.deleteThemeUserByThemeId(Number(id));
       res.sendStatus(204);
     } catch (err) {
       return next(
