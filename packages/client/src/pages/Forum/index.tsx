@@ -2,6 +2,7 @@ import './index.scss';
 import { CommentsBlock } from './components/CommentsBlock';
 
 import {
+  Button,
   Tab,
   TabPanel,
   Tabs,
@@ -9,7 +10,7 @@ import {
   TabsHeader,
   Typography,
 } from '@material-tailwind/react';
-import { ForumPost, LastComment } from './forum.interfaces';
+import { ForumPost, LastComment, TAB_TYPE } from './forum.interfaces';
 import React, { useEffect, useState } from 'react';
 import PageContainer from '../../Components/PageContainer';
 import { TagsBlock } from './components/TagsBlock';
@@ -19,6 +20,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import {
   getAllPosts,
   getAllTags,
+  setForumTabName,
   STATE_STATUS,
 } from '../../store/slices/Forum';
 import { getLastComments } from '../../store/slices/Comment';
@@ -29,6 +31,10 @@ export default function ForumPage() {
   const [posts, setPosts] = useState<ForumPost[]>([]);
   const [lastComments, setLastComments] = useState<LastComment[]>([]);
   const dispatch = useAppDispatch();
+
+  const tabName = useAppSelector(state => state.forumSlice.tabName);
+  // eslint-disable-next-line no-console
+  console.log('tabName', tabName);
 
   const user = useAppSelector(store => store.userSlice.user);
   useEffect(() => {
@@ -59,32 +65,41 @@ export default function ForumPage() {
   const tabsData = [
     {
       label: 'Посты',
-      value: 'posts',
-      content: (!posts.length &&forumStatus === STATE_STATUS.LOADED ) ? (<PostEmpty title='Создайте новый пост!'/>) : (
-        <div className='forum'>
-          {forumStatus === STATE_STATUS.Error && <p>Ошибка загрузки постов</p>}
-          {forumStatus === STATE_STATUS.LOADING && <p>Загрузка постов</p>}
-          {posts?.length && (
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full'>
-              {posts.map(obj => (
-                <Post key={obj.id} {...obj} isEditable={user?.email === obj.user?.email} />
-              ))}
+      value: TAB_TYPE.POSTS,
+      content:
+        !posts.length && forumStatus === STATE_STATUS.LOADED ? (
+          <PostEmpty title='Создайте новый пост!' />
+        ) : (
+          <div className='forum'>
+            {forumStatus === STATE_STATUS.Error && (
+              <p>Ошибка загрузки постов</p>
+            )}
+            {forumStatus === STATE_STATUS.LOADING && <p>Загрузка постов</p>}
+            {posts?.length && (
+              <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full'>
+                {posts.map(obj => (
+                  <Post
+                    key={obj.id}
+                    {...obj}
+                    isEditable={user?.email === obj.user?.email}
+                  />
+                ))}
+              </div>
+            )}
+            <div className='forum__right'>
+              <TagsBlock items={tags} status={tagsStatus} />
+              <CommentsBlock
+                title='Последние комментарии'
+                items={lastComments}
+                status={tagsStatus}
+              />
             </div>
-          )}
-          <div className='forum__right'>
-            <TagsBlock items={tags} status={tagsStatus} />
-            <CommentsBlock
-              title='Последние комментарии'
-              items={lastComments}
-              status={tagsStatus}
-            />
           </div>
-        </div>
-      ),
+        ),
     },
     {
       label: 'Создать новый пост',
-      value: 'add-post',
+      value: TAB_TYPE.ADD_POST,
       content: <AddPostPage />,
     },
   ];
@@ -96,17 +111,25 @@ export default function ForumPage() {
           Форум
         </Typography>
       </div>
-
-      <Tabs value='posts' id='posts'>
+      <Tabs value={tabName} id='posts'>
         <TabsHeader>
           {tabsData.map(({ label, value }) => (
-            <Tab id={value} key={value} value={value}>
+            <Tab
+              data-toggle={tabName}
+              data-tabs-target={tabName}
+              id={tabName}
+              key={value}
+              value={value}>
               <div className='flex items-center gap-2'>{label}</div>
             </Tab>
           ))}
         </TabsHeader>
-
-        <TabsBody>
+        <TabsBody
+          animate={{
+            initial: { y: 250 },
+            mount: { y: 0 },
+            unmount: { y: 250 },
+          }}>
           {tabsData.map(({ value, content }) => (
             <TabPanel key={value} value={value}>
               {content}

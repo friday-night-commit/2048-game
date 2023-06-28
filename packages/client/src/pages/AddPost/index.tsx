@@ -12,12 +12,14 @@ import {
   CONTENT_TYPE,
   ForumPost,
   ImgResponse,
+  TAB_TYPE,
 } from '../Forum/forum.interfaces';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import {
   clearPostContent,
   createPost,
   loadPostPreview,
+  setForumTabName,
 } from '../../store/slices/Forum';
 
 export const AddPostPage = () => {
@@ -85,10 +87,8 @@ export const AddPostPage = () => {
 
       dispatch(createPost(newPost)).then(data => {
         if (data) {
-           window.location.reload();
-          // navigate(`/${routes.forumPage}`);
+          dispatch(setForumTabName(TAB_TYPE.POSTS));
           const newPost: ForumPost = data.payload as ForumPost;
-          // eslint-disable-next-line no-console
           if (newPost) {
             const desktopNotification = new DesktopNotification().init();
             desktopNotification.showNotification(

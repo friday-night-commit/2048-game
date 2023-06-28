@@ -8,6 +8,11 @@ export enum CONTENT_TYPE {
   COMMENT = 'comment',
 }
 
+export enum TAB_TYPE {
+  POSTS = 'posts',
+  ADD_POST = 'add-post',
+}
+
 export type ImgResponse = { url: string };
 
 export interface ForumPost {

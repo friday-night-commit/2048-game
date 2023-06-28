@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import ForumController from '../../Controllers/ForumController';
-import { ForumPost } from '../../pages/Forum/forum.interfaces';
+import { ForumPost, TAB_TYPE } from '../../pages/Forum/forum.interfaces';
 
 interface IState {
+  tabName: TAB_TYPE;
   postContent: string | undefined;
   posts: ForumPost[] | [];
   tags: string[];
@@ -17,6 +18,7 @@ export enum STATE_STATUS {
 }
 
 const initialState: IState = {
+  tabName: TAB_TYPE.POSTS,
   postContent: undefined,
   tags: [],
   posts: [],
@@ -32,17 +34,26 @@ export const getAllTags = createAsyncThunk('getAllTags', async () => {
   return await ForumController.getAllTags();
 });
 
-export const getPostById = createAsyncThunk('getPostById', async (id: number) => {
-  return await ForumController.getPostById(id);
-});
+export const getPostById = createAsyncThunk(
+  'getPostById',
+  async (id: number) => {
+    return await ForumController.getPostById(id);
+  }
+);
 
-export const createPost = createAsyncThunk('createPost', async (post: ForumPost) => {
-  return await ForumController.createPost(post);
-});
+export const createPost = createAsyncThunk(
+  'createPost',
+  async (post: ForumPost) => {
+    return await ForumController.createPost(post);
+  }
+);
 
-export const loadPostPreview = createAsyncThunk('loadPostPreview', async (formData: FormData) => {
-  return await ForumController.loadPostPreview(formData);
-});
+export const loadPostPreview = createAsyncThunk(
+  'loadPostPreview',
+  async (formData: FormData) => {
+    return await ForumController.loadPostPreview(formData);
+  }
+);
 
 const forumSlice = createSlice({
   name: 'forum',
@@ -54,6 +65,9 @@ const forumSlice = createSlice({
     clearPostContent(state) {
       state.postContent = '';
     },
+    setForumTabName(state, action: PayloadAction<TAB_TYPE>) {
+      state.tabName = action.payload;
+    }
   },
   extraReducers: build => {
     // Posts
@@ -64,9 +78,9 @@ const forumSlice = createSlice({
       state.postsStatus = STATE_STATUS.LOADED;
       state.posts = action.payload;
     });
-    build.addCase(getAllPosts.rejected, (state) => {
+    build.addCase(getAllPosts.rejected, state => {
       state.postsStatus = STATE_STATUS.Error;
-      state.posts =[];
+      state.posts = [];
     });
     // Tags
     build.addCase(getAllTags.pending, (state, action) => {
@@ -76,9 +90,9 @@ const forumSlice = createSlice({
       state.tagsStatus = STATE_STATUS.LOADED;
       state.tags = action.payload;
     });
-    build.addCase(getAllTags.rejected, (state) => {
+    build.addCase(getAllTags.rejected, state => {
       state.tagsStatus = STATE_STATUS.Error;
-      state.posts =[];
+      state.posts = [];
     });
     // Create Post
     build.addCase(createPost.pending, (state, action) => {
@@ -86,16 +100,16 @@ const forumSlice = createSlice({
     });
     build.addCase(createPost.fulfilled, (state, action) => {
       state.postsStatus = STATE_STATUS.LOADED;
-      if(action.payload){
-        state.posts = [ ...state.posts, action.payload ];
+      if (action.payload) {
+        state.posts = [...state.posts, action.payload];
       }
     });
-    build.addCase(createPost.rejected, (state) => {
+    build.addCase(createPost.rejected, state => {
       state.postsStatus = STATE_STATUS.Error;
     });
   },
 });
 
-export const { updatePostContent, clearPostContent } = forumSlice.actions;
+export const { updatePostContent, clearPostContent, setForumTabName } = forumSlice.actions;
 
 export default forumSlice.reducer;
