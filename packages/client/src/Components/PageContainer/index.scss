@@ -4,12 +4,8 @@
   padding: 2em;
 
   .game-page-container {
-    width: $game-container-size;
+    width: fit-content;
     margin: auto;
-
-    &.large {
-      width: $game-container-size * 2;
-    }
   }
 
   .game-modal {
@@ -23,7 +19,7 @@
     line-height: 28px;
     font-size: 28px;
     background: $dark-brown;
-    border-width: 0px;
+    border-width: 0;
     box-shadow: none;
 
     &:hover {
@@ -31,8 +27,8 @@
     }
 
     &.small {
-      line-height: 12px;
-      font-size: 12px;
+      line-height: 22px;
+      font-size: 14px;
     }
 
     &.alert {

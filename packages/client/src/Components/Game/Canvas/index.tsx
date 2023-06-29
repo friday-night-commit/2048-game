@@ -2,7 +2,6 @@ import React, { useEffect, useCallback, useRef } from 'react';
 import Engine from '../Engine';
 import { openModalFailure, openModalSuccess, wasRenewedMatrix } from '../../../store/slices/Modal';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import { Utils } from '../Utils';
 import LeaderboardController from '../../../Controllers/LeaderboardController';
 
 
@@ -46,8 +45,6 @@ const Canvas: React.FC<CanvasProps> = ({ ...props }) => {
     const canvas = canvasRef.current;
     if (canvas) {
       const context = canvas.getContext('2d');
-
-      Utils.fullscreenOpen('btn-fullscreen-mode');
 
       if (context) {
         const engine = new Engine(

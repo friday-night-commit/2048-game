@@ -114,7 +114,7 @@ export default function ForumPage() {
           Форум
         </Typography>
       </div>
-      <Tabs value={tabName} id='posts'>
+      <Tabs value={tabName || TAB_TYPE.ADD_POST} id='posts'>
   {/*      <Button onClick={() => dispatch(setForumTabName(TAB_TYPE.ADD_POST))}>
           {tabName === TAB_TYPE.POSTS ? 'Посты' : 'Добавить пост'}
         </Button>*/}

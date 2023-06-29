@@ -22,10 +22,10 @@ type TSnakeToCamelCase<TKey extends string> =
 
 type TSnakeToCamelCaseNested<T> = T extends object
   ? {
-      [K in keyof T as TSnakeToCamelCase<K & string>]: TSnakeToCamelCaseNested<
-        T[K]
+    [K in keyof T as TSnakeToCamelCase<K & string>]: TSnakeToCamelCaseNested<
+      T[K]
       >;
-    }
+  }
   : T;
 
 function serverToClientNaming<T>(serverResponse: T) {
@@ -70,6 +70,7 @@ const getYandexUser: RequestHandler = async (req, res, next) => {
     res.locals.user = serverToClientNaming(userFromDb!.toJSON());
   } catch (error) {
     // eslint-disable-next-line no-console
+    console.log('getYandexUser error', error);
     res.locals.user = null;
   } finally {
     next();

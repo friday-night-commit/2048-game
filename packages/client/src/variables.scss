@@ -13,9 +13,6 @@ $light-red-tile: rgb(246, 124, 95); // 32
 $red-tile: rgb(246, 94, 59); // 64
 $yellow-tile: rgb(237, 207, 114); // 128
 
-/* Variables */
-$game-container-size: 500px;
-
 /* Mixins */
 @mixin hover-link {
   &:hover {

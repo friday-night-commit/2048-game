@@ -23,34 +23,21 @@ export class Utils {
     );
   }
 
-  static fullscreenOpen(idComponent: string): void {
-    const toggler = document.getElementById(idComponent);
-    const targetElem = document.getElementById('canvas-game');
+  static initFullScreen(
+    targetElementId: string,
+    togglerElementId = 'btn-fullscreen-mode'
+  ): void {
+    const toggler = document.getElementById(togglerElementId);
+    const targetElem = document.getElementById(targetElementId);
 
-    if(!toggler) {
-      return;
-    }
-
-    if(!targetElem) {
-      return;
-    }
+    if (!toggler || !targetElem) return;
 
     toggler.addEventListener('click', () => {
-      if (!document.fullscreenElement) {
-        activateFullscreen(targetElem);
-        targetElem.style.backgroundColor = 'rgb(187, 173, 160)';
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
       } else {
-        deactivateFullscreen();
+        targetElem.requestFullscreen();
       }
     });
-
-    const activateFullscreen = (element: HTMLElement) => {
-      element.requestFullscreen();
-    };
-
-    const deactivateFullscreen = () => {
-      document.exitFullscreen();
-    };
-
   }
 }

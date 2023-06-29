@@ -17,16 +17,15 @@ import { dbConnect } from './db';
 import apiRouter from './api';
 import multer from 'multer';
 import fs from 'fs';
-import bodyParser from 'body-parser';
 
 const isDev = process.env.NODE_ENV === 'development';
 
 async function startServer() {
   const port = Number(process.env.SERVER_PORT) || 5000;
 
-  const app = express().use(cookieParser()).use(cors())
-    .use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
-     .use(bodyParser.json({ limit: '50mb' }));
+  const app = express().use(cookieParser()).use(cors());
+  // .use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
+  // .use(bodyParser.json({ limit: '50mb' }));
 
   const vite = await initVite(app);
 
@@ -39,36 +38,39 @@ async function startServer() {
     createProxyMiddleware({
       changeOrigin: true,
       cookieDomainRewrite: {
-        '*': '',
+        '*': ''
       },
-      target: 'https://ya-praktikum.tech',
+      target: 'https://ya-praktikum.tech'
     })
   );
 
   app.use(express.json());
 
   const storage = multer.diskStorage({
-    destination: (_, __, cb) => {
+    destination: (_: any, __: any, cb: (arg0: null, arg1: string) => void) => {
       if (!fs.existsSync('uploads')) {
         fs.mkdirSync('uploads');
       }
       cb(null, 'uploads');
     },
-    filename: (_, file, cb) => {
+    filename: (_: any, file: any, cb: (arg0: null, arg1: any) => void) => {
       cb(null, file.originalname);
-    },
+    }
   });
 
   const upload = multer({ storage });
 
-  app.post('/upload', upload.single('image'), (req, res) => {
-    // eslint-disable-next-line no-console
-    console.log('req.file', req.file);
-    if (!req.file) {
+  interface MulterRequest extends Request {
+    file: any;
+  }
+
+  app.post('/upload', upload.single('image'), (req: MulterRequest, res: any) => {
+    const documentFile = (req as MulterRequest).file;
+    if (!documentFile) {
       return;
     }
     res.json({
-      url: `/uploads/${req.file.originalname}`,
+      url: `/uploads/${req.file.originalname}`
     });
   });
 

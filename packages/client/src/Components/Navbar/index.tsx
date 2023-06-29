@@ -1,9 +1,15 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useCallback } from 'react';
 import { Navbar as MaterialNavbar, Typography } from '@material-tailwind/react';
 import { Link, NavLink } from 'react-router-dom';
 
+import LeaderboardController from '../../Controllers/LeaderboardController';
+import useAuth from '../../hooks/useAuth';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import routes from '../../routes';
+import { setMaxScore } from '../../store/slices/User';
+
 import './index.scss';
+import ThemeToggler from '../ThemeToggler';
 
 type NavbarLinkProps = {
   url: string;
@@ -40,11 +46,31 @@ const NAVBAR_ITEMS = [
 ];
 
 export default function Navbar() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [maxScore, setMaxScore] = useState(4096); // TODO: get value from API
+  const { user } = useAuth();
+  const maxScore = useAppSelector(store => store.userSlice.maxScore);
+  const dispatch = useAppDispatch();
+
+  const getLeaderboard = useCallback(async () => {
+    return await LeaderboardController.getData(0, 100);
+  }, []);
+
+  useEffect(() => {
+    if (user && !maxScore) {
+      getLeaderboard().then(data => {
+        dispatch(
+          setMaxScore(
+            data.filter(({ userId }) => userId === user.id)[0]
+              ?.score || 0
+          )
+        );
+      });
+    }
+  }, []);
 
   return (
-    <MaterialNavbar className='navbar mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4' id='navbar-item-menu'>
+    <MaterialNavbar
+      className='navbar mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4 dark:bg-slate-900'
+      id='navbar-item-menu'>
       <div className='container mx-auto flex items-center justify-between'>
         <Typography
           as={Link}
@@ -60,8 +86,12 @@ export default function Navbar() {
             ))}
           </ul>
         </div>
+        { typeof window !== 'undefined' ?
+          <ThemeToggler/>
+          : null
+        }
         <span className='score-container'>
-          {`Максимум сегодня: ${maxScore}`}
+          {`Ваш рекорд: ${maxScore}`}
         </span>
       </div>
     </MaterialNavbar>
