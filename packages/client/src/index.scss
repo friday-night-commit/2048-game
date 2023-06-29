@@ -4,7 +4,12 @@
 
 @import './variables.scss';
 
-html {
+html.light {
   background: $background-color;
   color: $font-color;
+}
+
+html.dark {
+  background: $font-color;
+  color: $background-color;
 }
