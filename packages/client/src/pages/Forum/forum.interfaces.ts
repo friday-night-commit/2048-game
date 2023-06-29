@@ -13,6 +13,11 @@ export enum TAB_TYPE {
   ADD_POST = 'add-post',
 }
 
+export enum COMMENT_LABEL_TYPE {
+  LAST_COMMENTS = 'Последние комментарии',
+  POST_COMMENTS = 'Комментарии поста',
+}
+
 export type ImgResponse = { url: string };
 
 export interface ForumPost {

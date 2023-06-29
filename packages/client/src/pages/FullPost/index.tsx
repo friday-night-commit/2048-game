@@ -5,7 +5,7 @@ import PageContainer from '../../Components/PageContainer';
 import { Post } from './components/Post';
 import { CommentsBlock } from '../Forum/components/CommentsBlock';
 import { SideBlock } from '../Forum/components/SideBlock';
-import { Comment, CONTENT_TYPE, ForumPost } from '../Forum/forum.interfaces';
+import { Comment, COMMENT_LABEL_TYPE, CONTENT_TYPE, ForumPost } from '../Forum/forum.interfaces';
 
 const LazyTextEditorComponent = React.lazy(
   () => import('../AddPost/components/TextEditor')
@@ -102,7 +102,7 @@ export default function FullPost() {
 
         {isAuthorized && (
           <div className='full-post__right'>
-            <CommentsBlock title='Комментарии поста' items={comments} status={currentPostStatus} />
+            <CommentsBlock title={COMMENT_LABEL_TYPE.POST_COMMENTS} items={comments} status={currentPostStatus} />
             <SideBlock title='Оставить комментарий'>
               <div className='full-post__editor'>
                 <Suspense fallback={<textarea />}>
@@ -113,9 +113,10 @@ export default function FullPost() {
                 </Suspense>
               </div>
             </SideBlock>
+            <Button onClick={onSendComment}>Отправить</Button>
           </div>
         )}
-        <Button onClick={onSendComment}>Отправить</Button>
+
       </div>
     </PageContainer>
   );

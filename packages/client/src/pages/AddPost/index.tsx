@@ -88,6 +88,7 @@ export const AddPostPage = () => {
       dispatch(createPost(newPost)).then(data => {
         if (data) {
           dispatch(setForumTabName(TAB_TYPE.POSTS));
+          window.location.reload();
           const newPost: ForumPost = data.payload as ForumPost;
           if (newPost) {
             const desktopNotification = new DesktopNotification().init();

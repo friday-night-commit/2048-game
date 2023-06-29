@@ -1,10 +1,13 @@
 import React, { FC, lazy, Suspense } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './index.scss';
 import moment from 'moment';
 import { DATE_FORMATS } from '../../../../Utils/dateFormats';
 import ForumController from '../../../../Controllers/ForumController';
-import { default_avatar } from '../../../Forum/forum.interfaces';
+import {
+  COMMENT_LABEL_TYPE,
+  default_avatar,
+} from '../../../Forum/forum.interfaces';
 
 const LazyQuillContentComponent = lazy(
   () => import('../../../AddPost/components/QuillContent/index')
@@ -12,7 +15,7 @@ const LazyQuillContentComponent = lazy(
 
 type TOwnProps = {
   id: string;
-  title: string;
+  title: COMMENT_LABEL_TYPE;
   createdAt: Date;
   imageUrl: string;
   user: User;
@@ -29,7 +32,6 @@ type TOwnProps = {
 type TProps = FC<TOwnProps>;
 
 export const Post: any = ({
-  // TProps
   id,
   title,
   createdAt,
@@ -78,8 +80,9 @@ export const Post: any = ({
           </div>
         )}
         <Link to={`/forum/posts/${id}`}>
-          <div className='flex justify-center relative rounded-lg overflow-hidden h-52'>
-            <div className='transition-transform duration-500 transform ease-in-out hover:scale-110 w-full'>
+          <div className='flex justify-center relative rounded-lg overflow-hidden img-block'>
+            <div
+              className='transition-transform duration-500 transform ease-in-out hover:scale-10 w-full '>
               {imageUrl && (
                 <img
                   alt=''

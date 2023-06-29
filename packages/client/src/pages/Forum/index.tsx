@@ -2,7 +2,6 @@ import './index.scss';
 import { CommentsBlock } from './components/CommentsBlock';
 
 import {
-  Button,
   Tab,
   TabPanel,
   Tabs,
@@ -10,7 +9,12 @@ import {
   TabsHeader,
   Typography,
 } from '@material-tailwind/react';
-import { ForumPost, LastComment, TAB_TYPE } from './forum.interfaces';
+import {
+  COMMENT_LABEL_TYPE,
+  ForumPost,
+  LastComment,
+  TAB_TYPE,
+} from './forum.interfaces';
 import React, { useEffect, useState } from 'react';
 import PageContainer from '../../Components/PageContainer';
 import { TagsBlock } from './components/TagsBlock';
@@ -20,7 +24,6 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import {
   getAllPosts,
   getAllTags,
-  setForumTabName,
   STATE_STATUS,
 } from '../../store/slices/Forum';
 import { getLastComments } from '../../store/slices/Comment';
@@ -89,7 +92,7 @@ export default function ForumPage() {
             <div className='forum__right'>
               <TagsBlock items={tags} status={tagsStatus} />
               <CommentsBlock
-                title='Последние комментарии'
+                title={COMMENT_LABEL_TYPE.LAST_COMMENTS}
                 items={lastComments}
                 status={tagsStatus}
               />
@@ -112,12 +115,14 @@ export default function ForumPage() {
         </Typography>
       </div>
       <Tabs value={tabName} id='posts'>
+  {/*      <Button onClick={() => dispatch(setForumTabName(TAB_TYPE.ADD_POST))}>
+          {tabName === TAB_TYPE.POSTS ? 'Посты' : 'Добавить пост'}
+        </Button>*/}
         <TabsHeader>
           {tabsData.map(({ label, value }) => (
             <Tab
-              data-toggle={tabName}
-              data-tabs-target={tabName}
-              id={tabName}
+              className={tabName === TAB_TYPE.ADD_POST ? 'active' : ''}
+              aria-selected={tabName === TAB_TYPE.ADD_POST}
               key={value}
               value={value}>
               <div className='flex items-center gap-2'>{label}</div>

@@ -9,7 +9,7 @@ class TopicsController {
     const yandexId = getYandexId(res);
 
     if (!yandexId) {
-    //   return next(ApiError.forbidden('Авторизованный пользователь не найден'));
+      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
     }
 
     try {
@@ -72,8 +72,6 @@ class TopicsController {
     }
 
     try {
-
-
       const topic = await dbTopicsController.createTopic(
         title,
         text,
