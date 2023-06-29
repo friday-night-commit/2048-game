@@ -121,16 +121,14 @@ export const Post: any = ({
           </div>
         </Link>
         <div className=' gap-4 mt-8'>
-          <p className='inline-flex flex-col xl:flex-row xl:items-center text-gray-800'>
+          <p className='flex-col xl:flex-row xl:items-center text-gray-800'>
             {isFullPost && (
-              <span className='mt-2 xl:mt-0'>
                 <Suspense fallback={<textarea />}>
                   <LazyQuillContentComponent
                     content={text}
                     textAreaHeight={350}
                   />
                 </Suspense>
-              </span>
             )}
           </p>
           <span className='content-icon'></span>
