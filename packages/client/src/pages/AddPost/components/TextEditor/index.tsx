@@ -30,7 +30,9 @@ const TextEditor: FC<TextEditorProps> = ({
   );
 
   const postContent = useAppSelector(state => state.forumSlice.postContent);
-  const commentContent = useAppSelector(state => state.commentSlice.commentContent);
+  const commentContent = useAppSelector(
+    state => state.commentSlice.commentContent
+  );
 
   const dispatch = useAppDispatch();
 

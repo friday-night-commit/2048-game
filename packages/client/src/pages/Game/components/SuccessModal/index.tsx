@@ -33,7 +33,7 @@ const SuccessModal: FC<ModalProps> = ({ open, handleOpen }) => {
         <div>
           <Button
             className='game-button small mr-4'
-            onClick={ handleContinuePlay }>
+            onClick={handleContinuePlay}>
             Продолжить игру
           </Button>
           <Button

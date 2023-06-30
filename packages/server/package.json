@@ -11,6 +11,7 @@
     "test": "jest ."
   },
   "dependencies": {
+    "reflect-metadata": "latest",
     "@types/jsesc": "3.0.1",
     "axios": "1.4.0",
     "config": "3.3.9",
@@ -25,7 +26,6 @@
     "merge-options": "3.0.4",
     "pg": "8.11.0",
     "prettier": "2.7.1",
-    "reflect-metadata": "0.1.13",
     "sequelize": "6.32.1",
     "sequelize-typescript": "2.1.5"
   },

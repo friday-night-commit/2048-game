@@ -8,9 +8,7 @@ async function createComment(
   topicId: number,
   parentId?: number
 ): Promise<Comment | null> {
-  return await Comment.create(
-    { text, userId, topicId, parentId },
-  );
+  return await Comment.create({ text, userId, topicId, parentId });
 }
 
 async function deleteCommentById(id: number): Promise<number> {

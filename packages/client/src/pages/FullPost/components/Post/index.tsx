@@ -8,6 +8,7 @@ import {
   COMMENT_LABEL_TYPE,
   default_avatar,
 } from '../../../Forum/forum.interfaces';
+import { ReactionBlock } from '../../../../Components/ReactionBlock';
 
 const LazyQuillContentComponent = lazy(
   () => import('../../../AddPost/components/QuillContent/index')
@@ -81,8 +82,7 @@ export const Post: any = ({
         )}
         <Link to={`/forum/posts/${id}`}>
           <div className='flex justify-center relative rounded-lg overflow-hidden img-block'>
-            <div
-              className='transition-transform duration-500 transform ease-in-out hover:scale-10 w-full '>
+            <div className='transition-transform duration-500 transform ease-in-out hover:scale-10 w-full '>
               {imageUrl && (
                 <img
                   alt=''
@@ -115,20 +115,22 @@ export const Post: any = ({
             <h2 className='font-medium text-base md:text-lg text-gray-800 line-clamp-1'>
               {title}
             </h2>
-            <div className='flex mt-2 text-sm text-gray-800 line-clamp-1'>
+            <div className='flex items-center gap-x-3 mt-2 text-sm text-gray-800 line-clamp-1'>
               <span className='tag tag-lg'>#{tag}</span>
+              <ReactionBlock topicId={21323} />
             </div>
           </div>
         </Link>
+
         <div className=' gap-4 mt-8'>
           <p className='flex-col xl:flex-row xl:items-center text-gray-800'>
             {isFullPost && (
-                <Suspense fallback={<textarea />}>
-                  <LazyQuillContentComponent
-                    content={text}
-                    textAreaHeight={350}
-                  />
-                </Suspense>
+              <Suspense fallback={<textarea />}>
+                <LazyQuillContentComponent
+                  content={text}
+                  textAreaHeight={350}
+                />
+              </Suspense>
             )}
           </p>
           <span className='content-icon'></span>

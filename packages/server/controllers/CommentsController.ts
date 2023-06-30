@@ -55,7 +55,7 @@ class CommentsController {
     const yandexId = getYandexId(res);
 
     if (!yandexId) {
-         return next(ApiError.forbidden('Авторизованный пользователь не найден'));
+      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
     }
 
     if (!text) {
@@ -71,7 +71,9 @@ class CommentsController {
       );
 
       if (comment) {
-        const updatedComment = await dbCommentsController.getCommentById(comment.id);
+        const updatedComment = await dbCommentsController.getCommentById(
+          comment.id
+        );
         res.status(201).json(updatedComment);
       } else {
         return next(ApiError.badRequest('Не получилось создать комментарий'));
@@ -88,15 +90,19 @@ class CommentsController {
     const yandexId = getYandexId(res);
 
     if (!yandexId) {
-       return next(ApiError.forbidden('Авторизованный пользователь не найден'));
+      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
     }
     try {
-     const lastComments = await dbCommentsController.getLastComments(Number(limit));
+      const lastComments = await dbCommentsController.getLastComments(
+        Number(limit)
+      );
       res.status(200).json(lastComments);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log('ee', err);
-      return next(ApiError.badRequest('Не получилось получить последние комментарии'));
+      return next(
+        ApiError.badRequest('Не получилось получить последние комментарии')
+      );
     }
   }
 

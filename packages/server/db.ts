@@ -5,9 +5,16 @@ import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 
 const isDev = process.env.NODE_ENV === 'development';
 
-const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } = process.env;
+const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
+  process.env;
 // eslint-disable-next-line no-console
-console.log('=====>>>>>>>>>', POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT);
+console.log(
+  '=====>>>>>>>>>',
+  POSTGRES_USER,
+  POSTGRES_PASSWORD,
+  POSTGRES_DB,
+  POSTGRES_PORT
+);
 
 const sequelizeOptions: SequelizeOptions = {
   host: 'localhost',
@@ -24,7 +31,7 @@ export const sequelize = new Sequelize(sequelizeOptions);
 export async function dbConnect() {
   try {
     await sequelize.authenticate();
-    await sequelize.sync(isDev ? { force: true } : {});
+    await sequelize.sync(isDev ? { force: false } : {});
     // eslint-disable-next-line no-console
     console.log('Connection with database has been established successfully.');
   } catch (error) {

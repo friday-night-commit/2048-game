@@ -81,7 +81,7 @@ class InputValidator {
     email: {
       pattern: {
         value:
-          '^[a-zA-Z0-9.!#$%&\' * +/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$',
+          "^[a-zA-Z0-9.!#$%&' * +/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$",
         message: 'Неверный формат e-mail',
       },
       required: {
@@ -90,8 +90,7 @@ class InputValidator {
     },
     tag: {
       pattern: {
-        value:
-          '^[A-Za-z]+$',
+        value: '^[A-Za-z]+$',
         message: 'Tag должен содержать одно слово',
       },
       required: {
@@ -181,7 +180,7 @@ class InputValidator {
       }
       isValid = false;
     }
-
+    console.log('validity', validity);
     if (validity.patternMismatch) {
       this._addInvalidity('Неверный формат данных');
       if (rules.pattern?.message) {

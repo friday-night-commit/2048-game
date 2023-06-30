@@ -11,7 +11,7 @@ const options: OptionsType = {
 export class ForumAPI {
   private endpoint = `${API_URL}/api/forum/topics`;
 
-  async createPost(data: ForumPost) : Promise<ForumPost | never>{
+  async createPost(data: ForumPost): Promise<ForumPost | never> {
     const response = await fetch(`${this.endpoint}`, {
       ...options,
       method: 'POST',
@@ -24,7 +24,7 @@ export class ForumAPI {
     return json;
   }
 
-  async loadPostPreview(formData: FormData) : Promise<ImgResponse | never>{
+  async loadPostPreview(formData: FormData): Promise<ImgResponse | never> {
     const response = await fetch(`${API_URL}/upload`, {
       method: 'POST',
       body: formData,
@@ -37,7 +37,7 @@ export class ForumAPI {
     return json;
   }
 
-  async getAllPosts() : Promise<ForumPost[] | never>{
+  async getAllPosts(): Promise<ForumPost[] | never> {
     const response = await fetch(`${this.endpoint}`, {
       ...options,
       method: 'GET',
@@ -49,7 +49,7 @@ export class ForumAPI {
     return json;
   }
 
-  async getAllTags() : Promise<string[] | never>{
+  async getAllTags(): Promise<string[] | never> {
     const response = await fetch(`${this.endpoint}/tags/all`, {
       ...options,
       method: 'GET',
@@ -61,7 +61,7 @@ export class ForumAPI {
     return json;
   }
 
-  async getPostById(id: number) : Promise<ForumPost>{
+  async getPostById(id: number): Promise<ForumPost> {
     const response = await fetch(`${this.endpoint}/${id}`, {
       ...options,
       method: 'GET',
@@ -73,7 +73,7 @@ export class ForumAPI {
     return json;
   }
 
-  async deletePostById(id: number) : Promise<number | never>{
+  async deletePostById(id: number): Promise<number | never> {
     const response = await fetch(`${this.endpoint}/${id}`, {
       ...options,
       method: 'DELETE',
@@ -85,6 +85,5 @@ export class ForumAPI {
     return json;
   }
 }
-
 
 export default new ForumAPI();

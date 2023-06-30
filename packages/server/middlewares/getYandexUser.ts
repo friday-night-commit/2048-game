@@ -43,8 +43,7 @@ const getYandexUser: RequestHandler = async (req, res, next) => {
   const cookie = Object.entries(req.cookies)
     .map(([key, value]) => `${key}=${value}`)
     .join('; ');
-
-
+  console.log('cookie', cookie);
   try {
     // @ts-ignore
     const { data: yandexUser } = await axios.get(

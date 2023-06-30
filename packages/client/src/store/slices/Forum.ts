@@ -67,7 +67,7 @@ const forumSlice = createSlice({
     },
     setForumTabName(state, action: PayloadAction<TAB_TYPE>) {
       state.tabName = action.payload;
-    }
+    },
   },
   extraReducers: build => {
     // Posts
@@ -110,6 +110,7 @@ const forumSlice = createSlice({
   },
 });
 
-export const { updatePostContent, clearPostContent, setForumTabName } = forumSlice.actions;
+export const { updatePostContent, clearPostContent, setForumTabName } =
+  forumSlice.actions;
 
 export default forumSlice.reducer;

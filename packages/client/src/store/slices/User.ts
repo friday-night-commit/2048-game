@@ -4,12 +4,15 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-import { doLoginWithCode, logoutUser } from '../../Controllers/YandexController';
+import {
+  doLoginWithCode,
+  logoutUser,
+} from '../../Controllers/YandexController';
 
 const initialState: userState = {
   user: undefined,
   isLoaded: false,
-  maxScore: 0
+  maxScore: 0,
 };
 
 const loadMe = createAsyncThunk<User | undefined>(
@@ -64,7 +67,7 @@ export const userSlice = createSlice({
     },
     setMaxScore(state, action: PayloadAction<number>) {
       state.maxScore = action.payload;
-    }
+    },
   },
   extraReducers: builder => {
     builder.addCase(logout.fulfilled, store => {
@@ -85,7 +88,6 @@ export const userSlice = createSlice({
     });
   },
 });
-
 
 export const { setUser, clearUser, setMaxScore } = userSlice.actions;
 

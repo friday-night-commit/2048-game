@@ -1,10 +1,12 @@
+/* eslint-disable */
 import {
   Model,
   Table,
   Column,
   DataType,
   ForeignKey,
-  Default, BelongsTo
+  Default,
+  BelongsTo,
 } from 'sequelize-typescript';
 
 import User from './user.model';

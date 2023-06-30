@@ -13,12 +13,10 @@ type ModalProps = {
 const FailureModal: FC<ModalProps> = ({ open, handleOpen }) => {
   const dispatch = useAppDispatch();
 
-  const refreshPage = useCallback(
-    function () {
-      dispatch(renewMatrix());
-      dispatch(closeModalFailure());
-    },[]
-  );
+  const refreshPage = useCallback(function () {
+    dispatch(renewMatrix());
+    dispatch(closeModalFailure());
+  }, []);
 
   return (
     <Modal
