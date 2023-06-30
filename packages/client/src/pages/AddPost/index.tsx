@@ -22,7 +22,8 @@ import {
   setForumTabName,
 } from '../../store/slices/Forum';
 
-export const AddPostPage = () => {
+// @ts-ignore
+export const AddPostPage = ({ backToPosts }: { backToPosts: any }) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState('');
   const [error, setError] = useState('');
@@ -87,18 +88,20 @@ export const AddPostPage = () => {
 
       dispatch(createPost(newPost)).then(data => {
         if (data) {
-          dispatch(setForumTabName(TAB_TYPE.POSTS));
-          window.location.reload();
-          const newPost: ForumPost = data.payload as ForumPost;
-          if (newPost) {
-            const desktopNotification = new DesktopNotification().init();
-            desktopNotification.showNotification(
-              'Новый пост',
-              newPost.title,
-              newPost.imageUrl
-            );
-            dispatch(clearPostContent());
-          }
+          backToPosts();
+          // dispatch(setForumTabName(TAB_TYPE.POSTS));
+          // window.location.reload();
+
+          // const newPost: ForumPost = data.payload as ForumPost;
+          // if (newPost) {
+          //   const desktopNotification = new DesktopNotification().init();
+          //   desktopNotification.showNotification(
+          //     'Новый пост',
+          //     newPost.title,
+          //     newPost.imageUrl
+          //   );
+          //   dispatch(clearPostContent());
+          // }
         }
       });
     },

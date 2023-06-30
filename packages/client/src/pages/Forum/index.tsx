@@ -35,6 +35,8 @@ export default function ForumPage() {
   const [lastComments, setLastComments] = useState<LastComment[]>([]);
   const dispatch = useAppDispatch();
 
+  const [openTab, setOpenTab] = useState<string>(TAB_TYPE.POSTS);
+
   const tabName = useAppSelector(state => state.forumSlice.tabName);
   // eslint-disable-next-line no-console
   console.log('tabName', tabName);
@@ -103,7 +105,7 @@ export default function ForumPage() {
     {
       label: 'Создать новый пост',
       value: TAB_TYPE.ADD_POST,
-      content: <AddPostPage />,
+      content: <AddPostPage backToPosts={() => setOpenTab(TAB_TYPE.POSTS)} />,
     },
   ];
 
@@ -114,17 +116,10 @@ export default function ForumPage() {
           Форум
         </Typography>
       </div>
-      <Tabs value={tabName || TAB_TYPE.ADD_POST} id='posts'>
-  {/*      <Button onClick={() => dispatch(setForumTabName(TAB_TYPE.ADD_POST))}>
-          {tabName === TAB_TYPE.POSTS ? 'Посты' : 'Добавить пост'}
-        </Button>*/}
+      <Tabs key={openTab} value={openTab} id='posts'>
         <TabsHeader>
           {tabsData.map(({ label, value }) => (
-            <Tab
-              className={tabName === TAB_TYPE.ADD_POST ? 'active' : ''}
-              aria-selected={tabName === TAB_TYPE.ADD_POST}
-              key={value}
-              value={value}>
+            <Tab key={value} value={value} onClick={() => setOpenTab(value)}>
               <div className='flex items-center gap-2'>{label}</div>
             </Tab>
           ))}
