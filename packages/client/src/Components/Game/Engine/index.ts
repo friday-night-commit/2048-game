@@ -39,7 +39,7 @@ const LISTENERS: Record<number, Direction> = {
 };
 
 export default class Engine {
-  static FINAL_SCORE = 2048;
+  static FINAL_SCORE = 32;
   static PIXELS_PER_FRAME = 25;
   static MAX_STEP_BACK = 5;
 
