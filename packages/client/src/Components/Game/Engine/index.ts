@@ -500,6 +500,7 @@ export default class Engine {
   clonePrevMatrix(matrix: MatrixArray): MatrixArray {
     // @ts-ignore
     const clone = (items: MatrixArray) =>
+      // @ts-ignore
       items.map(item => (Array.isArray(item) ? clone(item) : item));
     return clone(matrix);
   }

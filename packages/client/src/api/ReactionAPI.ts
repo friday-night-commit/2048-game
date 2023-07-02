@@ -1,6 +1,5 @@
 import { API_URL } from './consts';
 import { Reaction } from '../pages/Forum/forum.interfaces';
-import { REACTION_TYPE } from '../Components/ReactionBlock';
 
 const options: OptionsType = {
   headers: {
@@ -14,7 +13,7 @@ export class ReactionAPI {
 
   async createReactionById(
     id: number,
-    data: REACTION_TYPE
+    data: Record<'type', string>
   ): Promise<Reaction | never> {
     const response = await fetch(`${this.endpoint}/${id}`, {
       ...options,

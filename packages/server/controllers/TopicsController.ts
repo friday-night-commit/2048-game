@@ -50,10 +50,7 @@ class TopicsController {
 
   async createTopic(req: Request, res: Response, next: NextFunction) {
     const { title, text, tag, imageUrl } = req.body;
-    const yandexId = getYandexId(res); // 1154066
-
-    // eslint-disable-next-line no-console
-    console.log('yandexId', yandexId);
+    const yandexId = getYandexId(res);
 
     if (!yandexId) {
       return next(ApiError.forbidden('Авторизованный пользователь не найден'));
@@ -72,6 +69,7 @@ class TopicsController {
     }
 
     try {
+      console.log('dbTopicsController.createTopic', );
       const topic = await dbTopicsController.createTopic(
         title,
         text,

@@ -50,9 +50,10 @@
 }
 .box {
   position: absolute;
-  left: calc(50% - 150px);
-  top: calc(50% - 50px);
   width: 300px;
+  display: flex;
+  justify-items: center;
+  align-items: center;
 }
 .overlay {
   position: fixed;
@@ -82,14 +83,13 @@
     }
   }
 }
+
+
 .label-reactions {
-  background: url(https://cdn4.iconfinder.com/data/icons/facebook-likes/100/1.png)
+  background: url('../../assets/images/comments.svg')
     no-repeat 0 0;
   border: 2px dotted transparent;
   display: block;
-  height: 80px;
-  margin: 0 auto;
-  width: 100px;
   color: transparent;
   cursor: pointer;
 }

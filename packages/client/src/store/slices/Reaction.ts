@@ -1,8 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { STATE_STATUS } from './Forum';
 import ReactionController from '../../Controllers/ReactionController';
 import { Reaction } from '../../pages/Forum/forum.interfaces';
-import { REACTION_TYPE } from '../../Components/ReactionBlock';
 
 interface IState {
   reactionStatus: string | undefined;
@@ -16,8 +15,8 @@ const initialState: IState = {
 
 export const createReactionByPostId = createAsyncThunk(
   'createReactionByPostId',
-  async ({ id, reactionType }: { id: number; reactionType: REACTION_TYPE }) => {
-    return await ReactionController.createReactionByPostId(id, reactionType);
+  async ({ id, data }: { id: number; data: Record<'type', string> }) => {
+    return await ReactionController.createReactionByPostId(id, data);
   }
 );
 
@@ -34,19 +33,19 @@ const reactionSlice = createSlice({
   reducers: {},
   extraReducers: build => {
     // GET Reactions
-    build.addCase(getReactionsByPostId.pending, (state, action) => {
+    build.addCase(getReactionsByPostId.pending, (state) => {
       state.reactionStatus = STATE_STATUS.LOADING;
     });
     build.addCase(getReactionsByPostId.fulfilled, (state, action) => {
       state.reactions = action.payload;
       state.reactionStatus = STATE_STATUS.LOADED;
     });
-    build.addCase(getReactionsByPostId.rejected, (state, action) => {
+    build.addCase(getReactionsByPostId.rejected, (state) => {
       state.reactions = [];
       state.reactionStatus = STATE_STATUS.Error;
     });
     // Create Reactions
-    build.addCase(createReactionByPostId.pending, (state, action) => {
+    build.addCase(createReactionByPostId.pending, (state) => {
       state.reactionStatus = STATE_STATUS.LOADING;
     });
     build.addCase(createReactionByPostId.fulfilled, (state, action) => {
@@ -55,7 +54,7 @@ const reactionSlice = createSlice({
         state.reactions = [...state.reactions, action.payload];
       }
     });
-    build.addCase(createReactionByPostId.rejected, (state, action) => {
+    build.addCase(createReactionByPostId.rejected, (state) => {
       state.reactionStatus = STATE_STATUS.Error;
     });
   },

@@ -1,20 +1,16 @@
 import {
-  Comment,
-  LastComment,
   Reaction,
 } from '../pages/Forum/forum.interfaces';
-import CommentAPI from '../api/ReactionAPI';
-import { REACTION_TYPE } from '../Components/ReactionBlock';
+import ReactionAPI from '../api/ReactionAPI';
 
 class ReactionController {
   async createReactionByPostId(
     postId: number,
-    type: REACTION_TYPE
+   data: Record<'type', string>
   ): Promise<Reaction | undefined> {
     try {
-      return await CommentAPI.createReactionById(postId, type);
+      return await ReactionAPI.createReactionById(postId, data);
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.log('err', err);
       return undefined;
     }
@@ -22,7 +18,7 @@ class ReactionController {
 
   async getReactionsByPostId(postId: number): Promise<Reaction[] | []> {
     try {
-      return await CommentAPI.getReactionsById(postId);
+      return await ReactionAPI.getReactionsById(postId);
     } catch (err) {
       return [];
     }

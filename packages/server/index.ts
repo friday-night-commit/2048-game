@@ -76,7 +76,7 @@ async function startServer() {
 
   app.use('*', getYandexUser);
   app.use('/uploads', express.static('uploads'));
-  app.use('/routers', apiRouter);
+  app.use('/api', apiRouter);
 
   app.use('*', async (req, res, next) => renderSSR(req, res, next, vite));
 

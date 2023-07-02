@@ -26,34 +26,30 @@ class ReactionController {
 
   async createReaction(req: Request, res: Response, next: NextFunction) {
     const { topicId } = req.params;
-    const { text } = req.body;
+    const { type } = req.body;
     const yandexId = getYandexId(res);
 
     if (!yandexId) {
-      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
+      // return next(ApiError.forbidden('Авторизованный пользователь не найден'));
     }
 
-    if (!text) {
-      return next(ApiError.badRequest('Не задан текст комментария'));
+    if (!type) {
+      return next(ApiError.badRequest('Не задан тип реакции'));
     }
 
     try {
-      const comment = await dbReactionsController.createReaction(
+      const reaction = await dbReactionsController.createReaction(
         Number(res.locals.user.id),
-        Number(topicId)
+        Number(topicId),
+        type
       );
-
-      if (comment) {
-        const updatedComment =
-          await dbReactionsController.getReactionsByTopicId(comment.id);
-        res.status(201).json(updatedComment);
+      if (reaction) {
+        res.status(201).json(reaction);
       } else {
         return next(ApiError.badRequest('Не получилось создать комментарий'));
       }
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log('ee', err);
-      return next(ApiError.badRequest('Не получилось создать комментарий'));
+      return next(ApiError.badRequest('Не получилось создать реакцию'));
     }
   }
 }

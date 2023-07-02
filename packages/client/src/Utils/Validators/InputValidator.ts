@@ -180,7 +180,6 @@ class InputValidator {
       }
       isValid = false;
     }
-    console.log('validity', validity);
     if (validity.patternMismatch) {
       this._addInvalidity('Неверный формат данных');
       if (rules.pattern?.message) {

@@ -5,7 +5,7 @@ import CommentsController from '../controllers/CommentsController';
 const router: Router = Router();
 
 router
-  .route('')
+  .route('/')
   .post(TopicsController.createTopic)
   .get(TopicsController.getAllTopics);
 router

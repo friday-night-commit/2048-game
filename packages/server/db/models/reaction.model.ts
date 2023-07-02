@@ -10,11 +10,21 @@ import User from './user.model';
 import Topic from './topic.model';
 import { INTEGER, TEXT } from 'sequelize';
 
+export const enum REACTION_TYPE {
+  LIKE = 'Like',
+  LOVE = 'Love',
+  HAHA = 'Haha',
+  WOW = 'Wow',
+  SAD = 'Sad',
+  ANGRY = 'Angry',
+}
 export interface IReaction {
   id?: number;
   userId: number;
   topicId: number;
+  type: REACTION_TYPE;
 }
+
 
 @Table({
   tableName: 'reactions',
@@ -22,10 +32,10 @@ export interface IReaction {
 export default class Reaction extends Model<IReaction> {
   @Column({
     type: TEXT,
-    allowNull: false,
-    comment: 'comment content',
+    allowNull: true,
+    comment: 'comment type',
   })
-  declare text: string;
+  declare type: REACTION_TYPE;
 
   @ForeignKey(() => User)
   @Column({
