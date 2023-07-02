@@ -1,11 +1,10 @@
- /* eslint-disable */
-
- import {
+import {
   Model,
   Table,
   Column,
   DataType,
   ForeignKey,
+  Default, BelongsTo
 } from 'sequelize-typescript';
 
 import User from './user.model';
@@ -15,8 +14,11 @@ const { STRING, TEXT, INTEGER } = DataType;
 export interface ITopic {
   id?: number;
   title: string;
+  tag: string;
   text: string;
+  viewsCount?: number;
   userId: number;
+  imageUrl: string;
 }
 
 @Table({
@@ -28,14 +30,36 @@ export default class Topic extends Model<ITopic> {
     allowNull: false,
     comment: 'topic title',
   })
-  title: string;
+  declare title: string;
 
   @Column({
     type: TEXT,
     allowNull: false,
     comment: 'topic content',
   })
-  text: string;
+  declare text: string;
+
+  @Column({
+    type: TEXT,
+    allowNull: false,
+    comment: 'topic tag',
+  })
+  declare tag: string;
+
+  @Column({
+    type: TEXT,
+    allowNull: false,
+    comment: 'topic preview',
+  })
+  declare imageUrl: string;
+
+  @Default(0)
+  @Column({
+    type: INTEGER,
+    allowNull: true,
+    comment: 'topic view count',
+  })
+  declare viewsCount: number;
 
   @ForeignKey(() => User)
   @Column({
@@ -43,6 +67,10 @@ export default class Topic extends Model<ITopic> {
     type: INTEGER,
     allowNull: false,
     comment: 'topic author id',
+    onDelete: 'CASCADE',
   })
-  userId: number;
+  declare userId: number;
+
+  @BelongsTo(() => User, 'user_id')
+  declare user: User;
 }

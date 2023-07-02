@@ -25,14 +25,14 @@ class DesktopNotification {
     return this;
   }
 
-  showNotification(title: string, content: string) {
+  showNotification(title: string, body: string, icon = 'https://cdn-icons-png.flaticon.com/512/8297/8297354.png?    auto=compress&cs=tinysrgb&dpr=1&w=500') {
     const options: NotificationOptions = {
-      body: content,
-      icon: 'https://cdn-icons-png.flaticon.com/512/8297/8297354.png?auto=compress&cs=tinysrgb&dpr=1&w=500',
+      body,
+      icon,
       dir: 'ltr',
       vibrate: 5,
     };
-    new Notification(title, options);
+      new Notification(title, options);
   }
 }
 

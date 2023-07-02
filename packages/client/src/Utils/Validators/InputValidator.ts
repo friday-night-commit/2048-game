@@ -5,6 +5,7 @@ export type ValidatorTypes =
   | 'password'
   | 'phone'
   | 'message'
+  | 'tag'
   | 'default';
 
 type RuleType<P> = {
@@ -87,7 +88,16 @@ class InputValidator {
         value: true,
       },
     },
-
+    tag: {
+      pattern: {
+        value:
+          '^[A-Za-z]+$',
+        message: 'Tag должен содержать одно слово',
+      },
+      required: {
+        value: true,
+      },
+    },
     phone: {
       pattern: {
         value: '^[0-9+][0-9]{10,15}$',

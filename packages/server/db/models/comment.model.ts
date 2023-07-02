@@ -1,11 +1,9 @@
-/* eslint-disable */
-
 import {
   Model,
   Table,
   Column,
   DataType,
-  ForeignKey,
+  ForeignKey, BelongsTo
 } from 'sequelize-typescript';
 
 import User from './user.model';
@@ -30,7 +28,7 @@ export default class Comment extends Model<IComment> {
     allowNull: false,
     comment: 'comment content',
   })
-  text: string;
+  declare text: string;
 
   @ForeignKey(() => User)
   @Column({
@@ -38,8 +36,12 @@ export default class Comment extends Model<IComment> {
     type: INTEGER,
     allowNull: false,
     comment: 'comment author id',
+    onDelete: 'CASCADE'
   })
-  userId: number;
+  declare userId: number;
+
+  @BelongsTo(() => User, 'user_id')
+  declare user: User;
 
   @ForeignKey(() => Topic)
   @Column({
@@ -48,7 +50,10 @@ export default class Comment extends Model<IComment> {
     allowNull: true,
     comment: 'associated topic id',
   })
-  topicId: number;
+  declare topicId: number;
+
+  @BelongsTo(() => Topic, 'topic_id')
+  declare topic: Topic;
 
   @Column({
     field: 'parent_id',
@@ -56,5 +61,5 @@ export default class Comment extends Model<IComment> {
     allowNull: true,
     comment: 'parent comment id (for replies)',
   })
-  parentId: number;
+  declare parentId: number;
 }

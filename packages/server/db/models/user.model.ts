@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { Model, Table, Column, DataType } from 'sequelize-typescript';
 
 const { STRING, INTEGER } = DataType;
@@ -26,7 +24,7 @@ export default class User extends Model<IUser> {
     allowNull: false,
     comment: 'user yandex ID',
   })
-  yandexId: string;
+  yandexId: number;
 
   @Column({
     field: 'first_name',

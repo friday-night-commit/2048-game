@@ -1,36 +1,51 @@
 import { Button } from '@material-tailwind/react';
-import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Input from '../../Components/Input';
-// import TextEditor from './components/TextEditor';
 import DesktopNotification from '../../WebAPI/notification.service';
 
 const LazyTextEditorComponent = lazy(() => import('./components/TextEditor'));
 
 import './index.scss';
+import {
+  CONTENT_TYPE,
+  ForumPost,
+  ImgResponse,
+  TAB_TYPE,
+} from '../Forum/forum.interfaces';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import {
+  clearPostContent,
+  createPost,
+  loadPostPreview,
+  setForumTabName,
+} from '../../store/slices/Forum';
 
 export const AddPostPage = () => {
-  // Как лучше использовать этот класс в компоненте реакта?
-  let desktopNotification: DesktopNotification;
-
   const inputFileRef = useRef<HTMLInputElement>(null);
-
   const [preview, setPreview] = useState('');
   const [error, setError] = useState('');
-
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const content = useAppSelector(state => state.forumSlice.postContent);
 
   function handleUpload(e: React.FormEvent<HTMLInputElement>) {
     if (!e) {
       return;
     }
     const target = e.target as HTMLInputElement;
-
     try {
       if (target.files && target.files.length) {
-        const uri = URL.createObjectURL(target.files[0]);
-        setPreview(uri);
+        const file = target.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+        dispatch(loadPostPreview(formData)).then(data => {
+          const imgRes = data.payload as ImgResponse;
+          if (imgRes) {
+            setPreview(imgRes.url);
+          }
+        });
       }
     } catch (e) {
       const err = (e as Error).message;
@@ -42,19 +57,56 @@ export const AddPostPage = () => {
     setPreview('');
   };
 
-  const onPublishPost = () => {
-    desktopNotification && desktopNotification.showNotification(
-      'Новый пост',
-      'React + Angular + Vue'
-    );
-  };
+  const onSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      const target = e.target as HTMLFormElement;
+      const formData = new FormData(target);
+      const title = formData.get('title')?.toString();
+      const tag = formData.get('tag')?.toString();
 
-  useEffect(() => {
-    desktopNotification = new DesktopNotification().init();
-  }, []);
+      const imageUrl = preview
+        ? preview
+        : 'https://www.itshop.ru/productimages/auto/pimg_2021101_182.png';
+
+      if (!title) {
+        return;
+      }
+      if (!content) {
+        return;
+      }
+      if (!tag) {
+        return;
+      }
+      const newPost: ForumPost = {
+        title,
+        tag,
+        imageUrl,
+        text: content,
+      };
+
+      dispatch(createPost(newPost)).then(data => {
+        if (data) {
+          dispatch(setForumTabName(TAB_TYPE.POSTS));
+          window.location.reload();
+          const newPost: ForumPost = data.payload as ForumPost;
+          if (newPost) {
+            const desktopNotification = new DesktopNotification().init();
+            desktopNotification.showNotification(
+              'Новый пост',
+              newPost.title,
+              newPost.imageUrl
+            );
+            dispatch(clearPostContent());
+          }
+        }
+      });
+    },
+    [content]
+  );
 
   return (
-    <div className='container mx-auto w-full  add-post'>
+    <form className='container mx-auto w-full  add-post' onSubmit={onSubmit}>
       <div className='add-post__left'>
         <div className='mb-4'>
           <Input
@@ -90,25 +142,27 @@ export const AddPostPage = () => {
         </>
 
         <Input
-          name='tags'
+          name='tag'
           type='text'
-          placeholder='Теги'
+          placeholder='Тег'
           required={true}
-          validationType='default'
+          validationType='tag'
         />
       </div>
 
-
       <div className='add-post__right'>
         <Suspense fallback={<textarea />}>
-          <LazyTextEditorComponent textAreaHeight={310} />
+          <LazyTextEditorComponent
+            textAreaHeight={310}
+            contentType={CONTENT_TYPE.POST}
+          />
         </Suspense>
       </div>
 
       <div className='add-post__action'>
         <Button
           disabled={!!error}
-          onClick={onPublishPost}
+          type='submit'
           className=' mb-2 px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800'>
           Опубликовать
         </Button>
@@ -118,6 +172,6 @@ export const AddPostPage = () => {
           Отмена
         </Button>
       </div>
-    </div>
+    </form>
   );
 };

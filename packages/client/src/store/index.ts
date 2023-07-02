@@ -2,10 +2,14 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 
 import userSlice from './slices/User';
 import modalSlice from './slices/Modal';
+import forumSlice from './slices/Forum';
+import commentSlice from './slices/Comment';
 
 const reducer = combineReducers({
   userSlice,
   modalSlice,
+  forumSlice,
+  commentSlice,
 });
 
 export const createStore = (

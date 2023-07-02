@@ -1,15 +1,20 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
+// import dotenv from 'dotenv';
+
+// dotenv.config({path: __dirname + '../../.env'});
 
 const isDev = process.env.NODE_ENV === 'development';
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } = process.env;
+// eslint-disable-next-line no-console
+console.log('=====>>>>>>>>>', POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT);
 
 const sequelizeOptions: SequelizeOptions = {
   host: 'localhost',
-  port: Number(POSTGRES_PORT),
-  username: POSTGRES_USER,
-  password: POSTGRES_PASSWORD,
-  database: POSTGRES_DB,
+  port: 5432,
+  username: 'postgres',
+  password: 'postgres',
+  database: 'postgres',
   dialect: 'postgres', // 'mysql', 'sqlite', 'mariadb', 'mssql',
   models: [__dirname + '/**/*.model.ts'],
 };

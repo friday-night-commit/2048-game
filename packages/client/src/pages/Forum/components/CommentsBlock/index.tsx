@@ -1,15 +1,28 @@
-import { FC, Fragment } from 'react';
+import React, { FC, Fragment, lazy, Suspense } from 'react';
 import { SideBlock } from '../SideBlock';
 import { Avatar } from '@material-tailwind/react';
 import './index.scss';
-import { Comment } from '../../stubs';
+import {
+  Comment,
+  COMMENT_LABEL_TYPE,
+  default_author_name,
+  default_avatar,
+  default_comment_avatar,
+} from '../../forum.interfaces';
 import moment from 'moment';
 import { DATE_FORMATS } from '../../../../Utils/dateFormats';
+import { STATE_STATUS } from '../../../../store/slices/Forum';
+import { Link } from 'react-router-dom';
+
+const LazyQuillContentComponent = lazy(
+  () => import('../../../AddPost/components/QuillContent/index')
+);
 
 type TOwnProps = {
-  items: Comment[];
+  title: string;
+  items: Comment[] | undefined;
   children?: JSX.Element | JSX.Element[];
-  isLoading: boolean;
+  status: STATE_STATUS;
 };
 
 type TProps = FC<TOwnProps>;
@@ -17,42 +30,64 @@ type TProps = FC<TOwnProps>;
 export const CommentsBlock: TProps = ({
   items,
   children,
-  isLoading = true,
+  status,
+  title,
 }: TOwnProps) => {
   return (
-    <SideBlock title='Последние комментарии'>
-      <ul>
-        {(isLoading ? [...Array(5)] : items).map((obj: Comment, index) => (
-          <Fragment key={index}>
-            <div className='flex-start user-block'>
-              <div>
-                {isLoading ? (
-                  <span>...Skeleton</span>
-                ) : (
-                  <Avatar alt={obj.user.fullName} src={obj.user.avatarUrl} />
-                )}
-              </div>
-              {isLoading ? (
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <p>...Skeleton</p>
-                </div>
-              ) : (
-                <div className='message'>
-                  <span>{obj.user.fullName}</span>
-                  <span>{obj.text}</span>
-                  <span className='message__date'>
-                    {moment(obj.createdAt).format(
-                      DATE_FORMATS.COMPLEX_DATE_FORMAT
+    <div className='comments-block'>
+      <SideBlock title={title}>
+        <ul>
+          {!items?.length && <p>Нет комментариев</p>}
+          {items &&
+            items.map((obj: Comment, index) => (
+              <Fragment key={index}>
+                <Link
+                  to={`/forum/posts/${obj.topic?.id}`}
+                  className='flex-start user-block'>
+                  <div>
+                    {status === STATE_STATUS.LOADING ? (
+                      <span>...Skeleton</span>
+                    ) : (
+                      <Avatar
+                        alt={obj?.user?.first_name}
+                        src={obj?.user?.avatar || default_comment_avatar}
+                      />
                     )}
-                  </span>
-                </div>
-              )}
-            </div>
-            <hr className='solid' />
-          </Fragment>
-        ))}
-        {children}
-      </ul>
-    </SideBlock>
+                  </div>
+                  {status === STATE_STATUS.LOADED && (
+                    <div>
+                      <span>{obj?.user?.login || default_author_name}</span>
+                      <div className='content'>
+                        <Suspense fallback={<textarea />}>
+                          <LazyQuillContentComponent
+                            content={obj.text}
+                            textAreaHeight={90}
+                          />
+                        </Suspense>
+                      </div>
+                      <div className='content__footer'>
+                        <span className='content__date'>
+                          {moment(obj?.createdAt).format(
+                            DATE_FORMATS.COMPLEX_DATE_FORMAT
+                          )}
+                        </span>
+
+                        {title === COMMENT_LABEL_TYPE.LAST_COMMENTS &&
+                          obj.topic?.title && (
+                            <span className='content__title'>
+                              <span>{obj.topic.title}</span>
+                            </span>
+                          )}
+                      </div>
+                    </div>
+                  )}
+                </Link>
+                <hr className='solid' />
+              </Fragment>
+            ))}
+          {children}
+        </ul>
+      </SideBlock>
+    </div>
   );
 };
