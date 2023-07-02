@@ -28,3 +28,4 @@ export default class Theme extends Model<ITheme> {
   })
   declare name: string;
 }
+

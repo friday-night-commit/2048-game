@@ -1,4 +1,5 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
+import { Umzug, SequelizeStorage } from 'umzug';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -15,11 +16,24 @@ const sequelizeOptions: SequelizeOptions = {
 };
 
 export const sequelize = new Sequelize(sequelizeOptions);
+const umzug = new Umzug({
+  migrations: { glob: 'migrations/*.ts' },
+  context: sequelize.getQueryInterface(),
+  storage: new SequelizeStorage({ sequelize }),
+  logger: console,
+});
+
+export type Migration = typeof umzug._types.migration;
 
 export async function dbConnect() {
   try {
     await sequelize.authenticate();
     await sequelize.sync(isDev ? { force: true } : {});
+    const pending = await umzug.pending();
+    if (pending.length > 0) {
+      await umzug.up();
+    }
+
     // eslint-disable-next-line no-console
     console.log('Connection with database has been established successfully.');
   } catch (error) {

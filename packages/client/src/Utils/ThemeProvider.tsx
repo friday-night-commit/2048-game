@@ -1,8 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { getUserTheme } from '../store/slices/Theme';
+import { Theme } from '../Components/ThemeToggler/theme.interfaces';
 
 const getInitialTheme = (): string => {
   if (typeof window !== 'undefined' && window.localStorage) {
-
     const storedPrefs = window.localStorage.getItem('color-theme');
     if (storedPrefs) {
       return storedPrefs;
@@ -29,34 +31,10 @@ const defaultValue: TOwnProps = {
   setTheme: () => {},
 };
 
-
 export const ThemeContext = React.createContext(defaultValue);
 
 export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
-
-  const [theme, setTheme] = useState(getInitialTheme);
-
-  // const content = useAppSelector(state => state.commentSlice.commentContent);
-  // const user = useAppSelector(store => store.userSlice.user);
-  //
-  // useEffect(() => {
-  //   dispatch(getCommentsByPostId(Number(id))).then(data => {
-  //     const comments = data.payload as Comment[];
-  //     if(comments.length) {
-  //       setComments(comments);
-  //     }
-  //   });
-  //
-  // }, [id]);
-  //
-  // useEffect(() => {
-  //   dispatch(getPostById(Number(id))).then(data => {
-  //     const post = data.payload as ForumPost;
-  //     if(post){
-  //       setPost(post);
-  //     }
-  //   });
-
+    const [theme, setTheme] = useState(getInitialTheme);
 
     const rawSetTheme = (theme: string) => {
     const root = window.document.documentElement;

@@ -9,13 +9,13 @@ import ThemeController, {
 const router: Router = Router();
 
 router
-  .route('')
+  .route('/')
   .get(ThemeController.createTheme);
 router
   .route('/allThemes')
   .get(ThemeController.getAllThemes);
 router
-  .route('/:id([0-9]+)/:userId([0-9]+)')
+  .route('/changeTheme/:id([0-9]+)/:userId([0-9]+)')
   .post(validateParams(themeParamsSchemas.post), ThemeController.createThemeUser)
   .put(validateParams(themeParamsSchemas.put), ThemeController.updateThemeForUser)
   .delete(ThemeController.deleteThemeForUser);
