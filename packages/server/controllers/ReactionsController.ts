@@ -6,7 +6,6 @@ import { getYandexId } from '../middlewares/checkYandexUser';
 
 class ReactionController {
   async getTopicReactions(req: Request, res: Response, next: NextFunction) {
-    console.log('getTopicReactions');
     const { topicId } = req.params;
     const yandexId = getYandexId(res);
 
@@ -30,7 +29,7 @@ class ReactionController {
     const yandexId = getYandexId(res);
 
     if (!yandexId) {
-      // return next(ApiError.forbidden('Авторизованный пользователь не найден'));
+      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
     }
 
     if (!type) {

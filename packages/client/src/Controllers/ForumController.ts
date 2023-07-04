@@ -6,8 +6,7 @@ class ForumController {
     try {
       return await ForumAPI.createPost(post);
     } catch (err) {
-      console.error('createPost',post,err);
-     //  alert(err);
+      alert(err);
     }
   }
 

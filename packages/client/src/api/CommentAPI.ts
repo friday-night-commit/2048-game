@@ -1,12 +1,5 @@
-import { API_URL } from './consts';
+import { API_URL, options } from './consts';
 import { Comment, LastComment } from '../pages/Forum/forum.interfaces';
-
-const options: OptionsType = {
-  headers: {
-    'Content-Type': 'application/json;charset=utf-8',
-  },
-  credentials: 'include',
-};
 
 export class CommentAPI {
   private endpoint = `${API_URL}/api/forum/topics`;

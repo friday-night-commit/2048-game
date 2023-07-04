@@ -11,7 +11,6 @@ class ReactionController {
     try {
       return await ReactionAPI.createReactionById(postId, data);
     } catch (err) {
-      console.log('err', err);
       return undefined;
     }
   }

@@ -1,4 +1,4 @@
-import React, {  useState, FC, useEffect } from 'react';
+import React, { useState, FC, useEffect } from 'react';
 import './index.scss';
 import { createReactionByPostId, getReactionsByPostId } from '../../store/slices/Reaction';
 import { Reaction } from '../../pages/Forum/forum.interfaces';

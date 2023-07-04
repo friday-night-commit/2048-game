@@ -93,7 +93,7 @@ class CommentsController {
     const limit = req.query.limit || 3;
 
     try {
-     const lastComments = await dbCommentsController.getLastComments(Number(limit));
+      const lastComments = await dbCommentsController.getLastComments(Number(limit));
       res.status(200).json(lastComments);
     } catch (err) {
       return next(ApiError.badRequest('Не получилось получить последние комментарии', err as Error));

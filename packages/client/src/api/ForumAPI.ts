@@ -1,12 +1,5 @@
-import { API_URL } from './consts';
+import { API_URL, options } from './consts';
 import { ForumPost, ImgResponse } from '../pages/Forum/forum.interfaces';
-
-const options: OptionsType = {
-  headers: {
-    'Content-Type': 'application/json;charset=utf-8',
-  },
-  credentials: 'include',
-};
 
 export class ForumAPI {
   private endpoint = `${API_URL}/api/forum/topics`;
