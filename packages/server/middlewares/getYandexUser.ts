@@ -43,9 +43,9 @@ const getYandexUser: RequestHandler = async (req, res, next) => {
   const cookie = Object.entries(req.cookies)
     .map(([key, value]) => `${key}=${value}`)
     .join('; ');
-  console.log('cookie', cookie);
+
+
   try {
-    // @ts-ignore
     const { data: yandexUser } = await axios.get(
       'https://ya-praktikum.tech/api/v2/auth/user',
       {
@@ -65,8 +65,11 @@ const getYandexUser: RequestHandler = async (req, res, next) => {
     } else {
       userFromDb = await userFromDb.update({ ...rest, yandexId });
     }
-    res.locals.user = serverToClientNaming(userFromDb!.toJSON());
+    if (userFromDb) {
+      res.locals.user = serverToClientNaming(userFromDb.toJSON());
+    }
   } catch (error) {
+    // eslint-disable-next-line no-console
     res.locals.user = null;
   } finally {
     next();

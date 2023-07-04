@@ -24,7 +24,6 @@ const store = createStore(
   initialState as StoreState
 );
 delete window.__REDUX_INITIAL_STATE__;
-
 hydrateRoot(
   document.getElementById('root') as HTMLElement,
   <ThemeProvider>

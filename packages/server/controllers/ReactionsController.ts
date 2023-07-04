@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from 'express';
 
 import dbReactionsController from '../db/controllers/reactions';
-import { ApiError } from './error';
-import getYandexId from './getYandexIdUtil';
+import ApiError from './ApiError';
+import { getYandexId } from '../middlewares/checkYandexUser';
 
 class ReactionController {
   async getTopicReactions(req: Request, res: Response, next: NextFunction) {

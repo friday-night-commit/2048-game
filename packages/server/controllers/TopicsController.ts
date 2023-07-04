@@ -1,16 +1,37 @@
 import type { Request, Response, NextFunction } from 'express';
 import dbTopicsController from '../db/controllers/topics';
-import { ApiError } from './error';
-import getYandexId from './getYandexIdUtil';
+import ApiError from './ApiError';
+import { getYandexId } from '../middlewares/checkYandexUser';
+import checkTextLength from './checkTextLength';
+
+const titleParamSchema = {
+  name: 'title',
+  type: 'string',
+  required: true,
+  validator_functions: [checkTextLength(200)],
+};
+
+const textParamSchema = {
+  name: 'text',
+  type: 'string',
+  required: true,
+  validator_functions: [checkTextLength(600)],
+};
+
+const userIdParamSchema = {
+  name: 'userId',
+  type: 'number',
+  required: true,
+};
+
+export const paramsSchemas = {
+  post: [titleParamSchema, textParamSchema],
+  put: [titleParamSchema, textParamSchema, userIdParamSchema]
+};
 
 class TopicsController {
   async getTopic(req: Request, res: Response, next: NextFunction) {
     const { topicId } = req.params;
-    const yandexId = getYandexId(res);
-
-    if (!yandexId) {
-      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
-    }
 
     try {
       const topic = await dbTopicsController.getTopicById(Number(topicId));
@@ -20,9 +41,9 @@ class TopicsController {
         return next(ApiError.badRequest(`Пост с id ${topicId} не найден`));
       }
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log('getTopic err', err);
-      return next(ApiError.badRequest(`Пост с id ${topicId} не найден`));
+      return next(
+        ApiError.badRequest(`Пост с id ${topicId} не найден`, err as Error)
+      );
     }
   }
 
@@ -30,10 +51,8 @@ class TopicsController {
     try {
       const topics = await dbTopicsController.getAllTopics();
       res.status(200).json(topics);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log('err', e);
-      return next(ApiError.badRequest('Не получилось получить посты'));
+    } catch (err) {
+      return next(ApiError.badRequest('Не получилось получить посты', err as Error));
     }
   }
 
@@ -41,35 +60,15 @@ class TopicsController {
     try {
       const tags = await dbTopicsController.getAllTags();
       res.status(200).json(tags);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log('err', e);
-      return next(ApiError.badRequest('Не получилось получить теги'));
+    } catch (err) {
+      return next(ApiError.badRequest('Не получилось получить теги', err as Error));
     }
   }
 
   async createTopic(req: Request, res: Response, next: NextFunction) {
     const { title, text, tag, imageUrl } = req.body;
-    const yandexId = getYandexId(res);
-
-    if (!yandexId) {
-      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
-    }
-
-    if (!title) {
-      return next(ApiError.badRequest('Не задан заголовок поста'));
-    }
-
-    if (!text) {
-      return next(ApiError.badRequest('Не задан текст поста'));
-    }
-
-    if (!tag) {
-      return next(ApiError.badRequest('Не задан тэг поста'));
-    }
 
     try {
-      console.log('dbTopicsController.createTopic', );
       const topic = await dbTopicsController.createTopic(
         title,
         text,
@@ -83,34 +82,15 @@ class TopicsController {
         return next(ApiError.badRequest('Не получилось создать пост'));
       }
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log('err', err);
-      return next(ApiError.badRequest('Не получилось создать пост'));
+      return next(
+        ApiError.badRequest('Не получилось создать пост', err as Error)
+      );
     }
   }
 
   async updateTopic(req: Request, res: Response, next: NextFunction) {
-    const { title, text, userId } = req.body;
-    const { topicId } = req.params;
     const yandexId = getYandexId(res);
-
-    if (!yandexId) {
-      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
-    }
-
-    if (!title) {
-      return next(ApiError.badRequest('Не задан заголовок поста'));
-    }
-
-    if (!text) {
-      return next(ApiError.badRequest('Не задан текст поста'));
-    }
-
-    if (!topicId) {
-      return next(ApiError.notFound('Не задан topic id'));
-    }
-
-    if (yandexId != userId) {
+    if (yandexId != req.body.userId) {
       return next(ApiError.forbidden('Нет прав редактировать пост'));
     }
 
@@ -122,27 +102,22 @@ class TopicsController {
         return next(ApiError.badRequest('Не получилось обновить пост'));
       }
     } catch (err) {
-      return next(ApiError.badRequest('Не получилось обновить пост'));
+      return next(
+        ApiError.badRequest('Не получилось обновить пост', err as Error)
+      );
     }
   }
 
   async deleteTopic(req: Request, res: Response, next: NextFunction) {
     const { topicId } = req.params;
-    const yandexId = getYandexId(res);
-
-    if (!yandexId) {
-      return next(ApiError.forbidden('Авторизованный пользователь не найден'));
-    }
-
-    if (!topicId) {
-      return next(ApiError.notFound('Не задан topic id'));
-    }
 
     try {
       await dbTopicsController.deleteTopicById(Number(topicId));
       res.status(204).json(topicId);
     } catch (err) {
-      return next(ApiError.badRequest('Не получилось удалить пост'));
+      return next(
+        ApiError.badRequest('Не получилось удалить пост', err as Error)
+      );
     }
   }
 }

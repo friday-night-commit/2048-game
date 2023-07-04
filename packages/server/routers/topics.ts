@@ -2,10 +2,11 @@ import { Router } from 'express';
 import TopicsController from '../controllers/TopicsController';
 import CommentsController from '../controllers/CommentsController';
 
+
 const router: Router = Router();
 
 router
-  .route('/')
+  .route('')
   .post(TopicsController.createTopic)
   .get(TopicsController.getAllTopics);
 router

@@ -1,32 +1,26 @@
-// import dotenv from 'dotenv';
-// dotenv.config({ path: __dirname + '../../.env' });
-import 'dotenv/config';
+import dotenv from 'dotenv';
+dotenv.config({ path: '../../.env' });
 
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import path from 'node:path';
+
 import { distPath, initVite } from './services/init-vite';
-import { getYandexUser, renderSSR } from './middlewares';
-
+import { getYandexUser, checkYandexUser, renderSSR } from './middlewares';
 import { dbConnect } from './db';
-// import dbTopicsController from './db/controllers/topics';
-
-import apiRouter from './routers';
 import multer from 'multer';
 import fs from 'fs';
 import bodyParser from 'body-parser';
+import router from './routers';
 
 const isDev = process.env.NODE_ENV === 'development';
 
 async function startServer() {
   const port = Number(process.env.SERVER_PORT) || 5000;
 
-  const app = express()
-    .use(cookieParser())
-    .use(cors())
+  const app = express().use(cookieParser()).use(cors())
     .use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
     .use(bodyParser.json({ limit: '50mb' }));
 
@@ -37,7 +31,7 @@ async function startServer() {
   }
 
   app.use(
-    '/routers/v2',
+    '/api/v2',
     createProxyMiddleware({
       changeOrigin: true,
       cookieDomainRewrite: {
@@ -76,7 +70,9 @@ async function startServer() {
 
   app.use('*', getYandexUser);
   app.use('/uploads', express.static('uploads'));
-  app.use('/api', apiRouter);
+  app.use('/api/forum/topics', checkYandexUser);
+
+  app.use('/api', router);
 
   app.use('*', async (req, res, next) => renderSSR(req, res, next, vite));
 
