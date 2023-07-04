@@ -1,4 +1,6 @@
-import {
+ /* eslint-disable */
+
+ import {
   Model,
   Table,
   Column,
