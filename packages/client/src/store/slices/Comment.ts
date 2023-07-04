@@ -53,7 +53,7 @@ const commentSlice = createSlice({
   },
   extraReducers: build => {
     // Comments
-    build.addCase(getCommentsByPostId.pending, (state, action) => {
+    build.addCase(getCommentsByPostId.pending, (state, _) => {
       state.commentsStatus = STATE_STATUS.LOADING;
     });
     build.addCase(getCommentsByPostId.fulfilled, (state, action) => {
@@ -65,7 +65,7 @@ const commentSlice = createSlice({
       state.comments = [];
     });
     // Last Comments
-    build.addCase(getLastComments.pending, (state, action) => {
+    build.addCase(getLastComments.pending, (state, _) => {
       state.lastCommentsStatus = STATE_STATUS.LOADING;
     });
     build.addCase(getLastComments.fulfilled, (state, action) => {

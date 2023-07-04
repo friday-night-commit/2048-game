@@ -1,68 +1,50 @@
-import React, { lazy, Suspense } from 'react';
+import React, { FC, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import './index.scss';
 import moment from 'moment';
 import { DATE_FORMATS } from '../../../../Utils/dateFormats';
 import ForumController from '../../../../Controllers/ForumController';
 import {
-  COMMENT_LABEL_TYPE,
-  default_avatar
+  default_avatar, ForumPost
 } from '../../../Forum/forum.interfaces';
-import { ReactionBlock } from '../../../../Components/ReactionBlock';
 
 const LazyQuillContentComponent = lazy(
   () => import('../../../AddPost/components/QuillContent/index')
 );
 
-type TOwnProps = {
-  id: string;
-  title: COMMENT_LABEL_TYPE;
-  createdAt: Date;
-  imageUrl: string;
-  user: User;
-  viewsCount?: number;
-  commentsCount?: number;
-  isNew: boolean;
-  text: string;
-  tag: string;
+
+interface TOwnProps extends ForumPost {
   isFullPost?: boolean;
-  isLoading?: boolean;
   isEditable: boolean;
-};
+}
 
-// type TProps = FC<TOwnProps>;
-
-export const Post: any = ({
-                            id,
-                            title,
-                            createdAt,
-                            text,
-                            imageUrl,
-                            user,
-                            viewsCount,
-                            isNew,
-                            tag,
-                            isFullPost,
-                            isLoading,
-                            isEditable
-                          }: TOwnProps) => {
+type TProps = FC<TOwnProps>;
+export const Post: TProps = ({
+                               id,
+                               title,
+                               createdAt,
+                               text,
+                               imageUrl,
+                               user,
+                               viewsCount,
+                               reactionCount,
+                               tag,
+                               isFullPost,
+                               isEditable
+                             }: TOwnProps) => {
   const onRemovePost = async () => {
     if (window.confirm('Вы действительно хотите удалить статью?')) {
       await ForumController.deletePostById(Number(id));
-      window.location.reload();
+      window.location.reload(); // Сделать через стор
     }
   };
-
-  if (isLoading) {
-    return <h1>...Skeleton</h1>;
-  }
 
   const createdDate = moment(createdAt).format(
     DATE_FORMATS.COMPLEX_DATE_FORMAT
   );
 
   // Пост новый, если создан сегодня
-  isNew =
+  const isNew =
     moment(createdAt).format(DATE_FORMATS.SIMPLE_DATE_FORMAT) ===
     moment().format(DATE_FORMATS.SIMPLE_DATE_FORMAT);
 
@@ -81,7 +63,8 @@ export const Post: any = ({
         )}
         <Link to={`/forum/posts/${id}`}>
           <div className='flex justify-center relative rounded-lg overflow-hidden img-block'>
-            <div className='transition-transform duration-500 transform ease-in-out hover:scale-10 w-full '>
+            <div
+              className='transition-transform duration-500 transform ease-in-out hover:scale-10 w-full '>
               {imageUrl && (
                 <img
                   alt=''
@@ -89,16 +72,17 @@ export const Post: any = ({
                   className='absolute inset-0 bg-black opacity-3'></img>
               )}
             </div>
-            <div className='absolute  flex justify-center bottom-0 mb-3'>
-              <div className='flex info-block bg-white px-4 py-1 space-x-5 rounded-lg overflow-hidden shadow'>
+            <div className='absolute flex justify-center bottom-0 mb-3'>
+              <div className='flex bg-white px-4 py-1 space-x-5 rounded-lg overflow-hidden shadow'>
                 <p className='flex items-center font-medium text-gray-800'>
                   <span className='views'></span>
                   {viewsCount}
                 </p>
 
-                {isFullPost && (<p className='flex items-center font-medium text-gray-800 md'>
-                  <ReactionBlock topicId={+id} />
-                </p>)}
+                <p className='flex items-center font-medium text-gray-800'>
+                  <span className='comments'></span>
+                  {reactionCount}
+                </p>
               </div>
             </div>
 
@@ -114,13 +98,11 @@ export const Post: any = ({
             <h2 className='font-medium text-base md:text-lg text-gray-800 line-clamp-1'>
               {title}
             </h2>
-            <div className='flex items-center gap-x-3 mt-2 text-sm text-gray-800 line-clamp-1'>
+            <div className='flex mt-2 text-sm text-gray-800 line-clamp-1'>
               <span className='tag tag-lg'>#{tag}</span>
-
             </div>
           </div>
         </Link>
-
         <div className=' gap-4 mt-8'>
           <p className='flex-col xl:flex-row xl:items-center text-gray-800'>
             {isFullPost && (
