@@ -71,7 +71,7 @@ const forumSlice = createSlice({
   },
   extraReducers: build => {
     // Posts
-    build.addCase(getAllPosts.pending, (state, action) => {
+    build.addCase(getAllPosts.pending, (state, _) => {
       state.postsStatus = STATE_STATUS.LOADING;
     });
     build.addCase(getAllPosts.fulfilled, (state, action) => {
@@ -83,7 +83,7 @@ const forumSlice = createSlice({
       state.posts = [];
     });
     // Tags
-    build.addCase(getAllTags.pending, (state, action) => {
+    build.addCase(getAllTags.pending, (state, _) => {
       state.tagsStatus = STATE_STATUS.LOADING;
     });
     build.addCase(getAllTags.fulfilled, (state, action) => {
@@ -95,7 +95,7 @@ const forumSlice = createSlice({
       state.posts = [];
     });
     // Create Post
-    build.addCase(createPost.pending, (state, action) => {
+    build.addCase(createPost.pending, (state, _) => {
       state.postsStatus = STATE_STATUS.LOADING;
     });
     build.addCase(createPost.fulfilled, (state, action) => {

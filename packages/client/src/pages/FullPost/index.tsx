@@ -88,7 +88,7 @@ export default function FullPost() {
   }
   const isAuthorized = !!user;
   const isEditable = user?.id === post.user?.id;
-  post.commentsCount = comments.length;
+  post.reactionCount = comments.length;
 
   return (
     <PageContainer>
@@ -97,7 +97,7 @@ export default function FullPost() {
           <p>Загрузка текущего поста</p>
         )}
         <div className='full-post__left'>
-          <Post {...post} isFullPost isEditable={isEditable} />
+          <Post {...post} isFullPost isEditable={isEditable}/>
         </div>
 
         {isAuthorized && (
@@ -116,7 +116,6 @@ export default function FullPost() {
             <Button onClick={onSendComment}>Отправить</Button>
           </div>
         )}
-
       </div>
     </PageContainer>
   );

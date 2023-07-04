@@ -2,7 +2,7 @@ import { FC } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'quill-emoji/dist/quill-emoji.css';
-// @ts-ignore // Без этого не работает
+// @ts-ignore
 import quillEmoji from 'react-quill-emoji';
 
 import './index.scss';
