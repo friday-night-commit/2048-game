@@ -26,7 +26,7 @@ export const getAllTags = createAsyncThunk('getThemeByName', async (name: string
 
 export const getUserTheme = createAsyncThunk(
   'getUserTheme',
-  async (id: number) => {
+  async (id: string) => {
     return await ThemeController.getUserTheme(id);
   }
 );

@@ -1,5 +1,5 @@
 import ThemeAPI from '../api/ThemeApi';
-import { Theme, ThemeUser } from '../Components/ThemeToggler/theme.interfaces';
+import { Theme, ThemeUser } from '../Components/ThemeToggler/theme.interfaces'
 
 
 class ThemeController {
@@ -22,7 +22,7 @@ class ThemeController {
     }
   }
 
-  async getUserTheme(userId: number): Promise<ThemeUser[] | []> {
+  async getUserTheme(userId: string): Promise<Theme[] | []> {
     try {
       return await ThemeAPI.getUserTheme(userId);
     } catch (err) {
@@ -30,7 +30,7 @@ class ThemeController {
     }
   }
 
-  async updateUserTheme(data: ThemeUser): Promise<ThemeUser[] | []> {
+  async updateUserTheme(data: ThemeUser): Promise<Theme[] | []> {
     try {
       return await ThemeAPI.updateUserTheme(data);
     } catch (err) {

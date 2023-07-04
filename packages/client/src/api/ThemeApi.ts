@@ -37,7 +37,7 @@ export class ThemeAPI {
     return json;
   }
 
-  async getUserTheme(userId: number) : Promise<ThemeUser[]>{
+  async getUserTheme(userId: string) : Promise<Theme[]>{
     const response = await fetch(`/getThemeByUser/${userId}`, {
       ...options,
       method: 'GET',
@@ -49,7 +49,7 @@ export class ThemeAPI {
     return json;
   }
 
-  async updateUserTheme(data: ThemeUser) : Promise<ThemeUser[]>{
+  async updateUserTheme(data: ThemeUser) : Promise<Theme[]>{
     const response = await fetch(`/changeTheme/${data.themeId}/${data.userId}`, {
       ...options,
       method: 'PUT',

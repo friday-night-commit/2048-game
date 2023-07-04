@@ -1,27 +1,5 @@
 import Theme from '../models/theme.model';
-import ThemeUser from '../models/themeuser.model';
 import User from '../models/user.model';
-
-async function createTheme(
-  name: string,
-): Promise<Theme | null> {
-  return await Theme.create({ name });
-}
-
-async function updateThemeById(themeName: string, themeId: number): Promise<[affectedCount: number]> {
-  return await Theme.update({ name: themeName }, { where: { id: themeId } });
-}
-
-async function fillTable() {
-  return await Theme.bulkCreate([
-    { name: 'light' },
-    { name: 'dark' },
-  ]);
-}
-
-async function deleteThemeById(id: number): Promise<number> {
-  return await Theme.destroy({ where: { id } });
-}
 
 async function getThemeById(id: number): Promise<Theme | null> {
   return await Theme.findOne({ where: { id } });
@@ -31,40 +9,26 @@ async function getThemeByName(name: string): Promise<Theme | null> {
   return await Theme.findOne({ where: { name: name } });
 }
 
-async function getAllThemes(): Promise<Theme[]> {
-  return await Theme.findAll();
+async function getThemeByUser(userId: string): Promise<Theme | null> {
+  return await Theme.findOne({
+    include: { model: User, where: { yandexId: userId } } });
 }
 
-async function createThemeUserLink(
-  themeId: number,
-  userId: number,
-): Promise<ThemeUser | null> {
-  return await ThemeUser.create({ themeId, userId });
+async function fullTable(): Promise<Theme[]> {
+  return await Theme.bulkCreate([
+    { name: 'light' },
+    { name: 'dark' }
+  ]);
 }
 
-async function getThemeByUser(userId: number): Promise<ThemeUser | null> {
-  return await ThemeUser.findOne({
-    include: { model: User, where: { id: userId } } });
-}
-
-async function updateThemeForUser(themeId: number, userId: number): Promise<[affectedCount: number]> {
-  return await ThemeUser.update({ themeId: themeId }, { where: { userId: userId } });
-}
-
-async function deleteThemeUserByThemeId(themeId: number): Promise<number> {
-  return await ThemeUser.destroy({ where: { themeId: themeId } });
+async function updateThemeForUser(themeId: number, userId: string): Promise<[affectedCount: number]> {
+  return await User.update({ themeId: themeId }, { where: { yandexId: userId } });
 }
 
 export default {
-  createTheme,
-  fillTable,
-  updateThemeById,
-  deleteThemeById,
   getThemeById,
   getThemeByName,
-  getAllThemes,
-  createThemeUserLink,
   getThemeByUser,
   updateThemeForUser,
-  deleteThemeUserByThemeId,
+  fullTable
 };

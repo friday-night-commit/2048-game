@@ -10,6 +10,15 @@ export class YandexAPIRepository {
         cookie: this._cookieHeader,
       },
     });
+
+    if(data) {
+      data.theme = await axios.get (`http://localhost:5000/api/theme/getThemeByUser/${data.id}`, {
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+        }
+      });
+    }
+
     return {
       ...data,
       xss: '</script><script>alert(`pwned`)</script><!--',

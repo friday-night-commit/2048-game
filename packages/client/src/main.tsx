@@ -28,7 +28,7 @@ delete window.__REDUX_INITIAL_STATE__;
 hydrateRoot(
   document.getElementById('root') as HTMLElement,
   <React.StrictMode>
-    <ThemeProvider>
+    <ThemeProvider store={store}>
     <BrowserRouter>
       <Provider store={store}>
           <App />

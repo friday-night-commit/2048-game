@@ -29,10 +29,7 @@ export async function dbConnect() {
   try {
     await sequelize.authenticate();
     await sequelize.sync(isDev ? { force: true } : {});
-    const pending = await umzug.pending();
-    if (pending.length > 0) {
-      await umzug.up();
-    }
+    await umzug.up();
 
     // eslint-disable-next-line no-console
     console.log('Connection with database has been established successfully.');

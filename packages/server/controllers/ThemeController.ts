@@ -41,46 +41,6 @@ export const paramsSchemas = {
 };
 
 class ThemeController {
-  async createTheme(_req: Request, res: Response, next: NextFunction) {
-    try {
-      const theme = await dbThemeController.fillTable();
-      if (theme) {
-        res.status(201).json(theme);
-      } else {
-        return next(ApiError.badRequest(ErrorMsg.NOT_CREATED));
-      }
-    } catch (err) {
-      return next(
-        ApiError.badRequest(ErrorMsg.NOT_CREATED, err as Error)
-      );
-    }
-  }
-
-  async createThemeUser(req: Request, res: Response, next: NextFunction) {
-    const { themeId, userId } = req.body;
-
-    try {
-      const theme = await dbThemeController.createThemeUserLink(themeId, userId);
-      if (theme) {
-        res.status(201).json(theme);
-      } else {
-        return next(ApiError.badRequest(ErrorMsg.NOT_CREATED));
-      }
-    } catch (err) {
-      return next(
-        ApiError.badRequest(ErrorMsg.NOT_CREATED, err as Error)
-      );
-    }
-  }
-
-  async getAllThemes(_req: Request, res: Response, next: NextFunction) {
-    try {
-      const topics = await dbThemeController.getAllThemes();
-      res.status(200).json(topics);
-    } catch (err) {
-      return next(ApiError.badRequest(ErrorMsg.NO_THEMES, err as Error));
-    }
-  }
 
   async getThemeById(req: Request, res: Response, next: NextFunction) {
     const { themeId } = req.params;
@@ -135,7 +95,7 @@ class ThemeController {
 
     try {
       const theme = await dbThemeController.getThemeByUser(
-        Number(userId)
+        userId
       );
       if (theme) {
         res.status(200).json(theme);
@@ -154,38 +114,13 @@ class ThemeController {
     }
   }
 
-  async updateTheme(req: Request, res: Response, next: NextFunction) {
-    const { id, name } = req.params;
-
-    try {
-      const theme = await dbThemeController.updateThemeById(
-        name,
-        Number(id)
-      );
-      if (theme) {
-        res.status(200).json(theme);
-      } else {
-        return next(
-          ApiError.badRequest(ErrorMsg.NOT_UPDATE)
-        );
-      }
-    } catch (err) {
-      return next(
-        ApiError.badRequest(
-          ErrorMsg.NOT_UPDATE,
-          err as Error
-        )
-      );
-    }
-  }
-
   async updateThemeForUser(req: Request, res: Response, next: NextFunction) {
     const { id, userId } = req.body;
 
     try {
       const theme = await dbThemeController.updateThemeForUser(
         Number(id),
-        Number(userId),
+        userId,
       );
       if (theme) {
         res.status(200).json(theme);
@@ -200,32 +135,6 @@ class ThemeController {
           ErrorMsg.NOT_FOUND + ParamsName.THEME_ID + id,
           err as Error
         )
-      );
-    }
-  }
-
-  async deleteThemeForUser(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-
-    try {
-      await dbThemeController.deleteThemeUserByThemeId(Number(id));
-      res.sendStatus(204);
-    } catch (err) {
-      return next(
-        ApiError.badRequest(ErrorMsg.NOT_DELETED, err as Error)
-      );
-    }
-  }
-
-  async deleteTheme(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-
-    try {
-      await dbThemeController.deleteThemeUserByThemeId(Number(id));
-      res.sendStatus(204);
-    } catch (err) {
-      return next(
-        ApiError.badRequest(ErrorMsg.NOT_DELETED, err as Error)
       );
     }
   }
