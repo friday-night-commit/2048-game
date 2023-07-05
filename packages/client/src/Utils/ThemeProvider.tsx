@@ -2,10 +2,12 @@ import React, { FC, useEffect, useState } from 'react';
 
 const getInitialTheme = (store): string => {
   if (typeof window !== 'undefined' && window.localStorage) {
-    console.log(store.getState().userSlice.user)
+    const themeFromDB = store.getState().userSlice.user.theme;
     const storedPrefs = window.localStorage.getItem('color-theme');
-    if (storedPrefs) {
+    if (storedPrefs && storedPrefs !== themeFromDB) {
       return storedPrefs;
+    } else {
+      return themeFromDB;
     }
   }
 

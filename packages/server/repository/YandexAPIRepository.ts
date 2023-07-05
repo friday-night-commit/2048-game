@@ -12,11 +12,15 @@ export class YandexAPIRepository {
     });
 
     if(data) {
-      data.theme = await axios.get (`http://localhost:5000/api/theme/getThemeByUser/${data.id}`, {
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-        }
-      });
+      try {
+        data.theme = await axios.get (`http://localhost:5000/api/theme/getThemeByUser/${data.id}`, {
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+          }
+        });
+      } catch (e) {
+        data.theme = 'light';
+      }
     }
 
     return {

@@ -11,7 +11,12 @@ async function getThemeByName(name: string): Promise<Theme | null> {
 
 async function getThemeByUser(userId: string): Promise<Theme | null> {
   return await Theme.findOne({
-    include: { model: User, where: { yandexId: userId } } });
+    // @ts-ignore
+    where: { yandexId: userId },
+    include: [
+      { model: User, required: true },
+    ],
+  });
 }
 
 async function fullTable(): Promise<Theme[]> {

@@ -16,11 +16,7 @@ const initialState: IState = {
   userTheme: 'light',
 };
 
-export const getAllPosts = createAsyncThunk('createThemes', async () => {
-  return await ThemeController.createThemesInDB();
-});
-
-export const getAllTags = createAsyncThunk('getThemeByName', async (name: string) => {
+export const getThemeByName = createAsyncThunk('getThemeByName', async (name: string) => {
   return await ThemeController.getThemeByName(name);
 });
 
