@@ -1,5 +1,5 @@
 import { API_URL, options } from './consts';
-import { Comment, LastComment } from '../pages/Forum/forum.interfaces';
+import { Comment } from '../pages/Forum/forum.interfaces';
 
 export class CommentAPI {
   private endpoint = `${API_URL}/api/forum/topics`;
@@ -31,7 +31,7 @@ export class CommentAPI {
     return json;
   }
 
-  async getLastComments(limit = 5): Promise<LastComment[]> {
+  async getLastComments(limit = 5): Promise<Comment[]> {
     const response = await fetch(
       `${this.lastCommentsEndpoint}/lastcomments?limit=${limit}`,
       {

@@ -10,10 +10,10 @@ import {
   Typography,
 } from '@material-tailwind/react';
 import {
+  Comment,
   COMMENT_LABEL_TYPE,
   ForumPost,
-  LastComment,
-  TAB_TYPE,
+  TAB_TYPE
 } from './forum.interfaces';
 import React, { useEffect, useState } from 'react';
 import PageContainer from '../../Components/PageContainer';
@@ -32,7 +32,7 @@ import PostEmpty from '../../Components/PostEmpty';
 export default function ForumPage() {
   const [tags, setTags] = useState<string[]>([]);
   const [posts, setPosts] = useState<ForumPost[]>([]);
-  const [lastComments, setLastComments] = useState<LastComment[]>([]);
+  const [lastComments, setLastComments] = useState<Comment[]>([]);
   const [openTab, setOpenTab] = useState<string>(TAB_TYPE.POSTS);
 
   const dispatch = useAppDispatch();
@@ -57,7 +57,7 @@ export default function ForumPage() {
     });
 
     dispatch(getLastComments(5)).then(data => {
-      const lastComments = data.payload as LastComment[];
+      const lastComments = data.payload as Comment[];
       if (lastComments.length) {
         setLastComments(lastComments);
       }

@@ -8,7 +8,7 @@ import {
 } from 'sequelize-typescript';
 import User from './user.model';
 import Topic from './topic.model';
-import { INTEGER, TEXT } from 'sequelize';
+import { INTEGER, STRING } from 'sequelize';
 
 export const enum REACTION_TYPE {
   LIKE = 'Like',
@@ -31,9 +31,9 @@ export interface IReaction {
 })
 export default class Reaction extends Model<IReaction> {
   @Column({
-    type: TEXT,
+    type: STRING,
     allowNull: true,
-    comment: 'comment type',
+    comment: 'reaction type',
   })
   declare type: REACTION_TYPE;
 
@@ -42,7 +42,7 @@ export default class Reaction extends Model<IReaction> {
     field: 'user_id',
     type: INTEGER,
     allowNull: false,
-    comment: 'comment author id',
+    comment: 'reaction author id',
     onDelete: 'CASCADE',
   })
   declare userId: number;

@@ -53,11 +53,3 @@ export interface Reaction {
   createdAt?: Date;
 }
 
-export interface LastComment {
-  id?: number;
-  text: string;
-  user: User;
-  postTitle: string;
-  parentId: number;
-  createdAt?: Date;
-}

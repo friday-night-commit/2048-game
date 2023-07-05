@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { STATE_STATUS } from './Forum';
 import CommentController from '../../Controllers/CommentController';
-import { Comment, LastComment } from '../../pages/Forum/forum.interfaces';
+import { Comment } from '../../pages/Forum/forum.interfaces';
 
 interface IState {
   commentContent: string | undefined;
   comments: Comment[];
-  lastComments: LastComment[];
+  lastComments: Comment[];
   commentsStatus: STATE_STATUS;
   lastCommentsStatus: STATE_STATUS;
 }

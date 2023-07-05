@@ -8,7 +8,7 @@ async function createTopic(
   tag: string,
   imageUrl: string
 ): Promise<Topic | null> {
-  return Topic.create({ title, text, userId, tag, imageUrl });
+  return await Topic.create({ title, text, userId, tag, imageUrl });
 }
 
 async function updateTopicById(
