@@ -1,6 +1,6 @@
 @import '/src/variables';
 
-.empty-block{
+.empty-block {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -8,7 +8,7 @@
 }
 .empty-icon {
   background-image: url('../../assets/images/post-empty.svg');
-  @apply block ;
+  @apply block;
   @apply bg-no-repeat bg-center;
   height: 600px;
   width: 600px;
@@ -22,7 +22,7 @@
 
 .typing-demo {
   width: 22ch;
-  animation: typing 2s steps(22), blink .5s step-end infinite alternate;
+  animation: typing 2s steps(22), blink 0.5s step-end infinite alternate;
   white-space: nowrap;
   overflow: hidden;
   border-right: 3px solid;
@@ -32,12 +32,12 @@
 
 @keyframes typing {
   from {
-    width: 0
+    width: 0;
   }
 }
 
 @keyframes blink {
   50% {
-    border-color: transparent
+    border-color: transparent;
   }
 }

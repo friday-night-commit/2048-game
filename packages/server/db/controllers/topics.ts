@@ -22,10 +22,9 @@ async function deleteTopicById(id: number): Promise<number> {
 }
 
 async function getTopicById(id: number): Promise<Topic | null> {
-  return await Topic.findOne(
-    { where: { id },
-      include: { model: User, required: true }
-
+  return await Topic.findOne({
+    where: { id },
+    include: { model: User, required: true },
   }).then(model => {
     if (!model) {
       return null;
@@ -34,10 +33,9 @@ async function getTopicById(id: number): Promise<Topic | null> {
   });
 }
 
-
 async function getAllTopics(): Promise<Topic[]> {
   return await Topic.findAll({
-     include: { model: User, required: true }
+    include: { model: User, required: true },
   });
 }
 

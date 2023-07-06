@@ -1,13 +1,6 @@
-import { API_URL } from './consts';
+import { API_URL, options } from './consts';
 
 type leaderboardAPIData = Promise<Array<Record<'data', leaderboardUser>>>;
-
-const options: OptionsType = {
-  headers: {
-    'Content-Type': 'application/json;charset=utf-8',
-  },
-  credentials: 'include',
-};
 
 class LeaderboardAPI {
   private endpoint = `${API_URL}/api/v2/leaderboard`;

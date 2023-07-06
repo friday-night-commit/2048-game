@@ -1,9 +1,12 @@
 import React, { useEffect, useCallback, useRef } from 'react';
 import Engine from '../Engine';
-import { openModalFailure, openModalSuccess, wasRenewedMatrix } from '../../../store/slices/Modal';
+import {
+  openModalFailure,
+  openModalSuccess,
+  wasRenewedMatrix,
+} from '../../../store/slices/Modal';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import LeaderboardController from '../../../Controllers/LeaderboardController';
-
 
 type CanvasProps = React.DetailedHTMLProps<
   React.CanvasHTMLAttributes<HTMLCanvasElement>,
@@ -16,9 +19,15 @@ const Canvas: React.FC<CanvasProps> = ({ ...props }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const dispatch = useAppDispatch();
   const isNewMatrix = useAppSelector(store => store.modalSlice.isNewMatrix);
-  const isOpenModalSuccess = useAppSelector(store => store.modalSlice.isOpenFailure);
-  const isOpenModalFail = useAppSelector(store => store.modalSlice.isOpenSuccess);
-  const isContinuePlay = useAppSelector(store => store.modalSlice.isContinuePlay);
+  const isOpenModalSuccess = useAppSelector(
+    store => store.modalSlice.isOpenFailure
+  );
+  const isOpenModalFail = useAppSelector(
+    store => store.modalSlice.isOpenSuccess
+  );
+  const isContinuePlay = useAppSelector(
+    store => store.modalSlice.isContinuePlay
+  );
 
   const openSuccess = () => dispatch(openModalSuccess());
   const openFailure = () => dispatch(openModalFailure());
@@ -64,10 +73,15 @@ const Canvas: React.FC<CanvasProps> = ({ ...props }) => {
         };
       }
     }
-  },[isNewMatrix, isContinuePlay]);
+  }, [isNewMatrix, isContinuePlay]);
 
   return (
-    <canvas ref={canvasRef} width={props.width} height={props.width} id='canvas-game'/>
+    <canvas
+      ref={canvasRef}
+      width={props.width}
+      height={props.width}
+      id='canvas-game'
+    />
   );
 };
 

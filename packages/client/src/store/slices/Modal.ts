@@ -31,7 +31,7 @@ export const modalSlice = createSlice({
       state.isOpenFailure = false;
     },
     renewMatrix(state) {
-      state.isNewMatrix= true;
+      state.isNewMatrix = true;
     },
     wasRenewedMatrix(state) {
       state.isNewMatrix = false;
@@ -40,12 +40,11 @@ export const modalSlice = createSlice({
       state.isContinuePlay = true;
       state.isOpenSuccess = false;
       state.isOpenFailure = false;
-
     },
     stopPlay(state) {
       state.isContinuePlay = false;
     },
-  }
+  },
 });
 
 // В дальнейшем при нужде изменить пользователя в store, необходимо:
@@ -61,7 +60,7 @@ export const {
   renewMatrix,
   wasRenewedMatrix,
   continuePlay,
-  stopPlay
+  stopPlay,
 } = modalSlice.actions;
 
 export default modalSlice.reducer;

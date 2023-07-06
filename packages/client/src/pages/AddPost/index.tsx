@@ -3,7 +3,6 @@ import React, { lazy, Suspense, useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Input from '../../Components/Input';
-import DesktopNotification from '../../WebAPI/notification.service';
 
 const LazyTextEditorComponent = lazy(() => import('./components/TextEditor'));
 
@@ -12,17 +11,14 @@ import {
   CONTENT_TYPE,
   ForumPost,
   ImgResponse,
-  TAB_TYPE,
 } from '../Forum/forum.interfaces';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import {
-  clearPostContent,
   createPost,
   loadPostPreview,
-  setForumTabName,
 } from '../../store/slices/Forum';
 
-export const AddPostPage = () => {
+export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState('');
   const [error, setError] = useState('');
@@ -87,18 +83,7 @@ export const AddPostPage = () => {
 
       dispatch(createPost(newPost)).then(data => {
         if (data) {
-          dispatch(setForumTabName(TAB_TYPE.POSTS));
-          window.location.reload();
-          const newPost: ForumPost = data.payload as ForumPost;
-          if (newPost) {
-            const desktopNotification = new DesktopNotification().init();
-            desktopNotification.showNotification(
-              'Новый пост',
-              newPost.title,
-              newPost.imageUrl
-            );
-            dispatch(clearPostContent());
-          }
+          backToPosts();
         }
       });
     },

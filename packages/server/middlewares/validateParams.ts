@@ -36,7 +36,10 @@ const validateParams = function (paramSchemas: ParamSchema[]) {
   };
 };
 
-const checkParamPresent = function (reqParams: string[], paramObj: ParamSchema) {
+const checkParamPresent = function (
+  reqParams: string[],
+  paramObj: ParamSchema
+) {
   return reqParams.includes(paramObj.name);
 };
 
@@ -46,7 +49,7 @@ const checkParamType = function (reqParam: string, paramObj: ParamSchema) {
 };
 
 const runValidators = function (reqParam: string, paramObj: ParamSchema) {
-  for (const validator of (paramObj.validator_functions || [])) {
+  for (const validator of paramObj.validator_functions || []) {
     if (!validator(reqParam)) return false;
   }
   return true;

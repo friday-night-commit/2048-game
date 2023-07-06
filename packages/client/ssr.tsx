@@ -17,7 +17,7 @@ async function render(uri, repository) {
     const { loader } = currentRoute;
     await loader(store.dispatch);
   }
-  
+
   const initialState = store.getState();
   const renderResult = renderToString(
     <StaticRouter location={uri}>
@@ -28,7 +28,7 @@ async function render(uri, repository) {
       </Provider>
     </StaticRouter>
   );
-  
+
   return [initialState, renderResult];
 }
 

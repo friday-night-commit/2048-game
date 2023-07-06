@@ -1,43 +1,48 @@
 /* eslint-disable */
 import {
+  BelongsTo,
+  Column,
+  ForeignKey,
   Model,
   Table,
-  Column,
-  DataType,
-  ForeignKey,
-  BelongsTo,
 } from 'sequelize-typescript';
-
 import User from './user.model';
 import Topic from './topic.model';
+import { INTEGER, STRING } from 'sequelize';
 
-const { TEXT, INTEGER } = DataType;
-
-export interface IComment {
+export const enum REACTION_TYPE {
+  LIKE = 'Like',
+  LOVE = 'Love',
+  HAHA = 'Haha',
+  WOW = 'Wow',
+  SAD = 'Sad',
+  ANGRY = 'Angry',
+}
+export interface IReaction {
   id?: number;
-  text: string;
   userId: number;
   topicId: number;
-  parentId: number | null;
+  type: REACTION_TYPE;
 }
 
+
 @Table({
-  tableName: 'comments',
+  tableName: 'reactions',
 })
-export default class Comment extends Model<IComment> {
+export default class Reaction extends Model<IReaction> {
   @Column({
-    type: TEXT,
-    allowNull: false,
-    comment: 'comment content',
+    type: STRING,
+    allowNull: true,
+    comment: 'reaction type',
   })
-  declare text: string;
+  declare type: REACTION_TYPE;
 
   @ForeignKey(() => User)
   @Column({
     field: 'user_id',
     type: INTEGER,
     allowNull: false,
-    comment: 'comment author id',
+    comment: 'reaction author id',
     onDelete: 'CASCADE',
   })
   declare userId: number;
@@ -56,12 +61,4 @@ export default class Comment extends Model<IComment> {
 
   @BelongsTo(() => Topic, 'topic_id')
   declare topic: Topic;
-
-  @Column({
-    field: 'parent_id',
-    type: INTEGER,
-    allowNull: true,
-    comment: 'parent comment id (for replies)',
-  })
-  declare parentId: number;
 }

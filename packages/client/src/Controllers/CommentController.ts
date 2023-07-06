@@ -1,4 +1,4 @@
-import { Comment, LastComment } from '../pages/Forum/forum.interfaces';
+import { Comment } from '../pages/Forum/forum.interfaces';
 import CommentAPI from '../api/CommentAPI';
 
 class CommentController {
@@ -23,7 +23,7 @@ class CommentController {
     }
   }
 
-  async getLastComments(limit: number): Promise<LastComment[] | []> {
+  async getLastComments(limit: number): Promise<Comment[] | []> {
     try {
       return await CommentAPI.getLastComments(limit);
     } catch (err) {

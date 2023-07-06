@@ -1,4 +1,7 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
+// import dotenv from 'dotenv';
+
+// dotenv.config({path: __dirname + '../../.env'});
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -19,7 +22,7 @@ export const sequelize = new Sequelize(sequelizeOptions);
 export async function dbConnect() {
   try {
     await sequelize.authenticate();
-    await sequelize.sync(isDev ? { force: true } : {});
+    await sequelize.sync(isDev ? { force: false } : {});
     // eslint-disable-next-line no-console
     console.log('Connection with database has been established successfully.');
   } catch (error) {

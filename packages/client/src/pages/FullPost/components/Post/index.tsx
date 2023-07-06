@@ -30,12 +30,12 @@ export const Post: TProps = ({
                                reactionCount,
                                tag,
                                isFullPost,
-                               isEditable
+                               isEditable,
                              }: TOwnProps) => {
   const onRemovePost = async () => {
     if (window.confirm('Вы действительно хотите удалить статью?')) {
       await ForumController.deletePostById(Number(id));
-      window.location.reload(); // Сделать через стор
+      window.location.reload();
     }
   };
 

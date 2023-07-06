@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from 'react';
 
 const getInitialTheme = (): string => {
   if (typeof window !== 'undefined' && window.localStorage) {
-
     const storedPrefs = window.localStorage.getItem('color-theme');
     if (storedPrefs) {
       return storedPrefs;
@@ -29,11 +28,9 @@ const defaultValue: TOwnProps = {
   setTheme: () => {},
 };
 
-
 export const ThemeContext = React.createContext(defaultValue);
 
 export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
-
   const [theme, setTheme] = useState(getInitialTheme);
 
   const rawSetTheme = (theme: string) => {
@@ -48,7 +45,7 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
 
   useEffect(() => {
     rawSetTheme(theme);
-  },[theme]);
+  }, [theme]);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>

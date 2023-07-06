@@ -5,7 +5,12 @@ import PageContainer from '../../Components/PageContainer';
 import { Post } from './components/Post';
 import { CommentsBlock } from '../Forum/components/CommentsBlock';
 import { SideBlock } from '../Forum/components/SideBlock';
-import { Comment, COMMENT_LABEL_TYPE, CONTENT_TYPE, ForumPost } from '../Forum/forum.interfaces';
+import {
+  Comment,
+  COMMENT_LABEL_TYPE,
+  CONTENT_TYPE,
+  ForumPost,
+} from '../Forum/forum.interfaces';
 
 const LazyTextEditorComponent = React.lazy(
   () => import('../AddPost/components/TextEditor')
@@ -36,23 +41,20 @@ export default function FullPost() {
   useEffect(() => {
     dispatch(getCommentsByPostId(Number(id))).then(data => {
       const comments = data.payload as Comment[];
-      if(comments.length) {
+      if (comments.length) {
         setComments(comments);
       }
     });
-
   }, [id]);
 
   useEffect(() => {
     dispatch(getPostById(Number(id))).then(data => {
       const post = data.payload as ForumPost;
-      if(post){
+      if (post) {
         setPost(post);
       }
     });
-
   }, [id]);
-
 
   const onSendComment = useCallback(
     async (e: React.FormEvent) => {
@@ -70,7 +72,7 @@ export default function FullPost() {
         createCommentByPostId({ id: Number(id), comment: newComment })
       ).then(data => {
         const newComment = data.payload as Comment;
-        if(newComment){
+        if (newComment) {
           setComments([...comments, newComment]);
         }
         dispatch(clearCommentContent());
@@ -97,12 +99,16 @@ export default function FullPost() {
           <p>Загрузка текущего поста</p>
         )}
         <div className='full-post__left'>
-          <Post {...post} isFullPost isEditable={isEditable}/>
+          <Post {...post} isFullPost isEditable={isEditable} />
         </div>
 
         {isAuthorized && (
           <div className='full-post__right'>
-            <CommentsBlock title={COMMENT_LABEL_TYPE.POST_COMMENTS} items={comments} status={currentPostStatus} />
+            <CommentsBlock
+              title={COMMENT_LABEL_TYPE.POST_COMMENTS}
+              items={comments}
+              status={currentPostStatus}
+            />
             <SideBlock title='Оставить комментарий'>
               <div className='full-post__editor'>
                 <Suspense fallback={<textarea />}>
