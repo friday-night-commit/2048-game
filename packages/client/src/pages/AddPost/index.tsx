@@ -91,6 +91,7 @@ export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
   );
 
   return (
+
     <form className='container mx-auto w-full  add-post' onSubmit={onSubmit}>
       <div className='add-post__left'>
         <div className='mb-4'>
