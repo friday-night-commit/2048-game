@@ -24,16 +24,15 @@ const store = createStore(
   initialState as StoreState
 );
 delete window.__REDUX_INITIAL_STATE__;
-
 hydrateRoot(
   document.getElementById('root') as HTMLElement,
-    <ThemeProvider>
+  <ThemeProvider>
     <BrowserRouter>
       <Provider store={store}>
-          <App />
+        <App />
       </Provider>
     </BrowserRouter>
-    </ThemeProvider>
+  </ThemeProvider>
 );
 
 initServiceWorker();

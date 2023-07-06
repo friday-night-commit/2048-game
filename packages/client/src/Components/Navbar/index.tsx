@@ -59,8 +59,7 @@ export default function Navbar() {
       getLeaderboard().then(data => {
         dispatch(
           setMaxScore(
-            data.filter(({ userId }) => userId === user.id)[0]
-              ?.score || 0
+            data.filter(({ userId }) => userId === user.id)[0]?.score || 0
           )
         );
       });
@@ -86,13 +85,8 @@ export default function Navbar() {
             ))}
           </ul>
         </div>
-        { typeof window !== 'undefined' ?
-          <ThemeToggler/>
-          : null
-        }
-        <span className='score-container'>
-          {`Ваш рекорд: ${maxScore}`}
-        </span>
+        {typeof window !== 'undefined' ? <ThemeToggler /> : null}
+        <span className='score-container'>{`Ваш рекорд: ${maxScore}`}</span>
       </div>
     </MaterialNavbar>
   );

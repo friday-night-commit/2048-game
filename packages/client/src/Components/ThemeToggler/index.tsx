@@ -9,9 +9,10 @@ const ThemeToggler = () => {
 
   return (
     <div className='toggle-button'>
-      {(isDark
-        ? (<FaSun onClick={() => setTheme('light')}/>)
-        : (<FaMoon onClick={() => setTheme('dark')} />)
+      {isDark ? (
+        <FaSun onClick={() => setTheme('light')} />
+      ) : (
+        <FaMoon onClick={() => setTheme('dark')} />
       )}
     </div>
   );

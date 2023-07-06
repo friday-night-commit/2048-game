@@ -2,7 +2,7 @@ import { FC } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'quill-emoji/dist/quill-emoji.css';
-// @ts-ignore // Без этого не работает
+// @ts-ignore
 import quillEmoji from 'react-quill-emoji';
 
 import './index.scss';
@@ -30,7 +30,9 @@ const TextEditor: FC<TextEditorProps> = ({
   );
 
   const postContent = useAppSelector(state => state.forumSlice.postContent);
-  const commentContent = useAppSelector(state => state.commentSlice.commentContent);
+  const commentContent = useAppSelector(
+    state => state.commentSlice.commentContent
+  );
 
   const dispatch = useAppDispatch();
 

@@ -11,7 +11,8 @@
     "test": "lerna run test",
     "lint": "lerna run lint",
     "format": "lerna run format",
-    "preview": "lerna run preview"
+    "preview": "lerna run preview",
+    "docker": "docker-compose -f docker-compose.yml up -d"
   },
   "license": "MIT",
   "workspaces": [

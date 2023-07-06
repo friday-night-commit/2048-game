@@ -10,9 +10,7 @@ const PostEmpty: FC<PostEmptyProps> = ({ title }) => {
     <div className='empty-block'>
       <span className='empty-icon'></span>
       <div className='wrapper'>
-        <div className='typing-demo'>
-        {title}
-        </div>
+        <div className='typing-demo'>{title}</div>
       </div>
     </div>
   );

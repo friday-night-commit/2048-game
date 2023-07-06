@@ -10,14 +10,17 @@ type QuillContentProps = {
 };
 
 const QuillContent: FC<QuillContentProps> = ({
-                                               content,
-                                               textAreaHeight = 200
-                                             }: QuillContentProps) => {
-
-  return <ReactQuill
-    style={{ height: textAreaHeight }}
-    value={content} readOnly={true} theme={'bubble'} />;
-
+  content,
+  textAreaHeight = 200,
+}: QuillContentProps) => {
+  return (
+    <ReactQuill
+      style={{ height: textAreaHeight }}
+      value={content}
+      readOnly={true}
+      theme={'bubble'}
+    />
+  );
 };
 
 export default QuillContent;
