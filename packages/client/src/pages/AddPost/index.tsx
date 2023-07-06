@@ -74,6 +74,7 @@ export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
       if (!tag) {
         return;
       }
+
       const newPost: ForumPost = {
         title,
         tag,
