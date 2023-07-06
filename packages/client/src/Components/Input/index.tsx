@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import InputValidator, {
-  ValidatorTypes,
+  ValidatorTypes
 } from '../../Utils/Validators/InputValidator';
 import './index.scss';
 import { Input as TWInput } from '@material-tailwind/react';
@@ -18,15 +18,15 @@ type InputProps = {
 };
 
 const Input: FC<InputProps> = ({
-  required,
-  placeholder,
-  type,
-  name,
-  label,
-  validationType,
-  value,
-  onChange,
-}: InputProps) => {
+                                 required,
+                                 placeholder,
+                                 type,
+                                 name,
+                                 label,
+                                 validationType,
+                                 value,
+                                 onChange
+                               }: InputProps) => {
   const [error, setError] = useState('');
   const [inputValue, setInputValue] = useState(value || '');
 
@@ -36,21 +36,23 @@ const Input: FC<InputProps> = ({
     }
   }, [value]);
 
-  const handleChange = useCallback(function (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) {
-    if (!e) {
-      return;
-    }
-    setInputValue(e.currentTarget.value);
-    const target = e.target as HTMLInputElement;
-    const validator = new InputValidator(target, validationType);
-    validator.check();
-    const error = validator.getError();
-    setError(error);
-    if (onChange) onChange(e);
-  },
-  []);
+  const handleChange = useCallback(function(
+      e: React.ChangeEvent<HTMLInputElement>
+    ) {
+      if (!e) {
+        return;
+      }
+
+      const value = e.currentTarget.value.replace(/^(javascript)/, '');
+      setInputValue(value);
+      const target = e.target as HTMLInputElement;
+      const validator = new InputValidator(target, validationType);
+      validator.check();
+      const error = validator.getError();
+      setError(error);
+      if (onChange) onChange(e);
+    },
+    []);
 
   return (
     <div className='default-input'>
