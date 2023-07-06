@@ -21,7 +21,7 @@ export enum COMMENT_LABEL_TYPE {
 export type ImgResponse = { url: string };
 
 export interface ForumPost {
-  id: number;
+  id?: number;
   title: string;
   text: string;
   tag: string;

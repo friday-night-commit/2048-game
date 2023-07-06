@@ -78,6 +78,7 @@ export const AddPostPage = () => {
       if (!tag) {
         return;
       }
+
       const newPost: ForumPost = {
         title,
         tag,
