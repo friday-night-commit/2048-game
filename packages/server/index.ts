@@ -13,7 +13,7 @@ import { getYandexUser, checkYandexUser, renderSSR } from './middlewares';
 import { dbConnect } from './db';
 import multer from 'multer';
 import fs from 'fs';
-// import bodyParser from 'body-parser';
+import bodyParser from 'body-parser';
 import router from './routers';
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -21,9 +21,7 @@ const isDev = process.env.NODE_ENV === 'development';
 async function startServer() {
   const port = Number(process.env.SERVER_PORT) || 5000;
 
-  const app = express().use(cookieParser()).use(cors());
-  //.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
-  // .use(bodyParser.json({ limit: '50mb' }));
+  const app = express();
 
   const vite = await initVite(app);
 
@@ -43,6 +41,10 @@ async function startServer() {
   );
 
   app.use(express.json());
+
+  app.use(cookieParser()).use(cors())
+    .use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
+    .use(bodyParser.json({ limit: '50mb' }));
 
   const storage = multer.diskStorage({
     destination: (_, __, cb) => {
