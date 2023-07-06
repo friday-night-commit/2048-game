@@ -1,0 +1,47 @@
+@import '../../variables.scss';
+
+.navbar {
+  color: $font-color;
+
+  a {
+    @include hover-link;
+    color: $dark-brown;
+
+    &.active {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
+
+  a.title {
+    font-size: 80px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    &:hover {
+      color: $orange-tile;
+    }
+  }
+
+  .score-container {
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+    background: $orange-tile;
+    padding: 15px 25px;
+    border-radius: 3px;
+  }
+}
+
+.toggle-button {
+  color: $font-color;
+  border: 2px solid $orange-tile;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.toggle-button:hover {
+  background-color: $light-orange-tile;
+  color: white;
+}

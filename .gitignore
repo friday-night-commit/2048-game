@@ -1,6 +1,9 @@
 node_modules/
+.yarn
 .env
 .idea
 .vscode
 dist
 tmp
+/packages/server/uploads
+yarn-error.log

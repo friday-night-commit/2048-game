@@ -1,18 +1,22 @@
-import { useEffect } from 'react'
-import './App.css'
+import { useEffect } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 
-function App() {
+import useAuth from './hooks/useAuth';
+import routes from './routes';
+
+const App = () => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { getUserData } = useAuth();
+
   useEffect(() => {
-    const fetchServerData = async () => {
-      const url = `http://localhost:${__SERVER_PORT__}`
-      const response = await fetch(url)
-      const data = await response.json()
-      console.log(data)
-    }
+    (async () => {
+      const user = await getUserData();
+      if (user && pathname === '/') navigate(`/${routes.mainPage}`);
+    })();
+  }, []);
 
-    fetchServerData()
-  }, [])
-  return <div className="App">Вот тут будет жить ваше приложение :)</div>
-}
+  return <Outlet />;
+};
 
-export default App
+export default App;

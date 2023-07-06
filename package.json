@@ -6,11 +6,13 @@
     "build": "lerna run build",
     "dev:client": "lerna run dev  --scope=client",
     "dev:server": "lerna run dev --scope=server",
+    "start:server": "nodemon dist/server/index.js --watch dist/server",
     "dev": "lerna run dev",
     "test": "lerna run test",
     "lint": "lerna run lint",
     "format": "lerna run format",
-    "preview": "lerna run preview"
+    "preview": "lerna run preview",
+    "docker": "docker-compose -f docker-compose.yml up -d"
   },
   "license": "MIT",
   "workspaces": [
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@evilmartians/lefthook": "^1.1.1",
-    "lerna": "^5.4.3"
+    "lerna": "^5.4.3",
+    "ts-node": "^10.9.1"
   }
 }

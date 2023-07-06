@@ -1,0 +1,11 @@
+@import '../../variables.scss';
+
+.game-container {
+  background: $light-brown;
+  border-radius: 10px;
+  width: fit-content;
+
+  canvas {
+    margin: auto;
+  }
+}

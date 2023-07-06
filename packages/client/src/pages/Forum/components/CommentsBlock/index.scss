@@ -1,0 +1,51 @@
+@import '../../../../variables.scss';
+
+.user-block {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.comments-block {
+  overflow-y: auto;
+  max-height: 48rem;
+  &::-webkit-scrollbar,
+  &::-webkit-scrollbar-thumb,
+  &::-webkit-scrollbar-track {
+    width: 3px;
+    border: none;
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background-color: $light-orange-tile;
+  }
+}
+
+hr.solid {
+  border-top: 0.1rem solid $background-color;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+
+  &__footer {
+    display: flex;
+    justify-items: center;
+    justify-content: space-between;
+  }
+
+  &__date {
+    font-size: 1rem;
+    font-weight: 700;
+    color: $light-orange-tile;
+  }
+
+  &__title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: $font-color;
+  }
+}

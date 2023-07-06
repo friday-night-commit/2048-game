@@ -1,20 +1,88 @@
-import dotenv from 'dotenv'
-import cors from 'cors'
-dotenv.config()
+import dotenv from 'dotenv';
 
-import express from 'express'
-import { createClientAndConnect } from './db'
+dotenv.config({ path: '../../.env' });
 
-const app = express()
-app.use(cors())
-const port = Number(process.env.SERVER_PORT) || 3001
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import { createProxyMiddleware } from 'http-proxy-middleware';
+import path from 'node:path';
 
-createClientAndConnect()
+import { distPath, initVite } from './services/init-vite';
+import { getYandexUser, checkYandexUser, renderSSR } from './middlewares';
+import { dbConnect } from './db';
+import multer from 'multer';
+import fs from 'fs';
+// import bodyParser from 'body-parser';
+import router from './routers';
 
-app.get('/', (_, res) => {
-  res.json('👋 Howdy from the server :)')
-})
+const isDev = process.env.NODE_ENV === 'development';
 
-app.listen(port, () => {
-  console.log(`  ➜ 🎸 Server is listening on port: ${port}`)
-})
+async function startServer() {
+  const port = Number(process.env.SERVER_PORT) || 5000;
+
+  const app = express().use(cookieParser()).use(cors());
+  //.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
+  // .use(bodyParser.json({ limit: '50mb' }));
+
+  const vite = await initVite(app);
+
+  if (!isDev && !!distPath) {
+    app.use('/assets', express.static(path.resolve(distPath, 'assets')));
+  }
+
+  app.use(
+    '/api/v2',
+    createProxyMiddleware({
+      changeOrigin: true,
+      cookieDomainRewrite: {
+        '*': ''
+      },
+      target: 'https://ya-praktikum.tech'
+    })
+  );
+
+  app.use(express.json());
+
+  const storage = multer.diskStorage({
+    destination: (_, __, cb) => {
+      if (!fs.existsSync('uploads')) {
+        fs.mkdirSync('uploads');
+      }
+      cb(null, 'uploads');
+    },
+    filename: (_, file, cb) => {
+      cb(null, file.originalname);
+    }
+  });
+
+  const upload = multer({ storage });
+
+  app.post('/upload', upload.single('image'), (req, res) => {
+    // eslint-disable-next-line no-console
+    console.log('req.file', req.file);
+    if (!req.file) {
+      return;
+    }
+    res.json({
+      url: `/uploads/${req.file.originalname}`
+    });
+  });
+
+  app.use('*', getYandexUser);
+  app.use('/uploads', express.static('uploads'));
+  app.use('/api/forum/topics', checkYandexUser);
+
+  app.use('/api', router);
+
+  app.use('*', async (req, res, next) => renderSSR(req, res, next, vite));
+
+  app.listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`  ➜ 🎸 Server is listening on port: ${port}`);
+  });
+}
+
+startServer();
+
+dbConnect();

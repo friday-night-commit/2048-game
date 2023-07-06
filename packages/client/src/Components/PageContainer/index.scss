@@ -1,0 +1,52 @@
+@import '../../variables.scss';
+
+.page-container {
+  padding: 2em;
+
+  .game-page-container {
+    width: fit-content;
+    margin: auto;
+  }
+
+  .game-modal {
+    .title,
+    .content {
+      color: $font-color;
+    }
+  }
+
+  .game-button {
+    line-height: 28px;
+    font-size: 28px;
+    background: $dark-brown;
+    border-width: 0px;
+    box-shadow: none;
+
+    &:hover {
+      box-shadow: 2px 2px 6px lighten($dark-brown, 20%) !important;
+    }
+
+    &.small {
+      line-height: 22px;
+      font-size: 14px;
+    }
+
+    &.alert {
+      background: $orange-tile;
+    }
+
+    &.fullscreen {
+      width: 120px;
+      font-size: 10px;
+      margin-left: 10px;
+      text-align: left;
+      padding: 13px;
+    }
+  }
+
+  h5 a {
+    @include hover-link;
+    text-decoration: underline;
+    font-weight: bold;
+  }
+}
