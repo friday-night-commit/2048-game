@@ -549,6 +549,11 @@ export default class Engine {
       this.render();
       this.addHistory();
     } else {
+
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+
       if (this.score >= Engine.FINAL_SCORE) {
         this._openSuccess();
       } else {
