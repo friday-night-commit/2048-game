@@ -17,6 +17,7 @@ import {
   createPost,
   loadPostPreview,
 } from '../../store/slices/Forum';
+import { useCSRFToken } from '../../hooks/useCSRFToken';
 
 export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -25,6 +26,10 @@ export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const content = useAppSelector(state => state.forumSlice.postContent);
+  const token = useCSRFToken();
+  // eslint-disable-next-line no-console
+  console.log('token', token);
+
 
   function handleUpload(e: React.FormEvent<HTMLInputElement>) {
     if (!e) {
