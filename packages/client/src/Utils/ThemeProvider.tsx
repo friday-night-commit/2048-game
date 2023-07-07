@@ -3,6 +3,7 @@ import React, { FC, useEffect, useState } from 'react';
 const getInitialTheme = (store): string => {
   if (typeof window !== 'undefined' && window.localStorage) {
     const themeFromDB = store.getState().userSlice.user.theme;
+
     const storedPrefs = window.localStorage.getItem('color-theme');
     if (storedPrefs && storedPrefs !== themeFromDB) {
       return storedPrefs;

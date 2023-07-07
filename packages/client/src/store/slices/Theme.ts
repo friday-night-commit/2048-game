@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import ThemeController from '../../Controllers/ThemeController';
-import { ThemeUser } from '../../Components/ThemeToggler/theme.interfaces';
+import { ThemeUser, Theme } from '../../Components/ThemeToggler/theme.interfaces';
 
 export enum STATE_STATUS {
   LOADED = 'loaded',
@@ -10,10 +10,12 @@ export enum STATE_STATUS {
 
 interface IState {
   userTheme: string;
+  theme: Theme[];
 }
 
 const initialState: IState = {
   userTheme: 'light',
+  theme: [],
 };
 
 export const getThemeByName = createAsyncThunk('getThemeByName', async (name: string) => {
@@ -41,6 +43,12 @@ const themeSlice = createSlice({
     updateThemeForUser(state, action: PayloadAction<string>) {
       state.userTheme = action.payload;
     },
+  },
+  extraReducers: build => {
+    // GET User theme
+    build.addCase(getUserTheme.fulfilled, (state, action) => {
+      state.theme = action.payload;
+    });
   },
 });
 

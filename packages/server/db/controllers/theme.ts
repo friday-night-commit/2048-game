@@ -14,12 +14,12 @@ async function getThemeByUser(userId: string): Promise<Theme | null> {
     // @ts-ignore
     where: { yandexId: userId },
     include: [
-      { model: User, required: true },
+      { model: User, as: 'user', required: true },
     ],
   });
 }
 
-async function fullTable(): Promise<Theme[]> {
+async function fillTable(): Promise<Theme[]> {
   return await Theme.bulkCreate([
     { name: 'light' },
     { name: 'dark' }
@@ -35,5 +35,5 @@ export default {
   getThemeByName,
   getThemeByUser,
   updateThemeForUser,
-  fullTable
+  fillTable
 };

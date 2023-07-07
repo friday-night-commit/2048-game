@@ -41,6 +41,20 @@ export const paramsSchemas = {
 };
 
 class ThemeController {
+  async createTheme(_req: Request, res: Response, next: NextFunction) {
+    try {
+      const theme = await dbThemeController.fillTable();
+      if (theme) {
+        res.status(201).json(theme);
+      } else {
+        return next(ApiError.badRequest(ErrorMsg.NOT_CREATED));
+      }
+    } catch (err) {
+      return next(
+        ApiError.badRequest(ErrorMsg.NOT_CREATED, err as Error)
+      );
+    }
+  }
 
   async getThemeById(req: Request, res: Response, next: NextFunction) {
     const { themeId } = req.params;
