@@ -1,14 +1,19 @@
 import React, { FC, useEffect, useState } from 'react';
+import { RootTypeStore } from '../main';
 
-const getInitialTheme = (store): string => {
+const getInitialTheme = (store: RootTypeStore): string => {
   if (typeof window !== 'undefined' && window.localStorage) {
+
+    // @ts-ignore
     const themeFromDB = store.getState().userSlice.user.theme;
 
-    const storedPrefs = window.localStorage.getItem('color-theme');
-    if (storedPrefs && storedPrefs !== themeFromDB) {
-      return storedPrefs;
-    } else {
+    if (themeFromDB) {
       return themeFromDB;
+    }
+
+    const storedPrefs = window.localStorage.getItem('color-theme');
+    if (storedPrefs) {
+      return storedPrefs;
     }
   }
 
@@ -23,7 +28,7 @@ type TOwnProps = {
 
 type ThemeProviderProps = {
   children: JSX.Element | JSX.Element[];
-  store: any;
+  store: RootTypeStore;
 };
 
 const defaultValue: TOwnProps = {

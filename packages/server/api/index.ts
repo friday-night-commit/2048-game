@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import TopicRouter from './topics';
-import ThemeRouter from './theme';
+import ThemeRouter from '../routers/theme';
 
 
 const router: Router = Router();

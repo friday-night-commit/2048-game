@@ -13,11 +13,12 @@ export class YandexAPIRepository {
 
     if(data) {
       try {
-        data.theme = await axios.get (`http://localhost:5000/api/theme/getThemeByUser/${data.id}`, {
+        const theme = await axios.get (`http://localhost:5000/api/theme/getThemeByUser/${data.id}`, {
           headers: {
             'Content-Type': 'application/json;charset=utf-8',
           }
         });
+        data.theme = theme.data.name;
       } catch (e) {
         data.theme = 'light';
       }

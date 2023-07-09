@@ -50,12 +50,14 @@ export class ThemeAPI {
   }
 
   async updateUserTheme(data: ThemeUser) : Promise<Theme[]>{
+    console.log(data)
     const response = await fetch(`/changeTheme/${data.themeId}/${data.userId}`, {
       ...options,
       method: 'PUT',
       body: JSON.stringify(data),
       credentials: 'include',
     });
+    console.log(response)
     const json = await response.json();
     if (!response.ok) {
       throw new Error(json?.reason);

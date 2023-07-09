@@ -2,12 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import ThemeController from '../../Controllers/ThemeController';
 import { ThemeUser, Theme } from '../../Components/ThemeToggler/theme.interfaces';
 
-export enum STATE_STATUS {
-  LOADED = 'loaded',
-  LOADING = 'loading',
-  Error = 'error',
-}
-
 interface IState {
   userTheme: string;
   theme: Theme[];
@@ -47,6 +41,9 @@ const themeSlice = createSlice({
   extraReducers: build => {
     // GET User theme
     build.addCase(getUserTheme.fulfilled, (state, action) => {
+      state.theme = action.payload;
+    });
+    build.addCase(getThemeByName.fulfilled, (state, action) => {
       state.theme = action.payload;
     });
   },

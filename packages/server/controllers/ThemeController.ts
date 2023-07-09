@@ -23,12 +23,6 @@ const themeIdParamSchema = {
   required: true,
 };
 
-const themeNameParamSchema = {
-  name: 'name',
-  type: 'string',
-  required: true,
-};
-
 const userIdParamSchema = {
   name: 'userId',
   type: 'number',
@@ -36,26 +30,10 @@ const userIdParamSchema = {
 };
 
 export const paramsSchemas = {
-  post: [themeIdParamSchema, themeNameParamSchema],
-  put: [themeIdParamSchema, themeNameParamSchema, userIdParamSchema]
+  put: [themeIdParamSchema, userIdParamSchema]
 };
 
 class ThemeController {
-  async createTheme(_req: Request, res: Response, next: NextFunction) {
-    try {
-      const theme = await dbThemeController.fillTable();
-      if (theme) {
-        res.status(201).json(theme);
-      } else {
-        return next(ApiError.badRequest(ErrorMsg.NOT_CREATED));
-      }
-    } catch (err) {
-      return next(
-        ApiError.badRequest(ErrorMsg.NOT_CREATED, err as Error)
-      );
-    }
-  }
-
   async getThemeById(req: Request, res: Response, next: NextFunction) {
     const { themeId } = req.params;
 
@@ -109,7 +87,7 @@ class ThemeController {
 
     try {
       const theme = await dbThemeController.getThemeByUser(
-        userId
+        Number(userId)
       );
       if (theme) {
         res.status(200).json(theme);
@@ -129,24 +107,24 @@ class ThemeController {
   }
 
   async updateThemeForUser(req: Request, res: Response, next: NextFunction) {
-    const { id, userId } = req.body;
+    const { themeId, userId } = req.body;
 
     try {
       const theme = await dbThemeController.updateThemeForUser(
-        Number(id),
-        userId,
+        Number(themeId),
+        Number(userId),
       );
       if (theme) {
         res.status(200).json(theme);
       } else {
         return next(
-          ApiError.badRequest(ErrorMsg.NOT_FOUND + ParamsName.THEME_ID + id)
+          ApiError.badRequest(ErrorMsg.NOT_FOUND + ParamsName.THEME_ID + themeId)
         );
       }
     } catch (err) {
       return next(
         ApiError.badRequest(
-          ErrorMsg.NOT_FOUND + ParamsName.THEME_ID + id,
+          ErrorMsg.NOT_FOUND + ParamsName.THEME_ID + themeId,
           err as Error
         )
       );

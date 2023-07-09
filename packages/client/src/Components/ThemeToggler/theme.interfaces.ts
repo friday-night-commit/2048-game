@@ -4,6 +4,6 @@ export interface Theme {
 }
 
 export interface ThemeUser {
-  userId?: string;
   themeId?: number;
+  userId?: number;
 }

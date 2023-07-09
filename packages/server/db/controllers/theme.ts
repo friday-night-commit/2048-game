@@ -9,13 +9,10 @@ async function getThemeByName(name: string): Promise<Theme | null> {
   return await Theme.findOne({ where: { name: name } });
 }
 
-async function getThemeByUser(userId: string): Promise<Theme | null> {
+async function getThemeByUser(userId: number): Promise<Theme | null> {
+  const user = await User.findOne({ where: { yandexId: userId } });
   return await Theme.findOne({
-    // @ts-ignore
-    where: { yandexId: userId },
-    include: [
-      { model: User, as: 'user', required: true },
-    ],
+    where: { id: user!.themeId }
   });
 }
 
@@ -26,7 +23,7 @@ async function fillTable(): Promise<Theme[]> {
   ]);
 }
 
-async function updateThemeForUser(themeId: number, userId: string): Promise<[affectedCount: number]> {
+async function updateThemeForUser(themeId: number, userId: number): Promise<[affectedCount: number]> {
   return await User.update({ themeId: themeId }, { where: { yandexId: userId } });
 }
 

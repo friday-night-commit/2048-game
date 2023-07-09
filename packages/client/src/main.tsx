@@ -23,6 +23,7 @@ const store = createStore(
   new UserService(new YandexAPIRepository()),
   initialState as StoreState
 );
+export type RootTypeStore = typeof store;
 
 delete window.__REDUX_INITIAL_STATE__;
 

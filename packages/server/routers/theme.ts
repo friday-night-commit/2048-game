@@ -9,7 +9,7 @@ import ThemeController, {
 const router: Router = Router();
 
 router
-  .route('/changeTheme/:id([0-9]+)/:userId([0-9]+)')
+  .route('/changeTheme/:themeId([0-9]+)/:userId([0-9]+)')
   .put(validateParams(themeParamsSchemas.put), ThemeController.updateThemeForUser);
 router
   .route('/getThemeByName/:name([a-zA-Z]+)')
