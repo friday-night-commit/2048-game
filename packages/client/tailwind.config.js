@@ -10,7 +10,7 @@ export default withMT({
   ],
   darkMode: 'class',
   theme: {
-    extend: {}
+    extend: {},
   },
   plugins: [],
 });

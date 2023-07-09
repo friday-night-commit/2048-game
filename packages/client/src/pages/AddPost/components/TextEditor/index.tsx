@@ -2,17 +2,23 @@ import { FC } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import 'quill-emoji/dist/quill-emoji.css';
-// @ts-ignore // Без этого не работает
+// @ts-ignore
 import quillEmoji from 'react-quill-emoji';
 
 import './index.scss';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
+import { updatePostContent } from '../../../../store/slices/Forum';
+import { updateCommentContent } from '../../../../store/slices/Comment';
+import { CONTENT_TYPE } from '../../../Forum/forum.interfaces';
 
 type TextEditorProps = {
   textAreaHeight: number;
+  contentType: CONTENT_TYPE;
 };
 
 const TextEditor: FC<TextEditorProps> = ({
   textAreaHeight = 350,
+  contentType,
 }: TextEditorProps) => {
   Quill.register(
     {
@@ -22,6 +28,13 @@ const TextEditor: FC<TextEditorProps> = ({
     },
     true
   );
+
+  const postContent = useAppSelector(state => state.forumSlice.postContent);
+  const commentContent = useAppSelector(
+    state => state.commentSlice.commentContent
+  );
+
+  const dispatch = useAppDispatch();
 
   const modules = {
     'emoji-textarea': true,
@@ -62,9 +75,12 @@ const TextEditor: FC<TextEditorProps> = ({
     'image',
     'video',
   ];
-  const handleChange = (html: unknown) => {
-    // eslint-disable-next-line no-console
-    console.log('handleChange', html);
+  const handleChange = (html: string) => {
+    if (contentType === CONTENT_TYPE.POST) {
+      dispatch(updatePostContent(html));
+    } else if (contentType === CONTENT_TYPE.COMMENT) {
+      dispatch(updateCommentContent(html));
+    }
   };
 
   return (
@@ -75,7 +91,8 @@ const TextEditor: FC<TextEditorProps> = ({
         onChange={handleChange}
         modules={modules}
         formats={formats}
-        placeholder='Hello'
+        placeholder='Write new text'
+        value={contentType === CONTENT_TYPE.POST ? postContent : commentContent}
       />
     </div>
   );

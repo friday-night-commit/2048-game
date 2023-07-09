@@ -5,6 +5,7 @@ export type ValidatorTypes =
   | 'password'
   | 'phone'
   | 'message'
+  | 'tag'
   | 'default';
 
 type RuleType<P> = {
@@ -29,85 +30,93 @@ class InputValidator {
       pattern: {
         value: '^[а-яА-ЯёЁa-zA-Z-]{3,20}$',
         message:
-          'От 3 до 20 символов, латиница или кириллица, без пробелов и без цифр, нет спецсимволов (допустим только дефис)',
+          'От 3 до 20 символов, латиница или кириллица, без пробелов и без цифр, нет спецсимволов (допустим только дефис)'
       },
       maxlength: {
-        value: 20,
+        value: 20
       },
       minlength: {
-        value: 3,
+        value: 3
       },
       required: {
-        value: true,
-      },
+        value: true
+      }
     },
     login: {
       pattern: {
         value: '^[a-zA-Z][a-zA-Z0-9-_]{3,20}$',
-        message: 'От 3 до 20 символов, только латинские символы',
+        message: 'От 3 до 20 символов, только латинские символы'
       },
       maxlength: {
-        value: 20,
+        value: 20
       },
       minlength: {
-        value: 3,
+        value: 3
       },
       required: {
-        value: true,
-      },
+        value: true
+      }
     },
     password: {
       pattern: {
         value: '(?=.*\\d)(?=.*[A-ZА-ЯЁ]).{8,40}',
         message:
-          'От 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра',
+          'От 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра'
       },
       required: {
-        value: true,
+        value: true
       },
       maxlength: {
-        value: 40,
+        value: 40
       },
       minlength: {
-        value: 8,
-      },
+        value: 8
+      }
     },
     message: {
       required: {
-        value: true,
-      },
+        value: true
+      }
     },
     email: {
       pattern: {
         value:
           '^[a-zA-Z0-9.!#$%&\' * +/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$',
-        message: 'Неверный формат e-mail',
+        message: 'Неверный формат e-mail'
       },
       required: {
-        value: true,
-      },
+        value: true
+      }
     },
-
+    tag: {
+      pattern: {
+        value: '^[A-Za-z,\u0401\u0451\u0410-\u044f]+$',
+        message: 'Tag должен содержать одно слово'
+      },
+      required: {
+        value: true
+      }
+    },
     phone: {
       pattern: {
         value: '^[0-9+][0-9]{10,15}$',
-        message: 'От 10 до 15 символов, может начинается с плюса',
+        message: 'От 10 до 15 символов, может начинается с плюса'
       },
       required: {
-        value: true,
+        value: true
       },
       maxlength: {
-        value: 15,
+        value: 15
       },
       minlength: {
-        value: 8,
-      },
+        value: 8
+      }
     },
     default: {
       required: {
-        value: true,
-      },
-    },
+        value: true
+      }
+    }
   };
 
   private readonly element: HTMLInputElement | HTMLTextAreaElement;
@@ -171,7 +180,6 @@ class InputValidator {
       }
       isValid = false;
     }
-
     if (validity.patternMismatch) {
       this._addInvalidity('Неверный формат данных');
       if (rules.pattern?.message) {

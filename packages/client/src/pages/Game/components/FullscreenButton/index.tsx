@@ -11,4 +11,4 @@ export default function FullScreenButton() {
       <img width='20' src={fullscreenIcon} alt='Включить полноэкранный режим' />
     </Button>
   );
-};
+}

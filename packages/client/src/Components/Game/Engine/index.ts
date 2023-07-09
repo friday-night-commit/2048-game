@@ -3,8 +3,10 @@ import { Utils } from '../Utils';
 import { AudioPlayer, SoundNames } from '../../../WebAPI/AudioPlayer';
 
 export type MatrixArray = (Cell | undefined)[][];
-export type HistoryMatrixArray = { stepIndex: number, historyMatrix: MatrixArray }[];
-
+export type HistoryMatrixArray = {
+  stepIndex: number;
+  historyMatrix: MatrixArray;
+}[];
 
 export enum Direction {
   UP = 'up',
@@ -37,7 +39,7 @@ const LISTENERS: Record<number, Direction> = {
 };
 
 export default class Engine {
-  static FINAL_SCORE = 2048;
+  static FINAL_SCORE = 32;
   static PIXELS_PER_FRAME = 25;
   static MAX_STEP_BACK = 5;
 
@@ -86,7 +88,6 @@ export default class Engine {
     isContinuePlay: boolean,
     addUserToLeaderboard: (score: number) => void
   ) {
-
     if (size < 2) {
       throw Error('Invalid size for cell matrix');
     }
@@ -105,7 +106,9 @@ export default class Engine {
     this._stepsBack = 0;
     this._isHistoryMove = false;
     this.historyBack = this.historyBackStep.bind(this);
-    this.historyBtn = document.getElementById('btn-step-back') as HTMLButtonElement;
+    this.historyBtn = document.getElementById(
+      'btn-step-back'
+    ) as HTMLButtonElement;
     this._wasMadeHistoryStep = 0;
 
     this._size = size;
@@ -246,7 +249,7 @@ export default class Engine {
 
   createListeners(): void {
     const listener = (event: KeyboardEvent) => {
-      if(!this._openModalSuccess && !this._openModalFail) {
+      if (!this._openModalSuccess && !this._openModalFail) {
         this.moveCells(LISTENERS[(event as KeyboardEvent).keyCode]);
         this.historyButtonClick();
       }
@@ -258,29 +261,42 @@ export default class Engine {
 
   addHistory(): void {
     localStorage.clear();
-    this._historyMatrix.push({ stepIndex: this._stepsBack, historyMatrix: this.clonePrevMatrix(this._matrix) });
-    localStorage.setItem(`key${this._stepsBack}`, JSON.stringify(this._historyMatrix));
+    this._historyMatrix.push({
+      stepIndex: this._stepsBack,
+      historyMatrix: this.clonePrevMatrix(this._matrix),
+    });
+    localStorage.setItem(
+      `key${this._stepsBack}`,
+      JSON.stringify(this._historyMatrix)
+    );
     this._stepsBack += 1;
     this._isHistoryMove = true;
   }
 
   historyButtonClick(): void {
-    this._isHistoryMove ? this.historyBtn.disabled = false : this.historyBtn.disabled = true;
+    this._isHistoryMove
+      ? (this.historyBtn.disabled = false)
+      : (this.historyBtn.disabled = true);
     this.historyBtn.addEventListener('click', this.historyBack);
   }
 
   historyBackStep(): void {
-      this._historyMatrix.splice(this._stepsBack-1, 1);
-      this._stepsBack -= 1;
-      this._wasMadeHistoryStep += 1;
+    this._historyMatrix.splice(this._stepsBack - 1, 1);
+    this._stepsBack -= 1;
+    this._wasMadeHistoryStep += 1;
 
-      if(this._historyMatrix.length === 1 || this._wasMadeHistoryStep >= Engine.MAX_STEP_BACK) {
-        this._isHistoryMove = false;
-        this.historyButtonClick();
-      }
-      
-      this._matrix = this.clonePrevMatrix(this._historyMatrix[this._stepsBack-1].historyMatrix);
-      this.render(true);
+    if (
+      this._historyMatrix.length === 1 ||
+      this._wasMadeHistoryStep >= Engine.MAX_STEP_BACK
+    ) {
+      this._isHistoryMove = false;
+      this.historyButtonClick();
+    }
+
+    this._matrix = this.clonePrevMatrix(
+      this._historyMatrix[this._stepsBack - 1].historyMatrix
+    );
+    this.render(true);
   }
 
   generateCell(): Position | undefined {
@@ -481,9 +497,11 @@ export default class Engine {
     ].filter(isCell);
   }
 
-  clonePrevMatrix(matrix: MatrixArray): MatrixArray{
+  clonePrevMatrix(matrix: MatrixArray): MatrixArray {
     // @ts-ignore
-    const clone = (items: MatrixArray) => items.map(item => Array.isArray(item) ? clone(item) : item);
+    const clone = (items: MatrixArray) =>
+      // @ts-ignore
+      items.map(item => (Array.isArray(item) ? clone(item) : item));
     return clone(matrix);
   }
 
@@ -531,6 +549,10 @@ export default class Engine {
       this.render();
       this.addHistory();
     } else {
+
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
 
       if (this.score >= Engine.FINAL_SCORE) {
         this._openSuccess();
@@ -592,7 +614,9 @@ export default class Engine {
     this.clear();
     this.drawGrid();
     if (history) {
-      this.historyRenderCells(this._historyMatrix[this._stepsBack-1].historyMatrix);
+      this.historyRenderCells(
+        this._historyMatrix[this._stepsBack - 1].historyMatrix
+      );
     } else {
       this.generateCell();
       this.renderCells(this._matrix);
@@ -611,12 +635,12 @@ export default class Engine {
   }
 
   historyRenderCells(matrix: MatrixArray) {
-    for (let i = 0; i<matrix.length; i++) {
-      for (let j = 0; j<matrix[i].length; j++){
-          if(matrix[i][j]) {
-            matrix[i][j]!.position = { x: j, y: i };
-            matrix[i][j]!.render(this.context);
-          }
+    for (let i = 0; i < matrix.length; i++) {
+      for (let j = 0; j < matrix[i].length; j++) {
+        if (matrix[i][j]) {
+          matrix[i][j]!.position = { x: j, y: i };
+          matrix[i][j]!.render(this.context);
+        }
       }
     }
   }

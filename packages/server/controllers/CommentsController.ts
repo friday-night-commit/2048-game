@@ -2,7 +2,6 @@ import type { Request, Response, NextFunction } from 'express';
 
 import dbCommentsController from '../db/controllers/comments';
 import ApiError from './ApiError';
-import { getYandexId } from '../middlewares/checkYandexUser';
 import checkTextLength from './checkTextLength';
 
 const textParamSchema = {
@@ -68,17 +67,18 @@ class CommentsController {
   async createComment(req: Request, res: Response, next: NextFunction) {
     const { topicId } = req.params;
     const { text, parentId } = req.body;
-    const yandexId = getYandexId(res);
 
     try {
       const comment = await dbCommentsController.createComment(
         text,
-        Number(yandexId),
+        Number(res.locals.user.id),
         Number(topicId),
         parentId
       );
+
       if (comment) {
-        res.status(201).json(comment);
+        const updatedComment = await dbCommentsController.getCommentById(comment.id);
+        res.status(201).json(updatedComment);
       } else {
         return next(ApiError.badRequest('Не получилось создать комментарий'));
       }
@@ -86,6 +86,17 @@ class CommentsController {
       return next(
         ApiError.badRequest('Не получилось создать комментарий', err as Error)
       );
+    }
+  }
+
+  async getLastComments(req: Request, res: Response, next: NextFunction) {
+    const limit = req.query.limit || 3;
+
+    try {
+      const lastComments = await dbCommentsController.getLastComments(Number(limit));
+      res.status(200).json(lastComments);
+    } catch (err) {
+      return next(ApiError.badRequest('Не получилось получить последние комментарии', err as Error));
     }
   }
 

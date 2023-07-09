@@ -1,11 +1,4 @@
-import { API_URL } from './consts';
-
-const options: OptionsType = {
-  headers: {
-    'Content-Type': 'application/json;charset=utf-8',
-  },
-  credentials: 'include',
-};
+import { API_URL, options } from './consts';
 
 class UserAPI {
   private endpoint = `${API_URL}/api/v2/user`;
@@ -36,7 +29,6 @@ class UserAPI {
     if (!response.ok) {
       throw new Error(json?.reason);
     }
-
     return json;
   }
 

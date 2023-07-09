@@ -1,5 +1,4 @@
 import type { Request, Response, NextFunction } from 'express';
-
 import dbTopicsController from '../db/controllers/topics';
 import ApiError from './ApiError';
 import { getYandexId } from '../middlewares/checkYandexUser';
@@ -53,19 +52,29 @@ class TopicsController {
       const topics = await dbTopicsController.getAllTopics();
       res.status(200).json(topics);
     } catch (err) {
-      return next(ApiError.badRequest('Посты не найдены', err as Error));
+      return next(ApiError.badRequest('Не получилось получить посты', err as Error));
+    }
+  }
+
+  async getAllTags(_req: Request, res: Response, next: NextFunction) {
+    try {
+      const tags = await dbTopicsController.getAllTags();
+      res.status(200).json(tags);
+    } catch (err) {
+      return next(ApiError.badRequest('Не получилось получить теги', err as Error));
     }
   }
 
   async createTopic(req: Request, res: Response, next: NextFunction) {
-    const { title, text } = req.body;
-    const yandexId = getYandexId(res);
+    const { title, text, tag, imageUrl } = req.body;
 
     try {
       const topic = await dbTopicsController.createTopic(
         title,
         text,
-        Number(yandexId)
+        Number(res.locals.user.id),
+        tag,
+        imageUrl
       );
       if (topic) {
         res.status(201).json(topic);
@@ -104,7 +113,7 @@ class TopicsController {
 
     try {
       await dbTopicsController.deleteTopicById(Number(topicId));
-      res.sendStatus(204);
+      res.status(204).json(topicId);
     } catch (err) {
       return next(
         ApiError.badRequest('Не получилось удалить пост', err as Error)

@@ -1,7 +1,8 @@
 import { Button, Typography } from '@material-tailwind/react';
-import React, { FC, useCallback } from 'react';
+import { FC, useCallback } from 'react';
 
 import Modal from '../../../../Components/Modal';
+
 import { useAppDispatch } from '../../../../hooks/redux';
 import { closeModalFailure, renewMatrix } from '../../../../store/slices/Modal';
 
@@ -13,12 +14,10 @@ type ModalProps = {
 const FailureModal: FC<ModalProps> = ({ open, handleOpen }) => {
   const dispatch = useAppDispatch();
 
-  const refreshPage = useCallback(
-    function () {
-      dispatch(renewMatrix());
-      dispatch(closeModalFailure());
-    },[]
-  );
+  const restart = useCallback(() => {
+    dispatch(renewMatrix());
+    dispatch(closeModalFailure());
+  }, []);
 
   return (
     <Modal
@@ -31,7 +30,7 @@ const FailureModal: FC<ModalProps> = ({ open, handleOpen }) => {
           Ну что, еще поборемся за <b>2048</b>??
         </Typography>
         <div>
-          <Button className='game-button small' onClick={refreshPage}>
+          <Button className='game-button small' onClick={restart}>
             Начать сначала
           </Button>
         </div>

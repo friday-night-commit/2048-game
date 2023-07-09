@@ -1,0 +1,43 @@
+@import '/src/variables';
+
+.empty-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+.empty-icon {
+  background-image: url('../../assets/images/post-empty.svg');
+  @apply block;
+  @apply bg-no-repeat bg-center;
+  height: 600px;
+  width: 600px;
+}
+
+.wrapper {
+  height: 20vh;
+  display: grid;
+  place-items: center;
+}
+
+.typing-demo {
+  width: 22ch;
+  animation: typing 2s steps(22), blink 0.5s step-end infinite alternate;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid;
+  font-family: monospace;
+  font-size: 2em;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
