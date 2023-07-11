@@ -18,6 +18,7 @@ import {
   loadPostPreview,
 } from '../../store/slices/Forum';
 import { useCSRFToken } from '../../hooks/useCSRFToken';
+import ForumController from '../../Controllers/ForumController';
 
 export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -61,6 +62,15 @@ export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
   const onSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
+
+      // eslint-disable-next-line no-console
+      console.log('onSubmit token', token);
+      ForumController.setCSRFToken(token).then(r => {
+        // eslint-disable-next-line no-console
+        console.log('setCSRFToken req', r);
+        return r;
+      });
+
       const target = e.target as HTMLFormElement;
       const formData = new FormData(target);
       const title = formData.get('title')?.toString();
@@ -79,6 +89,8 @@ export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
       if (!tag) {
         return;
       }
+
+
       const newPost: ForumPost = {
         title,
         tag,

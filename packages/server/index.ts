@@ -9,7 +9,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import path from 'node:path';
 
 import { distPath, initVite } from './services/init-vite';
-import { getYandexUser, checkYandexUser, renderSSR } from './middlewares';
+import { getYandexUser, checkYandexUser, renderSSR, csrfMiddleware } from './middlewares';
 import { dbConnect } from './db';
 import multer from 'multer';
 import fs from 'fs';
@@ -22,9 +22,9 @@ async function startServer() {
   const port = Number(process.env.SERVER_PORT) || 5000;
 
   const app = express()
-    .use(cookieParser())
-    .use(cors())
-    .use(express.json());
+    .disable('x-powered-by')
+    .enable('trust proxy')
+    .use(cookieParser()).use(cors());
   //.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
   // .use(bodyParser.json({ limit: '50mb' }));
 
@@ -45,7 +45,7 @@ async function startServer() {
     })
   );
 
-
+  app.use(express.json());
 
   const storage = multer.diskStorage({
     destination: (_, __, cb) => {
@@ -63,6 +63,7 @@ async function startServer() {
 
   app.post('/upload', upload.single('image'), (req, res) => {
     // eslint-disable-next-line no-console
+    console.log('req.file', req.file);
     if (!req.file) {
       return;
     }
@@ -74,6 +75,8 @@ async function startServer() {
   app.use('*', getYandexUser);
   app.use('/uploads', express.static('uploads'));
   app.use('/api/forum/topics', checkYandexUser);
+
+  app.use(csrfMiddleware);
 
   app.use('/api', router);
 

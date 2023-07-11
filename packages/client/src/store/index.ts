@@ -26,10 +26,10 @@ export const createStore = (
     middleware: getDefaultMiddleware => {
       return getDefaultMiddleware({
         thunk: {
-          extraArgument: service
-        }
+          extraArgument: service,
+        },
       });
-    }
+    },
   });
 };
 

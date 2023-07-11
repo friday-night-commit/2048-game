@@ -18,6 +18,17 @@ class ForumController {
     }
   }
 
+  async setCSRFToken(token: string): Promise<Response | undefined> {
+    try {
+      return await ForumAPI.setCSRFToken(token);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log('ALERT', err);
+    //  alert(err);
+    }
+  }
+
+
   async getAllPosts(): Promise<ForumPost[]> {
     try {
       return await ForumAPI.getAllPosts();
