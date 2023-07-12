@@ -8,20 +8,20 @@ const titleParamSchema = {
   name: 'title',
   type: 'string',
   required: true,
-  validator_functions: [checkTextLength(200)],
+  validator_functions: [checkTextLength(200)]
 };
 
 const textParamSchema = {
   name: 'text',
   type: 'string',
   required: true,
-  validator_functions: [checkTextLength(600)],
+  validator_functions: [checkTextLength(600)]
 };
 
 const userIdParamSchema = {
   name: 'userId',
   type: 'number',
-  required: true,
+  required: true
 };
 
 export const paramsSchemas = {
@@ -49,6 +49,7 @@ class TopicsController {
 
   async getAllTopics(_req: Request, res: Response, next: NextFunction) {
     try {
+      // eslint-disable-next-line no-console
       const topics = await dbTopicsController.getAllTopics();
       res.status(200).json(topics);
     } catch (err) {
@@ -67,7 +68,6 @@ class TopicsController {
 
   async createTopic(req: Request, res: Response, next: NextFunction) {
     const { title, text, tag, imageUrl } = req.body;
-
     try {
       const topic = await dbTopicsController.createTopic(
         title,
@@ -76,6 +76,7 @@ class TopicsController {
         tag,
         imageUrl
       );
+
       if (topic) {
         res.status(201).json(topic);
       } else {

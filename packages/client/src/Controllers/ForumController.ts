@@ -2,9 +2,12 @@ import ForumAPI from '../api/ForumAPI';
 import { ForumPost, ImgResponse } from '../pages/Forum/forum.interfaces';
 
 class ForumController {
-  async createPost(post: ForumPost): Promise<ForumPost | undefined> {
+
+  // public setCSRFToken = (token: string) => ForumAPI.setCSRFToken(token);
+
+  async createPost(post: ForumPost, token: string): Promise<ForumPost | undefined> {
     try {
-      return await ForumAPI.createPost(post);
+      return await ForumAPI.createPost(post, token);
     } catch (err) {
       alert(err);
     }
@@ -17,17 +20,6 @@ class ForumController {
       alert(err);
     }
   }
-
-  async setCSRFToken(token: string): Promise<Response | undefined> {
-    try {
-      return await ForumAPI.setCSRFToken(token);
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log('ALERT', err);
-    //  alert(err);
-    }
-  }
-
 
   async getAllPosts(): Promise<ForumPost[]> {
     try {

@@ -40,11 +40,10 @@ export const getPostById = createAsyncThunk(
     return await ForumController.getPostById(id);
   }
 );
-
 export const createPost = createAsyncThunk(
   'createPost',
-  async (post: ForumPost) => {
-    return await ForumController.createPost(post);
+  async ({ post, token }: { post: ForumPost; token: string })=> {
+    return await ForumController.createPost(post, token);
   }
 );
 

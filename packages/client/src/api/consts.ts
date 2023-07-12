@@ -4,9 +4,9 @@ export const CSRF_TOKEN_NAME = '_csrf-token';
 export const options: OptionsType = {
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
-    'X-CSRF-Token': 'TEST_TOKEN'
+    'X-CSRF-Token': ''
   },
-  credentials: 'include',
+  credentials: 'include'
 };
 
 

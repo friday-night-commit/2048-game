@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 
 dotenv.config({ path: '../../.env' });
+import csurf from 'csurf';
 
 import express from 'express';
 import cookieParser from 'cookie-parser';
@@ -9,7 +10,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import path from 'node:path';
 
 import { distPath, initVite } from './services/init-vite';
-import { getYandexUser, checkYandexUser, renderSSR, csrfMiddleware } from './middlewares';
+import { getYandexUser, checkYandexUser, renderSSR } from './middlewares';
 import { dbConnect } from './db';
 import multer from 'multer';
 import fs from 'fs';
@@ -63,7 +64,6 @@ async function startServer() {
 
   app.post('/upload', upload.single('image'), (req, res) => {
     // eslint-disable-next-line no-console
-    console.log('req.file', req.file);
     if (!req.file) {
       return;
     }
@@ -76,7 +76,19 @@ async function startServer() {
   app.use('/uploads', express.static('uploads'));
   app.use('/api/forum/topics', checkYandexUser);
 
-  app.use(csrfMiddleware);
+  app.use(csurf({
+    cookie: {
+      path: '/',
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict'
+    }
+  }));
+
+  app.use(function(req, res, next) {
+    res.cookie('_csrf-token', req.csrfToken(), { path: '/', secure: true, maxAge: 3600, sameSite: 'strict' });
+    next();
+  });
 
   app.use('/api', router);
 

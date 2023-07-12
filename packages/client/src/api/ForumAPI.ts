@@ -1,12 +1,14 @@
 import { API_URL, options } from './consts';
 import { ForumPost, ImgResponse } from '../pages/Forum/forum.interfaces';
 
-
 export class ForumAPI {
   private endpoint = `${API_URL}/api/forum/topics`;
 
+  async createPost(data: ForumPost, tokenValue: string): Promise<ForumPost | never> {
 
-  async createPost(data: ForumPost): Promise<ForumPost | never> {
+    options.headers['X-CSRF-Token'] = tokenValue;
+    // eslint-disable-next-line no-console
+    console.log('options.headers', options.headers);
     const response = await fetch(`${this.endpoint}`, {
       ...options,
       method: 'POST',
@@ -18,12 +20,6 @@ export class ForumAPI {
     }
     return json;
   }
-
-  async setCSRFToken(token: string): Promise<void> {
-    // eslint-disable-next-line no-console
-    console.log('token', token);
-   // axios.defaults.headers.common['X-CSRF-Token'] = token;
-  };
 
   async loadPostPreview(formData: FormData): Promise<ImgResponse | never> {
     const response = await fetch(`${API_URL}/upload`, {
