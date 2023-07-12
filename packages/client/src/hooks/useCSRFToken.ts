@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
-import { useAppSelector } from './redux';
+import { useEffect } from 'react';
+import { useAppDispatch } from './redux';
 import { useCookies } from 'react-cookie';
-// import { CSRF_TOKEN_NAME } from '../api/consts';
+import { CSRF_TOKEN_NAME } from '../api/consts';
+import { setCSRFToken } from '../store/slices/Csrf';
 
 export const useCSRFToken = () => {
-  const [cookies] = useCookies();
-  // eslint-disable-next-line no-console
-  console.log('cookies', cookies);
-
-  const token = useAppSelector((state) => state.csrfSlice.token);
-  const [csrfToken, setCsrfToken] = useState(token);
-
+  const [cookies] = useCookies([CSRF_TOKEN_NAME]);
+  let token = '';
+  if(CSRF_TOKEN_NAME in cookies) {
+    token = cookies[CSRF_TOKEN_NAME].toString();
+  }
+  const dispatch = useAppDispatch();
   useEffect(() => {
-    setCsrfToken(token);
+    dispatch(setCSRFToken(token));
   }, [token]);
 
-  return csrfToken;
+  return token;
 };
