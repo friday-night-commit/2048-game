@@ -10,7 +10,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import path from 'node:path';
 
 import { distPath, initVite } from './services/init-vite';
-import { getYandexUser, checkYandexUser, renderSSR } from './middlewares';
+import { getYandexUser, checkYandexUser, renderSSR, helmetMiddleware } from './middlewares';
 import { dbConnect } from './db';
 import multer from 'multer';
 import fs from 'fs';
@@ -89,6 +89,8 @@ async function startServer() {
     res.cookie('_csrf-token', req.csrfToken(), { path: '/', secure: true, maxAge: 3600, sameSite: 'strict' });
     next();
   });
+
+  app.use(helmetMiddleware);
 
   app.use('/api', router);
 

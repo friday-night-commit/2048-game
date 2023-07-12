@@ -49,6 +49,7 @@
     "csurf": "^1.11.0",
     "eslint": "8.23.0",
     "express-session": "^1.17.3",
+    "helmet": "^7.0.0",
     "htmlescape": "1.1.1",
     "jest": "28",
     "multer": "1.4.5-lts.1",
