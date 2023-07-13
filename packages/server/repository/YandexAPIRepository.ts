@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { API_URL } from 'client/src/api/consts';
-import { INITIAL_THEME } from 'client/src/Components/ThemeToggler/theme.interfaces';
 const API_ROOT = 'https://ya-praktikum.tech/api/v2/';
+const API_URL = 'http://localhost:5000';
 
 export class YandexAPIRepository {
   constructor(private _cookieHeader: string | undefined) {}
@@ -22,7 +21,7 @@ export class YandexAPIRepository {
         });
         data.theme = theme.data.name;
       } catch (e) {
-        data.theme = INITIAL_THEME;
+        data.theme = 'light';
       }
     }
 
