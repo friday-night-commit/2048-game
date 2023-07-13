@@ -9,6 +9,7 @@ import {
 import { useCSRFToken } from '../../../../hooks/useCSRFToken';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { deletePost } from '../../../../store/slices/Forum';
+import { ReactionBlock } from '../../../../Components/ReactionBlock';
 
 const LazyQuillContentComponent = lazy(
   () => import('../../../AddPost/components/QuillContent/index')
@@ -29,7 +30,6 @@ export const Post: TProps = ({
                                imageUrl,
                                user,
                                viewsCount,
-                               reactionCount,
                                tag,
                                isFullPost,
                                isEditable,
@@ -86,8 +86,7 @@ export const Post: TProps = ({
                 </p>
 
                 <p className='flex items-center font-medium text-gray-800'>
-                  <span className='comments'></span>
-                  {reactionCount}
+                  <ReactionBlock topicId={id}/>
                 </p>
               </div>
             </div>

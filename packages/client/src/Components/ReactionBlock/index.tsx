@@ -3,9 +3,10 @@ import './index.scss';
 import { createReactionByPostId, getReactionsByPostId } from '../../store/slices/Reaction';
 import { Reaction } from '../../pages/Forum/forum.interfaces';
 import { useAppDispatch } from '../../hooks/redux';
+import { useCSRFToken } from '../../hooks/useCSRFToken';
 
 type ReactionBlockProps = {
-  topicId: number;
+  topicId: number | unknown;
 };
 
 export const enum REACTION_TYPE {
@@ -19,6 +20,8 @@ export const enum REACTION_TYPE {
 
 export const ReactionBlock: FC<ReactionBlockProps> = ({ topicId }) => {
   const dispatch = useAppDispatch();
+  const token = useCSRFToken();
+
   const [reactions, setReactions] = useState<Reaction[]>([]);
   let groupedReactions: Record<REACTION_TYPE, Reaction[]> = groupByType(reactions);
 
@@ -49,7 +52,7 @@ export const ReactionBlock: FC<ReactionBlockProps> = ({ topicId }) => {
     }
     const data = { type };
     dispatch(
-      createReactionByPostId({ id: Number(topicId), data })).then(data => {
+      createReactionByPostId({ id: Number(topicId), data, token })).then(data => {
       const newReaction = data.payload as Reaction;
       if (newReaction) {
         const updatedReactions = [...reactions, newReaction];
@@ -65,7 +68,6 @@ export const ReactionBlock: FC<ReactionBlockProps> = ({ topicId }) => {
       <label htmlFor='like' className='label-reactions'>
         {REACTION_TYPE.LIKE}
       </label>
-
       <div className='toolbox'></div>
       <label className='overlay' htmlFor='like'></label>
       <button
