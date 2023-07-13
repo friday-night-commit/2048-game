@@ -6,7 +6,7 @@ import { useAppDispatch } from '../../hooks/redux';
 import { useCSRFToken } from '../../hooks/useCSRFToken';
 
 type ReactionBlockProps = {
-  topicId: number | unknown;
+  topicId: number;
 };
 
 export const enum REACTION_TYPE {

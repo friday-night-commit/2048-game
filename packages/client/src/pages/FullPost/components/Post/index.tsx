@@ -32,14 +32,14 @@ export const Post: TProps = ({
                                viewsCount,
                                tag,
                                isFullPost,
-                               isEditable,
+                               isEditable
                              }: TOwnProps) => {
 
   const token = useCSRFToken();
   const dispatch = useAppDispatch();
   const onRemovePost = async () => {
     if (window.confirm('Вы действительно хотите удалить статью?')) {
-       id = Number(id);
+      id = Number(id);
       dispatch(deletePost({ id, token })).then();
       // TODO Кнопка "Remove Post" скрыта в компоненте
       isEditable = true;
@@ -86,7 +86,7 @@ export const Post: TProps = ({
                 </p>
 
                 <p className='flex items-center font-medium text-gray-800'>
-                  <ReactionBlock topicId={id}/>
+                  { id && <ReactionBlock topicId={id} />}
                 </p>
               </div>
             </div>
