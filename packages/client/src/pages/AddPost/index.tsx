@@ -28,8 +28,6 @@ export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
   const content = useAppSelector(state => state.forumSlice.postContent);
 
   const token = useCSRFToken();
-  // eslint-disable-next-line no-console
-  console.log('AddPostPage CSRF token', token);
 
   function handleUpload(e: React.FormEvent<HTMLInputElement>) {
     if (!e) {
@@ -86,9 +84,8 @@ export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
         title,
         tag,
         imageUrl,
-        text: content
+        text: content,
       };
-
       dispatch(createPost({ post, token })).then(data => {
         if (data) {
           backToPosts();

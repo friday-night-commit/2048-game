@@ -90,7 +90,7 @@ async function startServer() {
     next();
   });
 
-  app.use(helmetMiddleware);
+   app.use(helmetMiddleware);
 
   app.use('/api', router);
 

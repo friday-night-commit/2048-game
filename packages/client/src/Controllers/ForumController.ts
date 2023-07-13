@@ -38,9 +38,9 @@ class ForumController {
     }
   }
 
-  async deletePostById(id: number): Promise<number | undefined> {
+  async deletePostById(id: number, token: string): Promise<number | undefined> {
     try {
-      return await ForumAPI.deletePostById(id);
+      return await ForumAPI.deletePostById(id, token);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(`Error. ${id} has not been deleted`, err);

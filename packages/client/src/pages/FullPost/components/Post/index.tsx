@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import './index.scss';
 import moment from 'moment';
 import { DATE_FORMATS } from '../../../../Utils/dateFormats';
-import ForumController from '../../../../Controllers/ForumController';
 import {
   default_avatar, ForumPost
 } from '../../../Forum/forum.interfaces';
+import { useCSRFToken } from '../../../../hooks/useCSRFToken';
+import { useAppDispatch } from '../../../../hooks/redux';
+import { deletePost } from '../../../../store/slices/Forum';
 
 const LazyQuillContentComponent = lazy(
   () => import('../../../AddPost/components/QuillContent/index')
@@ -32,10 +34,15 @@ export const Post: TProps = ({
                                isFullPost,
                                isEditable,
                              }: TOwnProps) => {
+
+  const token = useCSRFToken();
+  const dispatch = useAppDispatch();
   const onRemovePost = async () => {
     if (window.confirm('Вы действительно хотите удалить статью?')) {
-      await ForumController.deletePostById(Number(id));
-      window.location.reload();
+       id = Number(id);
+      dispatch(deletePost({ id, token })).then();
+      // TODO Кнопка "Remove Post" скрыта в компоненте
+      isEditable = true;
     }
   };
 
@@ -47,7 +54,6 @@ export const Post: TProps = ({
   const isNew =
     moment(createdAt).format(DATE_FORMATS.SIMPLE_DATE_FORMAT) ===
     moment().format(DATE_FORMATS.SIMPLE_DATE_FORMAT);
-
   return (
     <div
       key={id}

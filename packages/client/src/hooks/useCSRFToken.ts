@@ -8,7 +8,6 @@ export const useCSRFToken = () => {
    const [cookies] = useCookies([CSRF_TOKEN_NAME]);
   // const token = useAppSelector((state) => state.csrfSlice.token);
   // eslint-disable-next-line no-console
-  console.log('cookies', cookies);
   const token = cookies[CSRF_TOKEN_NAME] || useAppSelector((state) => state.csrfSlice.token);
   const [csrfToken, setCsrfToken] = useState(token);
 

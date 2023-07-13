@@ -111,10 +111,9 @@ class TopicsController {
 
   async deleteTopic(req: Request, res: Response, next: NextFunction) {
     const { topicId } = req.params;
-
     try {
       await dbTopicsController.deleteTopicById(Number(topicId));
-      res.status(204).json(topicId);
+      res.send( topicId );
     } catch (err) {
       return next(
         ApiError.badRequest('Не получилось удалить пост', err as Error)

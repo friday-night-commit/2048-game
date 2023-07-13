@@ -7,8 +7,6 @@ export class ForumAPI {
   async createPost(data: ForumPost, tokenValue: string): Promise<ForumPost | never> {
 
     options.headers['X-CSRF-Token'] = tokenValue;
-    // eslint-disable-next-line no-console
-    console.log('options.headers', options.headers);
     const response = await fetch(`${this.endpoint}`, {
       ...options,
       method: 'POST',
@@ -70,7 +68,8 @@ export class ForumAPI {
     return json;
   }
 
-  async deletePostById(id: number): Promise<number | never> {
+  async deletePostById(id: number, tokenValue: string): Promise<number | never> {
+    options.headers['X-CSRF-Token']=tokenValue;
     const response = await fetch(`${this.endpoint}/${id}`, {
       ...options,
       method: 'DELETE',
@@ -79,7 +78,7 @@ export class ForumAPI {
     if (!response.ok) {
       throw new Error(json?.reason);
     }
-    return json;
+    return id;
   }
 }
 
