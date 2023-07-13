@@ -15,8 +15,8 @@ const initialState: IState = {
 
 export const createReactionByPostId = createAsyncThunk(
   'createReactionByPostId',
-  async ({ id, data }: { id: number; data: Record<'type', string> }) => {
-    return await ReactionController.createReactionByPostId(id, data);
+  async ({ id, data, token }: { id: number; data: Record<'type', string>, token: string }) => {
+    return await ReactionController.createReactionByPostId(id, data, token);
   }
 );
 

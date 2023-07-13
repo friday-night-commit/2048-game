@@ -2,9 +2,12 @@ import ForumAPI from '../api/ForumAPI';
 import { ForumPost, ImgResponse } from '../pages/Forum/forum.interfaces';
 
 class ForumController {
-  async createPost(post: ForumPost): Promise<ForumPost | undefined> {
+
+  // public setCSRFToken = (token: string) => ForumAPI.setCSRFToken(token);
+
+  async createPost(post: ForumPost, token: string): Promise<ForumPost | undefined> {
     try {
-      return await ForumAPI.createPost(post);
+      return await ForumAPI.createPost(post, token);
     } catch (err) {
       alert(err);
     }
@@ -35,9 +38,9 @@ class ForumController {
     }
   }
 
-  async deletePostById(id: number): Promise<number | undefined> {
+  async deletePostById(id: number, token: string): Promise<number | undefined> {
     try {
-      return await ForumAPI.deletePostById(id);
+      return await ForumAPI.deletePostById(id, token);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(`Error. ${id} has not been deleted`, err);

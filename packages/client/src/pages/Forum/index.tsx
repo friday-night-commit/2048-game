@@ -7,12 +7,10 @@ import {
   Tabs,
   TabsBody,
   TabsHeader,
-  Typography,
+  Typography
 } from '@material-tailwind/react';
 import {
-  Comment,
   COMMENT_LABEL_TYPE,
-  ForumPost,
   TAB_TYPE
 } from './forum.interfaces';
 import React, { useEffect, useState } from 'react';
@@ -24,49 +22,27 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import {
   getAllPosts,
   getAllTags,
-  STATE_STATUS,
+  STATE_STATUS
 } from '../../store/slices/Forum';
 import { getLastComments } from '../../store/slices/Comment';
 import PostEmpty from '../../Components/PostEmpty';
 
 export default function ForumPage() {
-  const [tags, setTags] = useState<string[]>([]);
-  const [posts, setPosts] = useState<ForumPost[]>([]);
-  const [lastComments, setLastComments] = useState<Comment[]>([]);
   const [openTab, setOpenTab] = useState<string>(TAB_TYPE.POSTS);
 
   const dispatch = useAppDispatch();
-
-  const tabName = useAppSelector(state => state.forumSlice.tabName);
-  // eslint-disable-next-line no-console
-  console.log('tabName', tabName);
-
+  const posts = useAppSelector(store => store.forumSlice.posts);
+  const tags = useAppSelector(store => store.forumSlice.tags);
+  const lastComments = useAppSelector(store => store.commentSlice.lastComments);
   const user = useAppSelector(store => store.userSlice.user);
   useEffect(() => {
-    dispatch(getAllPosts()).then(data => {
-      const posts = data.payload as ForumPost[];
-      if (posts.length) {
-        setPosts(posts);
-      }
-    });
-    dispatch(getAllTags()).then(data => {
-      const tags = data.payload as string[];
-      if (tags.length) {
-        setTags(tags);
-      }
-    });
-
-    dispatch(getLastComments(5)).then(data => {
-      const lastComments = data.payload as Comment[];
-      if (lastComments.length) {
-        setLastComments(lastComments);
-      }
-    });
+    dispatch(getAllPosts()).then();
+    dispatch(getAllTags()).then();
+    dispatch(getLastComments(5)).then();
   }, []);
 
   const forumStatus = useAppSelector(store => store.forumSlice.postsStatus);
   const tagsStatus = useAppSelector(store => store.forumSlice.tagsStatus);
-
   const tabsData = [
     {
       label: 'Посты',
@@ -100,13 +76,13 @@ export default function ForumPage() {
               />
             </div>
           </div>
-        ),
+        )
     },
     {
       label: 'Создать новый пост',
       value: TAB_TYPE.ADD_POST,
-      content: <AddPostPage backToPosts={() => setOpenTab(TAB_TYPE.POSTS)} />,
-    },
+      content: <AddPostPage backToPosts={() => setOpenTab(TAB_TYPE.POSTS)} />
+    }
   ];
 
   return (
@@ -119,7 +95,7 @@ export default function ForumPage() {
       <Tabs key={openTab} value={openTab} id='posts'>
         <TabsHeader>
           {tabsData.map(({ label, value }) => (
-              <Tab key={value} value={value} onClick={() => setOpenTab(value)}>
+            <Tab key={value} value={value} onClick={() => setOpenTab(value)}>
               <div className='flex items-center gap-2'>{label}</div>
             </Tab>
           ))}
@@ -128,7 +104,7 @@ export default function ForumPage() {
           animate={{
             initial: { y: 250 },
             mount: { y: 0 },
-            unmount: { y: 250 },
+            unmount: { y: 250 }
           }}>
           {tabsData.map(({ value, content }) => (
             <TabPanel key={value} value={value}>

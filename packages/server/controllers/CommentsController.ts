@@ -14,7 +14,7 @@ const textParamSchema = {
 const parentIdParamSchema = {
   name: 'parentId',
   type: 'number',
-  required: true,
+  required: false,
 };
 
 export const paramsSchemas = {
