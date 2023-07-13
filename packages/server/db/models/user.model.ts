@@ -1,6 +1,7 @@
 /* eslint-disable */
 
-import { Model, Table, Column, DataType } from 'sequelize-typescript';
+import { Model, Table, Column, DataType, ForeignKey, BelongsTo, Default } from 'sequelize-typescript'
+import Theme from './theme.model'
 
 const { STRING, INTEGER } = DataType;
 
@@ -14,6 +15,7 @@ export interface IUser {
   avatar: string;
   phone: string;
   login: string;
+  themeId: number;
 }
 
 @Table({
@@ -79,4 +81,17 @@ export default class User extends Model<IUser> {
     comment: 'user login',
   })
   login: string;
+
+  @Default(1)
+  @ForeignKey(() => Theme)
+  @Column({
+    field: 'theme_id',
+    type: INTEGER,
+    allowNull: false,
+    comment: 'theme id',
+    onDelete: 'CASCADE',
+  })
+  declare themeId: number;
+  @BelongsTo(() => Theme, 'theme_id')
+  declare theme: Theme;
 }

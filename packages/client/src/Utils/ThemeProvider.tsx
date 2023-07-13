@@ -1,14 +1,24 @@
 import React, { FC, useEffect, useState } from 'react';
+import { RootTypeStore } from '../main';
+import { INITIAL_THEME } from '../Components/ThemeToggler/theme.interfaces'
 
-const getInitialTheme = (): string => {
+const getInitialTheme = (store: RootTypeStore): string => {
   if (typeof window !== 'undefined' && window.localStorage) {
+
+    // @ts-ignore
+    const themeFromDB = store.getState().userSlice.user.theme;
+
+    if (themeFromDB) {
+      return themeFromDB;
+    }
+
     const storedPrefs = window.localStorage.getItem('color-theme');
     if (storedPrefs) {
       return storedPrefs;
     }
   }
 
-  return 'light';
+  return INITIAL_THEME;
 };
 
 type TOwnProps = {
@@ -17,23 +27,23 @@ type TOwnProps = {
   setTheme: React.Dispatch<React.SetStateAction<string>> | (() => {});
 };
 
-const initialTheme: string = getInitialTheme();
-
 type ThemeProviderProps = {
   children: JSX.Element | JSX.Element[];
+  store: RootTypeStore;
 };
 
 const defaultValue: TOwnProps = {
-  theme: initialTheme,
+  theme: INITIAL_THEME,
   setTheme: () => {},
 };
 
+
 export const ThemeContext = React.createContext(defaultValue);
 
-export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState(getInitialTheme);
+export const ThemeProvider: FC<ThemeProviderProps> = ({ children, store }) => {
+    const [theme, setTheme] = useState(getInitialTheme(store));
 
-  const rawSetTheme = (theme: string) => {
+    const rawSetTheme = (theme: string) => {
     const root = window.document.documentElement;
     const isDark = theme === 'dark';
 
@@ -45,7 +55,7 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
 
   useEffect(() => {
     rawSetTheme(theme);
-  }, [theme]);
+  },[theme]);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>

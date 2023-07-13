@@ -9,7 +9,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import path from 'node:path';
 
 import { distPath, initVite } from './services/init-vite';
-import { getYandexUser, checkYandexUser, renderSSR } from './middlewares';
+import { getYandexUser, checkYandexUser, renderSSR, theming } from './middlewares'
 import { dbConnect } from './db';
 import multer from 'multer';
 import fs from 'fs';
@@ -70,6 +70,7 @@ async function startServer() {
   });
 
   app.use('*', getYandexUser);
+  app.use('*', theming);
   app.use('/uploads', express.static('uploads'));
   app.use('/api/forum/topics', checkYandexUser);
 
