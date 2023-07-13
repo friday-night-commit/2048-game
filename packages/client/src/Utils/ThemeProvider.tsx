@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { RootTypeStore } from '../main';
+import { INITIAL_THEME } from '../Components/ThemeToggler/theme.interfaces'
 
 const getInitialTheme = (store: RootTypeStore): string => {
   if (typeof window !== 'undefined' && window.localStorage) {
@@ -17,7 +18,7 @@ const getInitialTheme = (store: RootTypeStore): string => {
     }
   }
 
-  return 'light';
+  return INITIAL_THEME;
 };
 
 type TOwnProps = {
@@ -32,7 +33,7 @@ type ThemeProviderProps = {
 };
 
 const defaultValue: TOwnProps = {
-  theme: 'light',
+  theme: INITIAL_THEME,
   setTheme: () => {},
 };
 

@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { API_URL } from 'client/src/api/consts';
+import { INITIAL_THEME } from 'client/src/Components/ThemeToggler/theme.interfaces';
 const API_ROOT = 'https://ya-praktikum.tech/api/v2/';
 
 export class YandexAPIRepository {
@@ -13,14 +15,14 @@ export class YandexAPIRepository {
 
     if(data) {
       try {
-        const theme = await axios.get (`http://localhost:5000/api/theme/getThemeByUser/${data.id}`, {
+        const theme = await axios.get (`${API_URL}api/theme/getThemeByUser/${data.id}`, {
           headers: {
             'Content-Type': 'application/json;charset=utf-8',
           }
         });
         data.theme = theme.data.name;
       } catch (e) {
-        data.theme = 'light';
+        data.theme = INITIAL_THEME;
       }
     }
 

@@ -1,15 +1,15 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ThemeController from '../../Controllers/ThemeController';
-import { ThemeUser, Theme } from '../../Components/ThemeToggler/theme.interfaces';
+import { ThemeUser, Theme, INITIAL_THEME } from '../../Components/ThemeToggler/theme.interfaces';
 
 interface IState {
   userTheme: string;
-  theme: Theme[];
+  themes: Theme[];
 }
 
 const initialState: IState = {
-  userTheme: 'light',
-  theme: [],
+  userTheme: INITIAL_THEME,
+  themes: [],
 };
 
 export const getThemeByName = createAsyncThunk('getThemeByName', async (name: string) => {
@@ -33,22 +33,16 @@ export const updateUserTheme = createAsyncThunk(
 const themeSlice = createSlice({
   name: 'theme',
   initialState,
-  reducers: {
-    updateThemeForUser(state, action: PayloadAction<string>) {
-      state.userTheme = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: build => {
     // GET User theme
     build.addCase(getUserTheme.fulfilled, (state, action) => {
-      state.theme = action.payload;
+      state.themes = action.payload;
     });
     build.addCase(getThemeByName.fulfilled, (state, action) => {
-      state.theme = action.payload;
+      state.themes = action.payload;
     });
   },
 });
-
-export const { updateThemeForUser } = themeSlice.actions;
 
 export default themeSlice.reducer;
