@@ -19,7 +19,7 @@ export const sequelize = new Sequelize(sequelizeOptions);
 export async function dbConnect() {
   try {
     await sequelize.authenticate();
-    await sequelize.sync(isDev ? { force: false } : {});
+    await sequelize.sync({ force: !isDev });
     // eslint-disable-next-line no-console
     console.log('Connection with database has been established successfully.');
   } catch (error) {
