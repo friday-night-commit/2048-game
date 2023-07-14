@@ -13,7 +13,7 @@ const router: Router = Router();
 
 router
   .route('')
-  .post(validateParams(topicsParamsSchemas.post), TopicsController.createTopic)
+  .post(validateParams(topicsParamsSchemas.post),TopicsController.createTopic)
   .get(TopicsController.getAllTopics);
 router
   .route('/:topicId([0-9]+)')

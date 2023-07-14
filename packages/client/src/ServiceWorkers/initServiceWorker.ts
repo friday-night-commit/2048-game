@@ -1,4 +1,5 @@
 export const initServiceWorker = () => {
+
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
@@ -16,7 +17,9 @@ export const initServiceWorker = () => {
           }
         )
         .catch(err => {
-          throw new Error(err);
+          // eslint-disable-next-line no-console
+          console.log('initServiceWorker err', err);
+         // throw new Error(err);
         });
     });
   } else {

@@ -23,7 +23,7 @@ const initialState: IState = {
   tags: [],
   posts: [],
   postsStatus: STATE_STATUS.LOADING,
-  tagsStatus: STATE_STATUS.LOADING,
+  tagsStatus: STATE_STATUS.LOADING
 };
 
 export const getAllPosts = createAsyncThunk('getAllPosts', async () => {
@@ -40,11 +40,17 @@ export const getPostById = createAsyncThunk(
     return await ForumController.getPostById(id);
   }
 );
-
 export const createPost = createAsyncThunk(
   'createPost',
-  async (post: ForumPost) => {
-    return await ForumController.createPost(post);
+  async ({ post, token }: { post: ForumPost; token: string }) => {
+    return await ForumController.createPost(post, token);
+  }
+);
+
+export const deletePost = createAsyncThunk(
+  'deletePost',
+  async ({ id, token }: { id: number; token: string }) => {
+    return await ForumController.deletePostById(id, token);
   }
 );
 
@@ -67,7 +73,7 @@ const forumSlice = createSlice({
     },
     setForumTabName(state, action: PayloadAction<TAB_TYPE>) {
       state.tabName = action.payload;
-    },
+    }
   },
   extraReducers: build => {
     // Posts
@@ -107,7 +113,22 @@ const forumSlice = createSlice({
     build.addCase(createPost.rejected, state => {
       state.postsStatus = STATE_STATUS.Error;
     });
-  },
+    // Delete Post
+    build.addCase(deletePost.pending, (state, _) => {
+      state.postsStatus = STATE_STATUS.LOADING;
+    });
+    build.addCase(deletePost.fulfilled, (state, action) => {
+      state.postsStatus = STATE_STATUS.LOADED;
+      // eslint-disable-next-line no-console
+      console.log('action', action);
+      if (action.payload) {
+        state.posts = state.posts.filter(p => p.id !== action.payload);
+      }
+    });
+    build.addCase(deletePost.rejected, state => {
+      state.postsStatus = STATE_STATUS.Error;
+    });
+  }
 });
 
 export const { updatePostContent, clearPostContent, setForumTabName } =

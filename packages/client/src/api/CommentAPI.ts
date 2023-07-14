@@ -5,7 +5,9 @@ export class CommentAPI {
   private endpoint = `${API_URL}/api/forum/topics`;
   private lastCommentsEndpoint = `${API_URL}/api/forum/comments`;
 
-  async createCommentById(id: number, data: Comment): Promise<Comment | never> {
+  async createCommentById(id: number, data: Comment, tokenValue: string): Promise<Comment | never> {
+    options.headers['X-CSRF-Token'] = tokenValue;
+
     const response = await fetch(`${this.endpoint}/${id}/comments`, {
       ...options,
       method: 'POST',
