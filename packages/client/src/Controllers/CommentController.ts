@@ -4,10 +4,11 @@ import CommentAPI from '../api/CommentAPI';
 class CommentController {
   async createCommentByPostId(
     postId: number,
-    comment: Comment
+    comment: Comment,
+    token: string
   ): Promise<Comment | undefined> {
     try {
-      return await CommentAPI.createCommentById(postId, comment);
+      return await CommentAPI.createCommentById(postId, comment, token);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log('err', err);

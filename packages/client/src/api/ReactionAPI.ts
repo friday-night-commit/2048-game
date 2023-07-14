@@ -6,8 +6,11 @@ export class ReactionAPI {
 
   async createReactionById(
     id: number,
-    data: Record<'type', string>
+    data: Record<'type', string>,
+    tokenValue: string
   ): Promise<Reaction | never> {
+    options.headers['X-CSRF-Token'] = tokenValue;
+
     const response = await fetch(`${this.endpoint}/${id}`, {
       ...options,
       method: 'POST',
