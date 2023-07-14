@@ -6,10 +6,11 @@ import ReactionAPI from '../api/ReactionAPI';
 class ReactionController {
   async createReactionByPostId(
     postId: number,
-   data: Record<'type', string>
+   data: Record<'type', string>,
+    token: string
   ): Promise<Reaction | undefined> {
     try {
-      return await ReactionAPI.createReactionById(postId, data);
+      return await ReactionAPI.createReactionById(postId, data, token);
     } catch (err) {
       return undefined;
     }

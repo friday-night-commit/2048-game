@@ -2,7 +2,7 @@ import React from 'react';
 import { hydrateRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-
+import { CookiesProvider } from 'react-cookie';
 import { createStore } from './store';
 import { initServiceWorker } from './ServiceWorkers/initServiceWorker';
 import App from './App-ssr';
@@ -29,15 +29,16 @@ delete window.__REDUX_INITIAL_STATE__;
 
 hydrateRoot(
   document.getElementById('root') as HTMLElement,
-  <React.StrictMode>
+  <CookiesProvider>
     <ThemeProvider store={store}>
-    <BrowserRouter>
-      <Provider store={store}>
-          <App />
-      </Provider>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Provider store={store}>
+          <App/>
+        </Provider>
+      </BrowserRouter>
     </ThemeProvider>
-  </React.StrictMode>
+  </CookiesProvider>
+
 );
 
 initServiceWorker();

@@ -24,12 +24,14 @@ import {
   createCommentByPostId,
   getCommentsByPostId,
 } from '../../store/slices/Comment';
+import { useCSRFToken } from '../../hooks/useCSRFToken';
 
 export default function FullPost() {
   const { id } = useParams();
   const [comments, setComments] = useState<Comment[]>([]);
   const [post, setPost] = useState<ForumPost>();
   const dispatch = useAppDispatch();
+  const token = useCSRFToken();
 
   if (!id) {
     throw new Error('Post id for comment is not found');
@@ -69,7 +71,7 @@ export default function FullPost() {
       };
 
       dispatch(
-        createCommentByPostId({ id: Number(id), comment: newComment })
+        createCommentByPostId({ id: Number(id), comment: newComment, token })
       ).then(data => {
         const newComment = data.payload as Comment;
         if (newComment) {

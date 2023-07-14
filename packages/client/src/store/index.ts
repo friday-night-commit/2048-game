@@ -6,6 +6,7 @@ import themeSlice from './slices/Theme';
 import forumSlice from './slices/Forum';
 import commentSlice from './slices/Comment';
 import reactionSlice from './slices/Reaction';
+import csrfSlice from './slices/Csrf';
 
 const reducer = combineReducers({
   userSlice,
@@ -14,6 +15,7 @@ const reducer = combineReducers({
   forumSlice,
   commentSlice,
   reactionSlice,
+  csrfSlice
 });
 
 export const createStore = (
