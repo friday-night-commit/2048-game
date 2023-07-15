@@ -5,7 +5,7 @@ const isDev = process.env.NODE_ENV === 'development';
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } = process.env;
 
 const sequelizeOptions: SequelizeOptions = {
-  host: isDev ? 'localhost' : '2048-game_postgres',
+  host: isDev ? 'localhost': 'postgres',
   port: Number(POSTGRES_PORT),
   username: POSTGRES_USER,
   password: POSTGRES_PASSWORD,
