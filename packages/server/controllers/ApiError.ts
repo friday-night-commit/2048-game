@@ -10,8 +10,9 @@ class ApiError extends Error {
     this.message = message;
   }
 
-  static forbidden(message: string) {
-    return new ApiError(403, message);
+  static forbidden(message: string, error?: Error) {
+    const resultMessage = error ? `${message}:\n${error.toString()}` : message;
+    return new ApiError(403, resultMessage);
   }
 
   static badRequest(message: string, error?: Error) {

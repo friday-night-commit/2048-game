@@ -15,7 +15,7 @@ const checkYandexUser: RequestHandler = async (_req, res, next) => {
   if (yandexId) {
     next();
   } else {
-    next(ApiError.forbidden('Авторизованный пользователь не найден'));
+    next(ApiError.forbidden('Авторизованный пользователь не найден', res.locals.userError));
   }
 };
 
