@@ -31,3 +31,11 @@ jobs:
           file: Dockerfile.server
           push: true
           tags: ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/server:${{ github.sha }}
+
+      - name: Build and push postgres image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: Dockerfile.postgres
+          push: true
+          tags: ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/server:${{ github.sha }}
