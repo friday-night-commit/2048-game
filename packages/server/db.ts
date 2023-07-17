@@ -1,3 +1,7 @@
+import Comment from './db/models/comment.model';
+import Reaction from './db/models/reaction.model';
+import Topic from './db/models/topic.model';
+import User from './db/models/user.model';
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -11,10 +15,11 @@ const sequelizeOptions: SequelizeOptions = {
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DB,
   dialect: 'postgres', // 'mysql', 'sqlite', 'mariadb', 'mssql',
-  models: [__dirname + '/**/*.model.ts'],
+  // models: [__dirname + '/**/*.model.ts'],
 };
 
 export const sequelize = new Sequelize(sequelizeOptions);
+sequelize.addModels([Comment, Reaction, Topic, User]);
 
 export async function dbConnect() {
   try {
