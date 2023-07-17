@@ -1,14 +1,11 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
-// import dotenv from 'dotenv';
-
-// dotenv.config({path: __dirname + '../../.env'});
 
 const isDev = process.env.NODE_ENV === 'development';
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } = process.env;
 
 const sequelizeOptions: SequelizeOptions = {
-  host: 'localhost',
+  host: isDev ? 'localhost': 'postgres',
   port: Number(POSTGRES_PORT),
   username: POSTGRES_USER,
   password: POSTGRES_PASSWORD,

@@ -21,8 +21,8 @@ const initialState: IState = {
 
 export const createCommentByPostId = createAsyncThunk(
   'createCommentByPostId',
-  async ({ id, comment }: { id: number; comment: Comment }) => {
-    return await CommentController.createCommentByPostId(id, comment);
+  async ({ id, comment, token }: { id: number; comment: Comment, token: string }) => {
+    return await CommentController.createCommentByPostId(id, comment, token);
   }
 );
 

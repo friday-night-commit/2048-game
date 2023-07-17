@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 
 dotenv.config({ path: '../../.env' });
+import csurf from 'csurf';
 
 import express from 'express';
 import cookieParser from 'cookie-parser';
@@ -9,7 +10,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import path from 'node:path';
 
 import { distPath, initVite } from './services/init-vite';
-import { getYandexUser, checkYandexUser, renderSSR } from './middlewares';
+import { getYandexUser, checkYandexUser, renderSSR, helmetMiddleware } from './middlewares';
 import { dbConnect } from './db';
 import multer from 'multer';
 import fs from 'fs';
@@ -21,8 +22,11 @@ const isDev = process.env.NODE_ENV === 'development';
 async function startServer() {
   const port = Number(process.env.SERVER_PORT) || 5000;
 
-  const app = express().use(cookieParser()).use(cors());
-  // .use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
+  const app = express()
+    .disable('x-powered-by')
+    .enable('trust proxy')
+    .use(cookieParser()).use(cors());
+  //.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
   // .use(bodyParser.json({ limit: '50mb' }));
 
   const vite = await initVite(app);
@@ -60,7 +64,6 @@ async function startServer() {
 
   app.post('/upload', upload.single('image'), (req, res) => {
     // eslint-disable-next-line no-console
-    console.log('req.file', req.file);
     if (!req.file) {
       return;
     }
@@ -72,6 +75,22 @@ async function startServer() {
   app.use('*', getYandexUser);
   app.use('/uploads', express.static('uploads'));
   app.use('/api/forum/topics', checkYandexUser);
+
+  app.use(csurf({
+    cookie: {
+      path: '/',
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict'
+    }
+  }));
+
+  app.use(function(req, res, next) {
+    res.cookie('_csrf-token', req.csrfToken(), { path: '/', secure: true, maxAge: 3600, sameSite: 'strict' });
+    next();
+  });
+
+   app.use(helmetMiddleware);
 
   app.use('/api', router);
 

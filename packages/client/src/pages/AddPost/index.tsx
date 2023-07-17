@@ -10,13 +10,14 @@ import './index.scss';
 import {
   CONTENT_TYPE,
   ForumPost,
-  ImgResponse,
+  ImgResponse
 } from '../Forum/forum.interfaces';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import {
   createPost,
-  loadPostPreview,
+  loadPostPreview
 } from '../../store/slices/Forum';
+import { useCSRFToken } from '../../hooks/useCSRFToken';
 
 export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -25,6 +26,8 @@ export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const content = useAppSelector(state => state.forumSlice.postContent);
+
+  const token = useCSRFToken();
 
   function handleUpload(e: React.FormEvent<HTMLInputElement>) {
     if (!e) {
@@ -56,6 +59,7 @@ export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
   const onSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
+     // ForumController.setCSRFToken(token);
       const target = e.target as HTMLFormElement;
       const formData = new FormData(target);
       const title = formData.get('title')?.toString();
@@ -74,14 +78,15 @@ export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
       if (!tag) {
         return;
       }
-      const newPost: ForumPost = {
+
+
+      const post: ForumPost = {
         title,
         tag,
         imageUrl,
         text: content,
       };
-
-      dispatch(createPost(newPost)).then(data => {
+      dispatch(createPost({ post, token })).then(data => {
         if (data) {
           backToPosts();
         }
