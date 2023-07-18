@@ -1,13 +1,12 @@
-import { ThemeProvider } from '@material-tailwind/react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 import { Provider } from 'react-redux';
-
 import App from './src/App-ssr';
 import { createStore } from './src/store';
 import { UserService } from './src/api/UserService';
 import { routesArr } from './src/router';
 import { matchPath } from 'react-router-dom';
+import { ThemeProvider } from './src/Utils/ThemeProvider';
 
 async function render(uri, repository) {
   const [pathname] = uri.split('?');

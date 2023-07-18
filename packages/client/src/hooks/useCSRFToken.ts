@@ -10,14 +10,11 @@ export const useCSRFToken = () => {
   // eslint-disable-next-line no-console
   const token = cookies[CSRF_TOKEN_NAME] || useAppSelector((state) => state.csrfSlice.token);
   const [csrfToken, setCsrfToken] = useState(token);
-
   const dispatch = useAppDispatch();
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log('csrfToken', csrfToken);
     dispatch(setCSRFToken(token));
     setCsrfToken(token);
   }, [token]);
 
-  return token;
+  return csrfToken;
 };
