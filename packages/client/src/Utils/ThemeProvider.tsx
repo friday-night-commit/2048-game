@@ -41,14 +41,14 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children, store }) => {
     const [theme, setTheme] = useState(getInitialTheme(store));
 
     const rawSetTheme = (theme: string) => {
-    const root = window.document.documentElement;
-    const isDark = theme === 'dark';
+      const root = window.document.documentElement;
+      const isDark = theme === 'dark';
 
-    root.classList.remove(isDark ? 'light' : 'dark');
-    root.classList.add(theme);
+      root.classList.remove(isDark ? 'light' : 'dark');
+      root.classList.add(theme);
 
-    localStorage.setItem('color-theme', theme);
-  };
+      localStorage.setItem('color-theme', theme);
+    };
 
   useEffect(() => {
     rawSetTheme(theme);

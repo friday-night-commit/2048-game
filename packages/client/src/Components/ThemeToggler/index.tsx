@@ -11,6 +11,7 @@ const ThemeToggler = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(store => store.userSlice.user);
   const token = useCSRFToken();
+  const isDark = theme === 'dark';
 
   const settingTheme = (color: string) => useCallback(
     function() {
@@ -29,10 +30,8 @@ const ThemeToggler = () => {
           );
         }
       });
-    }, []
+    }, [color]
   );
-
-  const isDark = theme === 'dark';
 
   return (
     <div className='toggle-button'>

@@ -5,20 +5,6 @@ import { Theme, ThemeUser } from '../Components/ThemeToggler/theme.interfaces';
 export class ThemeAPI {
   private endpoint = `${API_URL}/api/theme`;
 
-  async createThemes(
-  ): Promise<Theme | never> {
-    const response = await fetch(`${this.endpoint}/`, {
-      ...options,
-      method: 'GET',
-    });
-
-    const json = await response.json();
-    if (!response.ok) {
-      throw new Error(json?.reason);
-    }
-    return json;
-  }
-
   async getThemeByName(name: string) : Promise<Theme[]>{
     const response = await fetch(`${this.endpoint}/getThemeByName/${name}`, {
       ...options,
