@@ -1,12 +1,6 @@
-import { API_URL } from './consts';
+import { API_URL, options } from './consts';
 import { Theme, ThemeUser } from '../Components/ThemeToggler/theme.interfaces';
 
-const options: OptionsType = {
-  headers: {
-    'Content-Type': 'application/json;charset=utf-8',
-  },
-  credentials: 'include',
-};
 
 export class ThemeAPI {
   private endpoint = `${API_URL}/api/theme`;
@@ -49,7 +43,9 @@ export class ThemeAPI {
     return json;
   }
 
-  async updateUserTheme(data: ThemeUser) : Promise<Theme[]>{
+  async updateUserTheme(data: ThemeUser, tokenValue: string) : Promise<Theme[]>{
+    options.headers['X-CSRF-Token'] = tokenValue;
+
     const response = await fetch(`api/theme/changeTheme/${data.themeId}/${data.userId}`, {
       ...options,
       method: 'PUT',
@@ -63,7 +59,5 @@ export class ThemeAPI {
     return json;
   }
 }
-
-
 
 export default new ThemeAPI();

@@ -9,7 +9,7 @@ interface IState {
 
 const initialState: IState = {
   userTheme: INITIAL_THEME,
-  themes: [],
+  themes: []
 };
 
 export const getThemeByName = createAsyncThunk('getThemeByName', async (name: string) => {
@@ -25,8 +25,8 @@ export const getUserTheme = createAsyncThunk(
 
 export const updateUserTheme = createAsyncThunk(
   'updateUserTheme',
-  async (data: ThemeUser) => {
-    return await ThemeController.updateUserTheme(data);
+  async ({ data, token }: { data: ThemeUser, token: string }) => {
+    return await ThemeController.updateUserTheme(data, token);
   }
 );
 
@@ -42,7 +42,7 @@ const themeSlice = createSlice({
     build.addCase(getThemeByName.fulfilled, (state, action) => {
       state.themes = action.payload;
     });
-  },
+  }
 });
 
 export default themeSlice.reducer;

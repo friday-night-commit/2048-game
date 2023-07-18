@@ -19,9 +19,9 @@ class ThemeController {
     }
   }
 
-  async updateUserTheme(data: ThemeUser): Promise<Theme[] | []> {
+  async updateUserTheme(data: ThemeUser, token: string): Promise<Theme[] | []> {
     try {
-      return await ThemeAPI.updateUserTheme(data);
+      return await ThemeAPI.updateUserTheme(data, token);
     } catch (err) {
       return [];
     }

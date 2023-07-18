@@ -3,28 +3,33 @@ import { FaSun, FaMoon } from 'react-icons/fa';
 import { ThemeContext } from '../../Utils/ThemeProvider';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { getThemeByName, updateUserTheme } from '../../store/slices/Theme';
+import { useCSRFToken } from '../../hooks/useCSRFToken';
 
 const ThemeToggler = () => {
   const { theme, setTheme } = useContext(ThemeContext);
 
-   const dispatch = useAppDispatch();
-   const user = useAppSelector(store => store.userSlice.user);
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(store => store.userSlice.user);
+  const token = useCSRFToken();
 
   const settingTheme = (color: string) => useCallback(
-    function () {
+    function() {
       dispatch(getThemeByName(color)).then(data => {
         // @ts-ignore
         const themeId = data.payload.id;
-        if(themeId && user) {
+        if (themeId && user) {
           const userId = user.id;
-          dispatch(updateUserTheme({ themeId, userId })). then(()=>
-            {
+          const data = {
+            themeId,
+            userId
+          };
+          dispatch(updateUserTheme({ data, token })).then(() => {
               setTheme(color);
             }
           );
         }
       });
-    },[]
+    }, []
   );
 
   const isDark = theme === 'dark';
@@ -32,8 +37,8 @@ const ThemeToggler = () => {
   return (
     <div className='toggle-button'>
       {(isDark
-        ? (<FaSun onClick={settingTheme('light')}/>)
-        : (<FaMoon onClick={settingTheme('dark')} />)
+          ? (<FaSun onClick={settingTheme('light')} />)
+          : (<FaMoon onClick={settingTheme('dark')} />)
       )}
     </div>
   );
