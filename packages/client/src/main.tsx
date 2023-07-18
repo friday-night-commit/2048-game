@@ -23,17 +23,20 @@ const store = createStore(
   new UserService(new YandexAPIRepository()),
   initialState as StoreState
 );
+export type RootTypeStore = typeof store;
+
 delete window.__REDUX_INITIAL_STATE__;
+
 hydrateRoot(
   document.getElementById('root') as HTMLElement,
   <CookiesProvider>
-  <ThemeProvider>
-    <BrowserRouter>
-      <Provider store={store}>
-        <App/>
-      </Provider>
-    </BrowserRouter>
-  </ThemeProvider>
+    <ThemeProvider store={store}>
+      <BrowserRouter>
+        <Provider store={store}>
+          <App/>
+        </Provider>
+      </BrowserRouter>
+    </ThemeProvider>
   </CookiesProvider>
 
 );
