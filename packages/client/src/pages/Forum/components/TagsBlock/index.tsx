@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { SideBlock } from '../SideBlock';
 import './index.scss';
 import { setTagName, STATE_STATUS } from '../../../../store/slices/Forum';
@@ -16,9 +16,11 @@ type TProps = FC<TOwnProps>;
 export const TagsBlock: TProps = ({ items, status }: TOwnProps) => {
 
   const dispatch = useAppDispatch();
+  const [selectedTag, setTag] = useState(ALL_TAG_LABLE);
 
-  const changeTag =useCallback( (tag: string) => {
-      dispatch(setTagName(tag));
+  const changeTag = useCallback((tag: string) => {
+    dispatch(setTagName(tag));
+    setTag(tag);
   }, []);
 
   return (
@@ -28,20 +30,23 @@ export const TagsBlock: TProps = ({ items, status }: TOwnProps) => {
         {status === STATE_STATUS.LOADING && <p>Загрузка тегов</p>}
         {status === STATE_STATUS.LOADED &&
           items.map(tag => (
-            <a
+            <span
               key={tag}
               style={{ textDecoration: 'none', color: 'black' }}
               onClick={() => changeTag(tag)}>
-              <span className='tag tag-lg'>{'#' + tag}</span>
-            </a>
+              <span
+                className={`tag-lg ${selectedTag === tag ? 'tag-active' : 'tag'}`}
+              >
+                {'#' + tag}
+              </span>
+            </span>
           ))
         }
-        { items.length && <a
+        {items.length && <span
           key='all'
-          style={{ textDecoration: 'none', color: 'orange' }}
           onClick={() => changeTag(ALL_TAG_LABLE)}>
-          <span style={{ background: '#8f7a66' }} className='tag tag-lg'>{'#' + 'Все'}</span>
-        </a>}
+          <span className={`tag-lg ${selectedTag === ALL_TAG_LABLE ? 'tag-active' : 'tag'}`}>{'#' + 'Все'}</span>
+        </span>}
       </ul>
     </SideBlock>
   );
