@@ -26,7 +26,6 @@ export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const content = useAppSelector(state => state.forumSlice.postContent);
-
   const token = useCSRFToken();
 
   function handleUpload(e: React.FormEvent<HTMLInputElement>) {
@@ -65,6 +64,7 @@ export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
       const title = formData.get('title')?.toString();
       const tag = formData.get('tag')?.toString();
 
+
       const imageUrl = preview
         ? preview
         : 'https://www.itshop.ru/productimages/auto/pimg_2021101_182.png';
@@ -78,7 +78,6 @@ export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
       if (!tag) {
         return;
       }
-
 
       const post: ForumPost = {
         title,
@@ -96,6 +95,7 @@ export const AddPostPage = ({ backToPosts }: { backToPosts: () => void }) => {
   );
 
   return (
+
     <form className='container mx-auto w-full  add-post' onSubmit={onSubmit}>
       <div className='add-post__left'>
         <div className='mb-4'>

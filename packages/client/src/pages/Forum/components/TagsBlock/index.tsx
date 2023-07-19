@@ -1,23 +1,27 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { SideBlock } from '../SideBlock';
 import './index.scss';
-import { STATE_STATUS } from '../../../../store/slices/Forum';
+import { setTagName, STATE_STATUS } from '../../../../store/slices/Forum';
+import { useAppDispatch } from '../../../../hooks/redux';
 
 type TOwnProps = {
   items: string[];
   status: STATE_STATUS;
 };
 
+export const ALL_TAG_LABLE = '';
+
 type TProps = FC<TOwnProps>;
 
 export const TagsBlock: TProps = ({ items, status }: TOwnProps) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [selectedTag, setSelectedTag] = useState('');
 
-  const changeTag = (tag: string) => {
-    // eslint-disable-next-line no-console
-    console.log('To do filter by tag', tag);
-  };
+  const dispatch = useAppDispatch();
+  const [selectedTag, setTag] = useState(ALL_TAG_LABLE);
+
+  const changeTag = useCallback((tag: string) => {
+    dispatch(setTagName(tag));
+    setTag(tag);
+  }, []);
 
   return (
     <SideBlock title='Тэги'>
@@ -26,13 +30,23 @@ export const TagsBlock: TProps = ({ items, status }: TOwnProps) => {
         {status === STATE_STATUS.LOADING && <p>Загрузка тегов</p>}
         {status === STATE_STATUS.LOADED &&
           items.map(tag => (
-            <a
+            <span
               key={tag}
               style={{ textDecoration: 'none', color: 'black' }}
               onClick={() => changeTag(tag)}>
-              <span className='tag tag-lg'>{'#' + tag}</span>
-            </a>
-          ))}
+              <span
+                className={`tag-lg ${selectedTag === tag ? 'tag-active' : 'tag'}`}
+              >
+                {'#' + tag}
+              </span>
+            </span>
+          ))
+        }
+        {items.length && <span
+          key='all'
+          onClick={() => changeTag(ALL_TAG_LABLE)}>
+          <span className={`tag-lg ${selectedTag === ALL_TAG_LABLE ? 'tag-active' : 'tag'}`}>{'#' + 'Все'}</span>
+        </span>}
       </ul>
     </SideBlock>
   );
