@@ -10,15 +10,14 @@ import { useCSRFToken } from '../../../../hooks/useCSRFToken';
 import { useAppDispatch } from '../../../../hooks/redux';
 import { deletePost } from '../../../../store/slices/Forum';
 import { ReactionBlock } from '../../../../Components/ReactionBlock';
+import useAuth from '../../../../hooks/useAuth';
 
 const LazyQuillContentComponent = lazy(
   () => import('../../../AddPost/components/QuillContent/index')
 );
 
-
 interface TOwnProps extends ForumPost {
   isFullPost?: boolean;
-  isEditable: boolean;
 }
 
 type TProps = FC<TOwnProps>;
@@ -32,23 +31,24 @@ export const Post: TProps = ({
                                viewsCount,
                                tag,
                                isFullPost,
-                               isEditable
                              }: TOwnProps) => {
 
   const token = useCSRFToken();
   const dispatch = useAppDispatch();
+  const authUser = useAuth().user;
+
   const onRemovePost = async () => {
     if (window.confirm('Вы действительно хотите удалить статью?')) {
       id = Number(id);
       dispatch(deletePost({ id, token })).then();
-      // TODO Кнопка "Remove Post" скрыта в компоненте
-      isEditable = true;
     }
   };
 
   const createdDate = moment(createdAt).format(
     DATE_FORMATS.COMPLEX_DATE_FORMAT
   );
+
+  const isEditable = (authUser && authUser.email === user?.email);
 
   // Пост новый, если создан сегодня
   const isNew =
@@ -78,16 +78,16 @@ export const Post: TProps = ({
                   className='absolute inset-0 bg-black opacity-3'></img>
               )}
             </div>
-            <div className='absolute flex justify-center bottom-0 mb-3'>
+            <div className='absolute flex justify-center bottom-0 mb-3 '>
               <div className='flex bg-white px-4 py-1 space-x-5 rounded-lg overflow-hidden shadow'>
                 <p className='flex items-center font-medium text-gray-800'>
                   <span className='views'></span>
                   {viewsCount}
                 </p>
-
-                <p className='flex items-center font-medium text-gray-800'>
-                  { id && <ReactionBlock topicId={id} />}
-                </p>
+                {isFullPost &&<p className='flex items-center font-medium text-gray-800 w-50px'
+                   style={{ width: 50 }}>
+                  {id && <ReactionBlock topicId={id} />}
+                </p>}
               </div>
             </div>
 

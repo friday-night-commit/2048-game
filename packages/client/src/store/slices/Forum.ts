@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import ForumController from '../../Controllers/ForumController';
 import { ForumPost, TAB_TYPE } from '../../pages/Forum/forum.interfaces';
+import { ALL_TAG_LABLE } from '../../pages/Forum/components/TagsBlock';
 
 interface IState {
   tabName: TAB_TYPE;
   postContent: string | undefined;
   posts: ForumPost[] | [];
   tags: string[];
+  selectedTag: string;
   postsStatus: STATE_STATUS;
   tagsStatus: STATE_STATUS;
 }
@@ -21,6 +23,7 @@ const initialState: IState = {
   tabName: TAB_TYPE.POSTS,
   postContent: undefined,
   tags: [],
+  selectedTag: ALL_TAG_LABLE,
   posts: [],
   postsStatus: STATE_STATUS.LOADING,
   tagsStatus: STATE_STATUS.LOADING
@@ -61,6 +64,7 @@ export const loadPostPreview = createAsyncThunk(
   }
 );
 
+
 const forumSlice = createSlice({
   name: 'forum',
   initialState,
@@ -73,6 +77,9 @@ const forumSlice = createSlice({
     },
     setForumTabName(state, action: PayloadAction<TAB_TYPE>) {
       state.tabName = action.payload;
+    },
+    setTagName(state, action: PayloadAction<string>){
+      state.selectedTag = action.payload;
     }
   },
   extraReducers: build => {
@@ -108,6 +115,9 @@ const forumSlice = createSlice({
       state.postsStatus = STATE_STATUS.LOADED;
       if (action.payload) {
         state.posts = [...state.posts, action.payload];
+        if(!state.tags.includes(action.payload.tag)){
+          state.tags.push(action.payload.tag);
+        }
       }
     });
     build.addCase(createPost.rejected, state => {
@@ -119,10 +129,15 @@ const forumSlice = createSlice({
     });
     build.addCase(deletePost.fulfilled, (state, action) => {
       state.postsStatus = STATE_STATUS.LOADED;
-      // eslint-disable-next-line no-console
-      console.log('action', action);
       if (action.payload) {
+        const matchPost = state.posts.find(p => p.id === action.payload);
         state.posts = state.posts.filter(p => p.id !== action.payload);
+        if(matchPost){
+          const tagMatches = state.posts.filter(p => p.tag === matchPost.tag);
+          if(!tagMatches?.length) {
+            state.tags = state.tags.filter(t => t !== matchPost.tag);
+          }
+        }
       }
     });
     build.addCase(deletePost.rejected, state => {
@@ -131,7 +146,7 @@ const forumSlice = createSlice({
   }
 });
 
-export const { updatePostContent, clearPostContent, setForumTabName } =
+export const { updatePostContent, clearPostContent, setForumTabName, setTagName } =
   forumSlice.actions;
 
 export default forumSlice.reducer;

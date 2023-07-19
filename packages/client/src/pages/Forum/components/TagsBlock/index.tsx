@@ -1,23 +1,25 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 import { SideBlock } from '../SideBlock';
 import './index.scss';
-import { STATE_STATUS } from '../../../../store/slices/Forum';
+import { setTagName, STATE_STATUS } from '../../../../store/slices/Forum';
+import { useAppDispatch } from '../../../../hooks/redux';
 
 type TOwnProps = {
   items: string[];
   status: STATE_STATUS;
 };
 
+export const ALL_TAG_LABLE = '';
+
 type TProps = FC<TOwnProps>;
 
 export const TagsBlock: TProps = ({ items, status }: TOwnProps) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [selectedTag, setSelectedTag] = useState('');
 
-  const changeTag = (tag: string) => {
-    // eslint-disable-next-line no-console
-    console.log('To do filter by tag', tag);
-  };
+  const dispatch = useAppDispatch();
+
+  const changeTag =useCallback( (tag: string) => {
+      dispatch(setTagName(tag));
+  }, []);
 
   return (
     <SideBlock title='Тэги'>
@@ -32,7 +34,14 @@ export const TagsBlock: TProps = ({ items, status }: TOwnProps) => {
               onClick={() => changeTag(tag)}>
               <span className='tag tag-lg'>{'#' + tag}</span>
             </a>
-          ))}
+          ))
+        }
+        { items.length && <a
+          key='all'
+          style={{ textDecoration: 'none', color: 'orange' }}
+          onClick={() => changeTag(ALL_TAG_LABLE)}>
+          <span style={{ background: '#8f7a66' }} className='tag tag-lg'>{'#' + 'Все'}</span>
+        </a>}
       </ul>
     </SideBlock>
   );
