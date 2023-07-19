@@ -26,7 +26,7 @@ type TOwnProps = {
 
 type TProps = FC<TOwnProps>;
 
-export const CommentsBlock: TProps = ({
+export const Comments: TProps = ({
   items,
   children,
   status,
@@ -90,3 +90,5 @@ export const CommentsBlock: TProps = ({
     </div>
   );
 };
+
+export const CommentsBlock = React.memo(Comments);

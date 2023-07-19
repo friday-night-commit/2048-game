@@ -31,6 +31,7 @@ export interface ForumPost {
   viewsCount?: number;
   reactionCount?: number;
   isNew?: boolean;
+  userId?: number;
   user?: User;
   imageUrl: string;
   createdAt?: Date;

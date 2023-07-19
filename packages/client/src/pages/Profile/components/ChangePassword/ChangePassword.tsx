@@ -12,13 +12,13 @@ type TChangePasswordProps = {
 };
 
 export const ChangePasswordModal: FC<TChangePasswordProps> = ({
-  open,
-  handleOpen,
-}) => {
+                                                                open,
+                                                                handleOpen
+                                                              }) => {
   const [error, setError] = useState('');
 
   const handleSubmit = useCallback(
-    async function (e: FormEvent<HTMLFormElement>) {
+    async function(e: FormEvent<HTMLFormElement>) {
       e.preventDefault();
       let error = '';
       const oldPassword = (
@@ -45,7 +45,7 @@ export const ChangePasswordModal: FC<TChangePasswordProps> = ({
       if (!error) {
         const response = await ProfileController.changePassword({
           newPassword,
-          oldPassword,
+          oldPassword
         });
 
         if (response !== true && typeof response === 'string') {
@@ -60,49 +60,49 @@ export const ChangePasswordModal: FC<TChangePasswordProps> = ({
   );
 
   return (
-    <Modal
-      title='Изменить пароль'
-      open={open}
-      handleOpen={handleOpen}
-      className='game-modal'>
-      <div className='box-border '>
-        {error && <Toast text={error} />}
-        <form onSubmit={handleSubmit}>
-          <Input
-            name={UserFields.old_password}
-            type='password'
-            validationType='default'
-            label='Старый пароль'
-            required
-          />
-          <Input
-            name={UserFields.new_password}
-            type='password'
-            validationType='default'
-            label='Новый пароль'
-            required
-          />
-          <Input
-            name={UserFields.repeat_password}
-            type='password'
-            validationType='default'
-            label='Повторите пароль'
-            required
-          />
-          <div className='flex mt-2 justify-between '>
-            <Button
-              color='amber'
-              className='mt-2 mb-4'
-              type='submit'
-              onClick={handleOpen}>
-              Отмена
-            </Button>
-            <Button className='mt-2 mb-4' type='submit'>
-              Изменить
-            </Button>
-          </div>
-        </form>
-      </div>
-    </Modal>
+      <Modal
+        title='Изменить пароль'
+        open={open}
+        handleOpen={handleOpen}
+        className='game-modal'>
+        <div className='box-border '>
+          {error && <Toast text={error} />}
+          <form onSubmit={handleSubmit}>
+            <Input
+              name={UserFields.old_password}
+              type='password'
+              validationType='default'
+              label='Старый пароль'
+              required
+            />
+            <Input
+              name={UserFields.new_password}
+              type='password'
+              validationType='default'
+              label='Новый пароль'
+              required
+            />
+            <Input
+              name={UserFields.repeat_password}
+              type='password'
+              validationType='default'
+              label='Повторите пароль'
+              required
+            />
+            <div className='flex mt-2 justify-between '>
+              <Button
+                color='amber'
+                className='mt-2 mb-4'
+                type='submit'
+                onClick={handleOpen}>
+                Отмена
+              </Button>
+              <Button className='mt-2 mb-4' type='submit'>
+                Изменить
+              </Button>
+            </div>
+          </form>
+        </div>
+      </Modal>
   );
 };

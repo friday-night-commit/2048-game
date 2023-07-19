@@ -32,9 +32,9 @@ export default function ForumPage() {
 
   const dispatch = useAppDispatch();
   const posts = useAppSelector(store => store.forumSlice.posts);
+  const selectedTag = useAppSelector(store => store.forumSlice.selectedTag);
   const tags = useAppSelector(store => store.forumSlice.tags);
   const lastComments = useAppSelector(store => store.commentSlice.lastComments);
-  const user = useAppSelector(store => store.userSlice.user);
   useEffect(() => {
     dispatch(getAllPosts()).then();
     dispatch(getAllTags()).then();
@@ -58,11 +58,11 @@ export default function ForumPage() {
             {forumStatus === STATE_STATUS.LOADING && <p>Загрузка постов</p>}
             {posts?.length && (
               <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full'>
-                {posts.map(obj => (
+                {posts?.filter(p => selectedTag ? p.tag === selectedTag : p)
+                  .map(obj => (
                   <Post
                     key={obj.id}
                     {...obj}
-                    isEditable={user?.email === obj.user?.email}
                   />
                 ))}
               </div>

@@ -76,9 +76,9 @@ class TopicsController {
         tag,
         imageUrl
       );
-
-      if (topic) {
-        res.status(201).json(topic);
+      const foundTopic = await dbTopicsController.getTopicById(Number(topic?.id));
+      if (foundTopic) {
+        res.status(201).json(foundTopic);
       } else {
         return next(ApiError.badRequest('Не получилось создать пост'));
       }
