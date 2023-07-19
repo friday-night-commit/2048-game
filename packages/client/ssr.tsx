@@ -21,7 +21,7 @@ async function render(uri, repository) {
   const renderResult = renderToString(
     <StaticRouter location={uri}>
       <Provider store={store}>
-        <ThemeProvider>
+        <ThemeProvider store={store}>
           <App />
         </ThemeProvider>
       </Provider>
