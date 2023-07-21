@@ -1,6 +1,6 @@
 import axios from 'axios';
 const API_ROOT = 'https://ya-praktikum.tech/api/v2/';
-const API_URL = 'http://localhost:5000/';
+const API_URL = 'https://fri-night-commit.ya-praktikum.tech/';
 
 export class YandexAPIRepository {
   constructor(private _cookieHeader: string | undefined) {}

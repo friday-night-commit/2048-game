@@ -2,12 +2,12 @@ import React, { useCallback, useState, FC, useEffect } from 'react';
 import Toast from '../Toast';
 import './index.scss';
 import ProfileController from '../../Controllers/ProfileController';
+import { fileHosting } from '../../api/consts';
+import { default_comment_avatar } from '../../pages/Forum/forum.interfaces';
 
 type AvatarProps = {
   userAvatar?: string;
 };
-
-const fileHosting = 'https://ya-praktikum.tech/api/v2/resources';
 
 const Avatar: FC<AvatarProps> = ({ userAvatar }) => {
   const [preview, setPreview] = useState(fileHosting + userAvatar || '');
@@ -23,13 +23,14 @@ const Avatar: FC<AvatarProps> = ({ userAvatar }) => {
         return;
       }
       const target = e.target as HTMLInputElement;
+
       try {
         if (target.files && target.files.length) {
-          const uri = URL.createObjectURL(target.files[0]);
+          const file = target.files[0];
+          const uri = URL.createObjectURL(file);
           setPreview(uri);
-
           const formData = new FormData();
-          formData.append('avatar', target.files[0]);
+          formData.append('avatar', file, file.name);
           ProfileController.changeAvatar(formData);
         }
       } catch (e) {
@@ -43,7 +44,12 @@ const Avatar: FC<AvatarProps> = ({ userAvatar }) => {
   return (
     <div>
       <div className={`avatar-container ${!userAvatar && 'not-found'}`}>
-        <img className='avatar-container__image' src={preview} alt='photo' />
+        <img className='avatar-container__image' src={preview}
+             onError={({ currentTarget }) => {
+               currentTarget.onerror = null;
+               currentTarget.src=default_comment_avatar;
+             }}
+             alt='photo' />
         <label className='avatar-container__file'>
           <span className='avatar-container__text'>
             Нажмите чтобы изменить ваш аватар

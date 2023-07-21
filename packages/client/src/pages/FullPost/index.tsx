@@ -100,7 +100,7 @@ export default function FullPost() {
           <p>Загрузка текущего поста</p>
         )}
         <div className='full-post__left'>
-          <Post {...post} isFullPost />
+          <Post {...post} isFullPost/>
         </div>
 
         {isAuthorized && (

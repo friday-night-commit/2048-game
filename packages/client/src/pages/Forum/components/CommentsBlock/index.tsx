@@ -5,8 +5,8 @@ import './index.scss';
 import {
   Comment,
   COMMENT_LABEL_TYPE,
-  default_author_name,
-  default_comment_avatar,
+  default_author_name, default_avatar,
+  default_comment_avatar
 } from '../../forum.interfaces';
 import moment from 'moment';
 import { DATE_FORMATS } from '../../../../Utils/dateFormats';
@@ -49,6 +49,10 @@ export const Comments: TProps = ({
                     ) : (
                       <Avatar
                         alt={obj?.user?.first_name}
+                        onError={({ currentTarget }) => {
+                          currentTarget.onerror = null;
+                          currentTarget.src=default_avatar;
+                        }}
                         src={obj?.user?.avatar || default_comment_avatar}
                       />
                     )}
@@ -60,7 +64,7 @@ export const Comments: TProps = ({
                         <Suspense fallback={<textarea />}>
                           <LazyQuillContentComponent
                             content={obj.text}
-                            textAreaHeight={90}
+                            textAreaHeight={50}
                           />
                         </Suspense>
                       </div>
