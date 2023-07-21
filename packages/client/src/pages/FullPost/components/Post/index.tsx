@@ -59,7 +59,7 @@ export const Post: TProps = ({
       key={id}
       className='relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full'>
       <div className='shadow p-4 rounded-lg bg-white'>
-        {isEditable && (
+        {(isEditable && !isFullPost) && (
           <div className='edit-block'>
             <Link className='text-sm' to={`/posts/${id}/edit`}>
               Редактировать
@@ -114,7 +114,7 @@ export const Post: TProps = ({
               <Suspense fallback={<textarea />}>
                 <LazyQuillContentComponent
                   content={text}
-                  textAreaHeight={350}
+                  textAreaHeight={300}
                 />
               </Suspense>
             )}
@@ -129,6 +129,10 @@ export const Post: TProps = ({
                 <img
                   alt='avatar'
                   src={user?.avatar || default_avatar}
+                  onError={({ currentTarget }) => {
+                    currentTarget.onerror = null;
+                    currentTarget.src=default_avatar;
+                  }}
                   className='rounded-full w-6 h-6 md:w-8 md:h-8 bg-gray-200'></img>
               )}
               <span className='absolute top-0 right-0 inline-block w-3 h-3 bg-primary-red rounded-full'></span>

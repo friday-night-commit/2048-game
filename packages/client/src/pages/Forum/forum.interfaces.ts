@@ -1,7 +1,7 @@
 import { REACTION_TYPE } from '../../Components/ReactionBlock';
 
 export const default_avatar =
-  'https://thumbnail.imgbin.com/10/8/9/imgbin-elon-musk-tesla-motors-tesla-model-3-spacex-tesla-dJ5CpnLwMCeHCuT7A11U0JV38_t.jpg';
+  'https://icdn.lenta.ru/images/2023/05/11/23/20230511232910797/square_320_91bf74af8497ba5be0cde6d6e4e4785d.jpg';
 export const default_comment_avatar =
   'https://big-i.ru/upload/iblock/471/8xe3vim9p8f8ori1o3ert3tgts25ira9.jpg';
 export const default_author_name = 'ELon Mask';
