@@ -11,12 +11,6 @@ const titleParamSchema = {
   validator_functions: [checkTextLength(200)]
 };
 
-const textParamSchema = {
-  name: 'text',
-  type: 'string',
-  required: true,
-  validator_functions: [checkTextLength(600)]
-};
 
 const userIdParamSchema = {
   name: 'userId',
@@ -25,8 +19,8 @@ const userIdParamSchema = {
 };
 
 export const paramsSchemas = {
-  post: [titleParamSchema, textParamSchema],
-  put: [titleParamSchema, textParamSchema, userIdParamSchema]
+  post: [titleParamSchema],
+  put: [titleParamSchema, userIdParamSchema]
 };
 
 class TopicsController {
