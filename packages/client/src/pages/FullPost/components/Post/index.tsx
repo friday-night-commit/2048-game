@@ -50,7 +50,6 @@ export const Post: TProps = ({
 
   const isEditable = (authUser && authUser.email === user?.email);
 
-  // Пост новый, если создан сегодня
   const isNew =
     moment(createdAt).format(DATE_FORMATS.SIMPLE_DATE_FORMAT) ===
     moment().format(DATE_FORMATS.SIMPLE_DATE_FORMAT);
